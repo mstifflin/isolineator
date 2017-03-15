@@ -9,7 +9,8 @@
   },
   "scripts": {},
   "dependencies": {
-    "angular": "^1.6.3"
+    "angular": "^1.6.3",
+    "express": "^4.15.2"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",

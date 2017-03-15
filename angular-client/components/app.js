@@ -8,7 +8,7 @@ angular.module('app')
   return {
     scope: {},
     restrict: 'E',
-    controller, 'AppCtrl',
+    controller: 'AppCtrl',
     controllerAs: 'ctrl',
     bindToConteroller: true,
     templateUrl: 'templates/app.html'
