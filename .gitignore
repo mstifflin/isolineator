@@ -6,7 +6,6 @@ logs
 
 ## NPM ##
 node_modules/
-server/
 
 # Runtime data
 pids
