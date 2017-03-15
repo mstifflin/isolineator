@@ -14,3 +14,5 @@ angular.module('app')
     templateUrl: 'templates/app.html'
   }
 })
+
+//minor change
