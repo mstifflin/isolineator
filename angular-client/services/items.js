@@ -1,8 +1,9 @@
 angular.module('app')
-.service('itemsService', function($http) {
+.service('isolineatorService', function($http) {
+
   this.getAll = function(callback) {
-    $http.get('/items')
-    .then(function({data}) {
+    $http.get('/logs')
+    .then(function(data) {
       if(callback) {
         callback(data);
       }
@@ -11,4 +12,26 @@ angular.module('app')
       console.log(err);
     });
   };
+
+  this.searchLogs = function(query, callback) {
+    $http.get('/log')
+    .then(function(data) {
+      if(callback) {
+        callback(data);
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  }
+
+  this.postRecording = function(recording, callback) {
+    $http.post('/record')
+    .then(function(data){
+      if(callback) {
+        callback(data);
+      }
+    })
+  };
+
 });

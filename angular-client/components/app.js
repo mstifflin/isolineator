@@ -1,9 +1,9 @@
 angular.module('app')
-.controller('AppCtrl', function($window) {
-  // itemsService.getAll((data) => {
-  //   this.items = data;
+.controller('AppCtrl', function($scope) {
+  // isolineatorService.getAll((data) => {
+  //   this.logs = data;
   // });
-  // this.logs = $window.exampleTextData;
+  
   this.logs = [
     {
       text:"Hello there",
@@ -12,8 +12,11 @@ angular.module('app')
       text: "Hi again"
     }
   ]
+
   console.log('logs', this.logs);
+
 })
+
 .directive('app', function() {
   return {
     scope: {},
@@ -26,5 +29,4 @@ angular.module('app')
 
 })
 
-//minor change
 
