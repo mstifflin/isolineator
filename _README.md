@@ -4,10 +4,10 @@
 
 ## Team
 
-  - teamMember
-  - teamMember
-  - teamMember
-  - teamMember
+  - Christopher Yang
+  - Raphael Feliciano
+  - Apurva Shastry
+  - Michael Diodoro
 
 ## Table of Contents
 
