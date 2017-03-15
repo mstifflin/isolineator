@@ -4,6 +4,10 @@
 logs
 *.log
 
+## NPM ##
+node_modules/
+server/
+
 # Runtime data
 pids
 *.pid
