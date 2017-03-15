@@ -13,6 +13,8 @@ angular.module('app')
     bindToConteroller: true,
     templateUrl: 'templates/app.html'
   }
+
 })
 
 //minor change
+
