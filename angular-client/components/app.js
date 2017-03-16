@@ -5,11 +5,17 @@ angular.module('app')
   });
   
   this.logs = [
-    {
-      text:"Hello there",
+    { __v: 0,
+      vtext: 'go away',
+      topic: 'grumpy',
+      createdAt: '2017-03-16T05:08:52.020Z',
+      _id: '58ca1de4f29fc9ab6188f066' 
     },
-    {
-      text: "Hi again"
+    { __v: 0,
+      vtext: 'hi there',
+      topic: 'hi',
+      createdAt: '2017-03-16T05:08:52.009Z',
+      _id: '58ca1de4f29fc9ab6188f065' 
     }
   ]
 
