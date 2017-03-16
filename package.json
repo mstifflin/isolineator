@@ -8,6 +8,7 @@
     "node": ">=6.4.0"
   },
   "scripts": {
+    "start": "node Server/server.js"
   },
   "dependencies": {
     "express": "^4.15.0",
