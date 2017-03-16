@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var mongoURI = 'mongodb://localhost/isodb';
+var mongoURI = 'mongodb://localhost:5000';
 mongoose.connect(mongoURI);
 
 var db = mongoose.connection;
