@@ -4,16 +4,27 @@ angular.module('app')
     this.logs = data;
   });
   
-  // this.logs = [
-  //   {
-  //     text:"Hello there",
-  //   },
-  //   {
-  //     text: "Hi again"
-  //   }
-  // ]
+  this.logs = [
+    {
+      text:"Hello there",
+    },
+    {
+      text: "Hi again"
+    }
+  ]
 
   console.log('logs', this.logs);
+
+  this.recording = false;
+  this.record = () => {
+    // console.log('toggling');
+    this.recording = !this.recording;
+  }
+
+  this.searchService = isolineatorService;
+  this.searchResults = (data) => {
+    this.logs = data;
+  }
 
 })
 
@@ -23,7 +34,7 @@ angular.module('app')
     restrict: 'E',
     controller: 'AppCtrl',
     controllerAs: 'ctrl',
-    bindToConteroller: true,
+    bindToController: true,
     templateUrl: 'templates/app.html'
   }
 

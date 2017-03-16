@@ -3,11 +3,12 @@ angular.module('app')
 .directive('search', function() {
   return {
     scope: {
-      result: '<'
+      result: '<',
+      service: '<'
     },
-    controller: function(youTube) {
+    controller: function() {
       this.clicked = function() {
-        youTube.search(this.input, (data) => { this.result(data); });
+        this.service.searchLogs(this.input, (data) => { this.result(data); });
       };
       
       

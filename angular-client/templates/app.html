@@ -1,9 +1,10 @@
 <div>
   <div>
     <h1>Isolineator</h1>
-    
-    <button>Record</button>
-    <!-- <search>Search component goes here</search> -->
+
+    <button ng-click ='ctrl.record()' ng-show ='!ctrl.recording'>Record</button>
+    <button ng-click ='ctrl.record()' ng-show = 'ctrl.recording'> Stop Record</button>
+    <search service='ctrl.searchService' result='ctrl.searchResults'>Search component goes here</search>
 
     <list logs="ctrl.logs"/>
   </div>
