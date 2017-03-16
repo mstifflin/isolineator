@@ -14,13 +14,22 @@ angular.module('app')
   };
 
   this.searchLogs = function(query, callback) {
-    $http.get('/log')
-    .then(function({data}) {
+    var req = {};
+    req.query = query;
+
+    $http({
+      method: 'POST',
+      url: '/log', 
+      data: JSON.stringify(req)
+    })
+    // $http.get('/log')
+    .then(function(data) {
+      console.log('success');
       if(callback) {
         callback(data);
       }
     })
-    .catch(function({err}) {
+    .catch(function(err) {
       console.log(err);
     });
   };

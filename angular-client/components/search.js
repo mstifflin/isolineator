@@ -8,7 +8,12 @@ angular.module('app')
     },
     controller: function() {
       this.clicked = function() {
-        this.service.searchLogs(this.input, (data) => { this.result(data); });
+        console.log('attempting search');
+        // console.log('input', this.input);
+        this.service.searchLogs(this.input, (data) => { 
+          console.log('input', this.input);
+          this.result(data); 
+        });
       };
       
       
