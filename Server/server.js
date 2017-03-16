@@ -1,7 +1,8 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var db = require('../mongo-db');
+var db = require('../mongo-db/config.js');
+var inputs = require('../mongo-db/inputs.js');
 
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));

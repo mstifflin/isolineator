@@ -1,4 +1,4 @@
-var mangoose = require('mongoose');
+var mongoose = require('mongoose');
 
 var inputsSchema = mongoose.Schema({
 	//id: Number, no need for id as mongoose auto creates _id for each schema
@@ -30,7 +30,7 @@ var input2 = new Inputs({
 	createdAt: new Date()
 });
 
-input2.save(function (err, input) {
+input2.save(function (err, newInput) {
 	if (err) {
 		console.log('error in input2 save : ', err);
 	} else {
