@@ -1,5 +1,5 @@
 angular.module('app')
-.service('isolineatorService', function($http) {
+.service('isolineatorService', function($http, $window) {
 
   this.getAll = function(callback) {
     $http.get('/logs')
@@ -23,7 +23,7 @@ angular.module('app')
     .catch(function(err) {
       console.log(err);
     });
-  }
+  };
 
   this.postRecording = function(recording, callback) {
     $http.post('/record')
@@ -32,6 +32,9 @@ angular.module('app')
         callback(data);
       }
     })
+     .catch(function(err) {
+      console.log(err);
+    });
   };
 
 });

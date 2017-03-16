@@ -1,17 +1,17 @@
 angular.module('app')
-.controller('AppCtrl', function($scope) {
-  // isolineatorService.getAll((data) => {
-  //   this.logs = data;
-  // });
+.controller('AppCtrl', function($scope, isolineatorService) {
+  isolineatorService.getAll((data) => {
+    this.logs = data;
+  });
   
-  this.logs = [
-    {
-      text:"Hello there",
-    },
-    {
-      text: "Hi again"
-    }
-  ]
+  // this.logs = [
+  //   {
+  //     text:"Hello there",
+  //   },
+  //   {
+  //     text: "Hi again"
+  //   }
+  // ]
 
   console.log('logs', this.logs);
 
