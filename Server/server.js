@@ -10,8 +10,8 @@ app.use(bodyParser.json({
     extended: true
 }));
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+
+var port = process.env.PORT || 5000;
 
 
 app.post('/log', function(req, res) {
@@ -23,6 +23,6 @@ app.post('/', function(req, res) {
 
 });
 
-app.listen(3000, function() {
+app.listen(port, function() {
   console.log('In space no one can hear you scream');
 });
