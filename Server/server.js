@@ -10,10 +10,13 @@ app.use(bodyParser.json({
     extended: true
 }));
 
+
 var port = process.env.PORT || 5000;
 
-app.get('/', function(req, res) {
 
+app.post('/log', function(req, res) {
+  console.log('req.body.query', req.body.query);
+  res.status(201);
 });
 
 app.post('/', function(req, res) {
