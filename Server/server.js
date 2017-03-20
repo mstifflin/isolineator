@@ -10,7 +10,7 @@ app.use(bodyParser.json({
     extended: true
 }));
 
-app.set('port', 5000)
+var port = process.env.PORT || 5000;
 
 app.get('/', function(req, res) {
 
@@ -20,6 +20,6 @@ app.post('/', function(req, res) {
 
 });
 
-app.listen(5000, function() {
+app.listen(port, function() {
   console.log('In space no one can hear you scream');
 });
