@@ -1,11 +1,11 @@
 const fs = require('fs');
+const record = require('node-record-lpcm16');
+
 
 const Speech = require('@google-cloud/speech')({
   projectId: 'Isolineator',
   keyFilename: './Server/SpeechToText/isolineator-a25b826f81b6.json'
 });
-
-const fileName = './Test.m4a';
 
 const options = {
   encoding: 'LINEAR16',
@@ -20,7 +20,7 @@ const request = {
   singleUtterance: false,
   interimResults: false
 };
-//################STREAMING AUDIO###################
+//################for streaming audio from a file###################
   exports.streamAudio = (file, callback) => {
     fs.createReadStream(file)
     .on('error', console.error)
@@ -31,16 +31,16 @@ const request = {
       callback(data)
     })
   };
-//////////////Same functions///////////////
-  // const recognizeStream = speech.createRecognizeStream(request)
-  //   .on('error', console.error)
-  //   .on('data', (data) => {
-  //     console.log('Data received: ', data);
-  //   });
-  // fs.createReadStream('./audio.raw').pipe(recognizeStream);
-
-  // res.status(201).send();
-//#######################################
+///////////for direct mic to api//////////////////
+  
+  exports.liveStreamAudio = (callback) => {
+    return Speech.createRecognizeStream(request)
+      .on('error', console.error)
+      .on('data', (data) => {
+        process.stdout.write(data.results)
+        callback(data);
+      });
+  }
 
 //################normal synchronus####################
   exports.syncAudio = (file, callback) => {
@@ -48,7 +48,7 @@ const request = {
     .then((results) => {
       const transcription = results[0];
       console.log(`Transcription: ${transcription}`);
-      return transcription; 
+      return transcription;
     })
     .then((data) => {
       callback(data);
