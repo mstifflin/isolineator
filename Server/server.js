@@ -22,8 +22,9 @@ app.post('/log', function(req, res) {
   res.status(201);
 });
 
-app.post('/', function(req, res) {
-
+app.post('/record', function(req, res) {
+  console.log('post for record: req', req);
+  res.status(201);
 });
 
 
