@@ -1,5 +1,4 @@
 const fs = require('fs');
-const record = require('node-record-lpcm16');
 
 
 const Speech = require('@google-cloud/speech')({
@@ -20,40 +19,50 @@ const request = {
   singleUtterance: false,
   interimResults: false
 };
-//################for streaming audio from a file###################
-  exports.streamAudio = (file, callback) => {
-    fs.createReadStream(file)
-    .on('error', console.error)
-    .pipe(Speech.createRecognizeStream(request))
-    .on('error', console.error)
-    .on('data', function(data) {
-      console.log(data);
-      callback(data)
+//##############to create a file first then transcribe##########
+exports.createAndStream = (file, callback) => {
+  return fs.createWriteStream(file)
+    .on('finish', () => {
+      console.log("Recording Finished. Now Transcribing")
+      exports.streamFile(file, callback);
     })
-  };
+};
+
+
+//################for streaming audio from a file already created###################
+exports.streamFile = (file, callback) => {
+  fs.createReadStream(file)
+  .on('error', console.error)
+  .pipe(Speech.createRecognizeStream(request))
+  .on('error', console.error)
+  .on('data', function(data) {
+    console.log(data);
+    callback(data)
+  })
+};
 ///////////for direct mic to api//////////////////
   
-  exports.liveStreamAudio = (callback) => {
-    return Speech.createRecognizeStream(request)
-      .on('error', console.error)
-      .on('data', (data) => {
-        process.stdout.write(data.results)
-        callback(data);
-      });
-  }
+exports.liveStreamAudio = (callback) => {
+  return Speech.createRecognizeStream(request)
+    .on('error', console.error)
+    .on('data', (data) => {
+      process.stdout.write(data.results)
+      callback(data);
+    });
+}
 
 //################normal synchronus####################
-  exports.syncAudio = (file, callback) => {
-    Speech.recognize(file, options)
-    .then((results) => {
-      const transcription = results[0];
-      console.log(`Transcription: ${transcription}`);
-      return transcription;
-    })
-    .then((data) => {
-      callback(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+exports.syncAudio = (file, callback) => {
+  Speech.recognize(file, options)
+  .then((results) => {
+    const transcription = results[0];
+    console.log(`Transcription: ${transcription}`);
+    return transcription;
+  })
+  .then((data) => {
+    callback(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}

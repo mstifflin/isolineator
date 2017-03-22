@@ -13,6 +13,7 @@
   "dependencies": {
     "@google-cloud/speech": "^0.7.0",
     "angular": "^1.6.3",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.0",
     "googleapis": "^18.0.0",
