@@ -5,11 +5,24 @@ var record = require('node-record-lpcm16');
 var request = require('request');
 var multer = require('multer');
 // var upload = multer({ dest: 'uploads/' });
+// var upload = multer();
 var db = require('../mongo-db/config.js');
 var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 
 var app = express();
+
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + '.wav');
+  }
+});
+
+var upload = multer({ storage: storage });
 
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));

@@ -24,7 +24,7 @@
             </button>
 
             <button ng-click="recorder.save()" ng-disabled="recorder.status.isRecording || !recorder.audioModel">
-                Download
+                Save
             </button>
 
             <div style="max-width: 600px">
@@ -48,10 +48,10 @@
             </h2>
 
 
-            <h2 style="font-family: sans-serif; text-align: center; border: solid 2px #333; padding: 20px 10px;"
+           <!--  <h2 style="font-family: sans-serif; text-align: center; border: solid 2px #333; padding: 20px 10px;"
                 ng-if="recorder.status.isRecording">
                 Remaining Time: {{recorder.timeLimit - recorder.elapsedTime}}
-            </h2>
+            </h2> -->
         </div>
 
 
