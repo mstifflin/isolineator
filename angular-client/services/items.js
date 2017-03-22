@@ -30,7 +30,7 @@ angular.module('app')
       }
     })
     .catch(function(err) {
-      console.log(err);
+      console.log('error in searchLogs:', err);
     });
   };
 
@@ -59,11 +59,9 @@ angular.module('app')
     //  });
 
     var formData = new FormData();
-    formData.append('filename', filename);
-    formData.append('recording', recording);
+    formData.append('recording', recording, filename);
 
-    console.log('get all file names ', formData.getAll('filename'));
-    console.log('get recordings', formData.getAll('recording'));
+    console.log('get recording', formData.get('recording'));
 
     console.log('Form data:', formData);
 
@@ -71,11 +69,15 @@ angular.module('app')
       method: 'POST',
       url: '/record', 
       data: formData,
-      contentType: 'multipart/form-data',
-      processData: false
+      // contentType: 'multipart/form-data',
+      contentType: false,
+      transformRequest: angular.identity,
+      processData: false,
+      headers: {'Content-type': undefined}
     })
     .then(function(data) {
-      console.log('posted in original postrecording');
+      console.log('data from success:', data);
+      // console.log('data.config.data.get(recording)', data.config.data.get('recording').name);
       if (callback) {
         callback(data);
       }
@@ -83,6 +85,21 @@ angular.module('app')
      .catch(function(err) {
        console.log('error in postRecording', err);
      });
+
+   //  $http.post('/record', formData, {
+   //    transformRequest: angular.identity,
+   //    headers: {'Content-type': undefined}
+   //  })
+   //  .success(function(data) {
+   //    console.log('data from success:', data);
+   //    // console.log('data.config.data.get(recording)', data.config.data.get('recording').name);
+   //    if (callback) {
+   //      callback(data);
+   //    }
+   //  })
+   // .error(function(err) {
+   //   console.log('error in postRecording', err);
+   // });
 
 
   };
