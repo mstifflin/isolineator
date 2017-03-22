@@ -26,6 +26,9 @@ app.post('/', function(req, res) {
 
 });
 
+
+// Creates a file first, THEN transcribes the audio from the file
+// RETURNS the transcribed text string.
 app.post('/testCreate', (req, res) => {
   record.start({
     sampleRate: 44100,
@@ -33,13 +36,15 @@ app.post('/testCreate', (req, res) => {
     verbose: true
   })
   .pipe(Speech.createAndStream('./Server/audio/test.wav', (data) => {
-    console.log(data);
     if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).send();
+      res.status(201).send(data.results[0].transcript);
     }
   }));
 });
 
+
+// Creates a direct data stream from the user's microphone into the Speech-to-text API
+// RETURNS the transcribed text string when the user is done talking
 app.post('/testStream', function(req, res) {
   record.start({
     sampleRate: 44100,
@@ -49,16 +54,19 @@ app.post('/testStream', function(req, res) {
   .pipe(Speech.liveStreamAudio((data) => {
     console.log(data)
     if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).end(data.results[0].transcript);
+      res.status(201).send(data.results[0].transcript);
     }
   }));
 });
 
+
+// Transcribes a local audio file that already exisits
+// RETURN the transcribed text string when done 
 app.post('/testFile', function(req, res) {
-  Speech.streamFile('./test.wav', (data)=>{
+  Speech.streamFile('./Server/audio/test.wav', (data)=>{
     console.log(data.results);
     if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).end(data.results[0].transcript);
+      res.status(201).send(data.results[0].transcript);
     }
   });
 });
