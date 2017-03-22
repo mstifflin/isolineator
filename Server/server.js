@@ -19,33 +19,34 @@ var port = process.env.PORT || 5000;
 
 app.post('/log', function(req, res) {
   console.log('req.body.query', req.body.query);
-  Speech.streamAudio('./test.wav', (data)=>{
-    console.log(data.results);
-    if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(200).end(data.results);
-    } else {
-      res.write(JSON.stringify(data.results));
-    }
-  });
+  res.status(201);
 });
 
 app.post('/', function(req, res) {
 
 });
 
-app.post('/test', function(req, res) {
+app.post('/testStream', function(req, res) {
   record.start({
     sampleRate: 16000,
     threshold: 0.5,
     verbose: true
   })
-  .pipe(Speech.liveStreamAudio((data => {
+  .pipe(Speech.liveStreamAudio((data) => {
     if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
       res.status(200).end(data.results);
-    } else {
-      res.write(JSON.stringify(data.results));
     }
-  })));
+  }));
+});
+
+app.post('/testFile', function(req, res) {
+  console.log('req.body.query', req.body.query);
+  Speech.streamAudio('./test.wav', (data)=>{
+    console.log(data.results);
+    if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+      res.status(200).end(data.results);
+    }
+  });
 });
 
 app.listen(port, function() {
