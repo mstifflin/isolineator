@@ -8,16 +8,17 @@ const Speech = require('@google-cloud/speech')({
 
 const options = {
   encoding: 'LINEAR16',
-  sampleRate: 16000
+  sampleRate: 44100
 };
 
 const request = {
   config: {
     encoding: 'LINEAR16',
-    sampleRate: 16000
+    sampleRate: 44100
   },
   singleUtterance: false,
-  interimResults: false
+  interimResults: true,
+  verbose: true
 };
 //##############to create a file first then transcribe##########
 exports.createAndStream = (file, callback) => {
@@ -46,7 +47,7 @@ exports.liveStreamAudio = (callback) => {
   return Speech.createRecognizeStream(request)
     .on('error', console.error)
     .on('data', (data) => {
-      process.stdout.write(data.results)
+      // process.stdout.write(data)
       callback(data);
     });
 }

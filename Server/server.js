@@ -28,37 +28,37 @@ app.post('/', function(req, res) {
 
 app.post('/testCreate', (req, res) => {
   record.start({
-    sampleRate: 16000,
+    sampleRate: 44100,
     threshold: 0.5,
     verbose: true
   })
   .pipe(Speech.createAndStream('./Server/audio/test.wav', (data) => {
-    console.log(data.results);
+    console.log(data);
     if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).end(data.results);
+      res.status(201).send();
     }
   }));
 });
 
 app.post('/testStream', function(req, res) {
   record.start({
-    sampleRate: 16000,
+    sampleRate: 44100,
     threshold: 0.5,
     verbose: true
   })
   .pipe(Speech.liveStreamAudio((data) => {
+    console.log(data)
     if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).end(data.results);
+      res.status(201).end(data.results[0].transcript);
     }
   }));
 });
 
 app.post('/testFile', function(req, res) {
-  console.log('req.body.query', req.body.query);
   Speech.streamFile('./test.wav', (data)=>{
     console.log(data.results);
     if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).end(data.results);
+      res.status(201).end(data.results[0].transcript);
     }
   });
 });
