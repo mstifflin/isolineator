@@ -77,7 +77,6 @@ angular.module('app')
     })
     .then(function(data) {
       console.log('data from success:', data);
-      // console.log('data.config.data.get(recording)', data.config.data.get('recording').name);
       if (callback) {
         callback(data);
       }
