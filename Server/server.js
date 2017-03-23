@@ -1,6 +1,11 @@
 var app = require('express')();
 var express = require('express');
+
 var server = require('http').Server(app);
+
+var app = express();
+var request = require('request')
+
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var record = require('node-record-lpcm16');
@@ -11,8 +16,6 @@ var multer = require('multer');
 var db = require('../mongo-db/config.js');
 var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
-
-// var app = express();
 
 var io = require ('socket.io')(server);
 
@@ -25,15 +28,23 @@ io.on('disconnect', (socket) => {
 });
 
 
+var port = process.env.PORT || 5000;
+var Translate = require('./TextTranslateApi.js')
+
+
 app.use(express.static(__dirname + '/../angular-client'));
+
 app.use(express.static(__dirname + '/../node_modules'));
 
 
 
+
 // app.use(bodyParser.urlencoded({ extended: false })); 
+
 app.use(bodyParser.json({
   extended: true
 }));
+
 
 
 var storage = multer.diskStorage({
@@ -128,6 +139,11 @@ app.post('/testFile', function(req, res) {
     }
   });
 });
+
+app.post('/textTranslate', function(req, res) {
+	Translate.Translater(req.body.TranslationText, 'es')
+})
+
 
 // app.listen(port, function() {
 //   console.log('In space no one can hear you scream', port);
