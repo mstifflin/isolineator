@@ -99,7 +99,7 @@ app.post('/testStream', function(req, res) {
     verbose: true
   })
   .pipe(Speech.liveStreamAudio((data) => {
-    // console.log(data);
+    console.log(data);
     // res.write(data.results);
 
     // let speech = data.results.length ? data.results[0].transcribe : '';
