@@ -33,6 +33,9 @@
                 </div>
 
                 <div ng-show="recorder.isHtml5 && recorder.status.isRecording">
+                    <div ng-model = "text" ng-show ="text" class = "animate-show-hide">
+                    {{text}}
+                    </div>
                     <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer>
                 </div>
                 <br/>

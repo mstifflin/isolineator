@@ -111,7 +111,7 @@ angular.module('app')
       headers: {'Content-type': undefined}
     })
     .then(function(data) {
-      console.log('data from success:', data);
+      // console.log('data from success:', data);
       if (callback) {
         callback(data);
       }

@@ -70,6 +70,10 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     }
   };
 
+  var socket = io.connect('http://127.0.0.1:5000');
+
+  $scope.text = '';
+
   var control = this,
     cordovaMedia = {
       recorder: null,
@@ -215,14 +219,15 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     }
 
     // var socket = io.connect('http://localhost');
-    var socket = io.connect('http://127.0.0.1:5000');
+    // var socket = io.connect('http://127.0.0.1:5000');
     // var socket = new io.Socket();
     socket.on('transcription', function(data) {
       console.log('transcription:', data);
+      $scope.text = data.results;
     });
 
     service1.postStream(function(data) {
-      console.log('data', data);
+      // console.log('data', data);
     });
 
     //clear audio previously recorded
@@ -316,10 +321,11 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
       control.onRecordComplete();
     };
 
+    // io.disconnect();
     //To stop stream
     service1.stopStream(function(data) {
       console.log('stopStream invoked', data);
-      socket.disconnect();
+      
     });
 
     //To stop recording
