@@ -27,7 +27,7 @@ angular.module('app')
     this.recording = !this.recording;
   }
 
-  this.searchService = isolineatorService;
+  this.service = isolineatorService;
   this.searchResults = (data) => {
     this.logs = data;
   }

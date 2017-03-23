@@ -30,20 +30,74 @@ angular.module('app')
       }
     })
     .catch(function(err) {
-      console.log(err);
+      console.log('error in searchLogs:', err);
     });
   };
 
-  this.postRecording = function(recording, callback) {
-    $http.post('/record')
-    .then(function({data}){
-      if(callback) {
+  this.postStream = function(callback) {
+  // var formData = new FormData();
+  // formData.append('recording', recording, filename);
+
+  $http({
+    method: 'POST',
+    url: '/testStream', 
+  })
+  .then(function(data) {
+    console.log('data from success:', data);
+    if (callback) {
+      callback(data);
+    }
+  })
+   .catch(function(err) {
+     console.log('error in postRecording', err);
+   });
+  };
+
+  this.stopStream = function(callback) {
+    $http({
+      method: 'POST',
+      url: '/stopStream', 
+    })
+    .then(function(data) {
+      console.log('voice streaming has stopped', data);
+      if (callback) {
         callback(data);
       }
     })
-     .catch(function({err}) {
-      console.log(err);
-    });
+     .catch(function(err) {
+       console.log('error in postRecording', err);
+     });
+    };
+
+  this.postRecording = function(filename, recording, date, callback) { 
+
+    var formData = new FormData();
+    formData.append('recording', recording, filename);
+
+    console.log('get recording', formData.get('recording'));
+
+    console.log('Form data:', formData);
+
+    $http({
+      method: 'POST',
+      url: '/record', 
+      data: formData,
+      // contentType: 'multipart/form-data',
+      contentType: false,
+      transformRequest: angular.identity,
+      processData: false,
+      headers: {'Content-type': undefined}
+    })
+    .then(function(data) {
+      // console.log('data from success:', data);
+      if (callback) {
+        callback(data);
+      }
+    })
+     .catch(function(err) {
+       console.log('error in postRecording', err);
+     });
+
   };
 
 });
