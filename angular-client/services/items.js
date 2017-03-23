@@ -80,7 +80,7 @@ angular.module('app')
 
     $http({
       method: 'POST',
-      url: '/', 
+      url: '/record', 
       data: formData,
       // contentType: 'multipart/form-data',
       contentType: false,
