@@ -1,7 +1,25 @@
 angular.module('app')
 .controller('AppCtrl', function($scope, isolineatorService) {
+
+  var socket = io.connect('http://127.0.0.1:5000');
+
   isolineatorService.getAll((data) => {
     this.logs = data;
+  });
+
+  socket.on('transcription', (data, trans) => {
+    // console.log('transcription:', data);
+    // console.log(trans)
+    if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
+      // console.log('transcription data.results is array:', data);
+      console.log(data.results[0].isFinal)
+      this.text = data.results[0].transcript;
+      this.translate = trans;
+    } else {
+      // console.log('transcription data.results is NOT array:', data);
+      this.text = data.results;
+      this.translate = trans;
+    }
   });
   
   this.logs = [

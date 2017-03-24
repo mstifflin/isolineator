@@ -6,7 +6,8 @@ const Translate = require('@google-cloud/translate')({
 
 exports.Translater = function(text, target, callback) {
 	Translate.translate(text, target).then((results) => {
-    console.log(results[0])
+    // console.log(results[0])
+    callback(results[0]);
   }).catch((error) => {
   		console.log(error);
   })
