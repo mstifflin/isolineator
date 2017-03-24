@@ -106,6 +106,8 @@ app.post('/testStream', function(req, res) {
  })
  .pipe(Speech.liveStreamAudio((data) => {
    console.log(data);
+   // console.log('In mikes code, data of buffer: ', data instanceof Buffer);
+   // console.log('In mikes code, data of stream: ', data instanceof);
    if(Array.isArray(data.results) && data.results[0] !== undefined) {
       Translater(data.results[0].transcript, 'es', (translate) =>{
         io.emit('transcription', data, translate);
@@ -127,9 +129,38 @@ app.post('/testStream', function(req, res) {
    // });
    if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
      // console.log('transcribed data from teststream', data.results[0]);
-     res.status(201).end(data.results[0].transcript);
+     // res.status(201).end(data.results[0].transcript);
+
    }
- }));
+ }).on('end', () => {
+  console.log('This is the end of transcribing');
+
+  //Apurva's text to voice
+  t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {
+    if (err) {
+        console.log(err.code)
+    } else if (data) {
+      console.log('inside data of getSpeechStreamFromChunks');
+        if (data.AudioStream instanceof Buffer) {
+          // Initiate the source
+          var bufferStream = new Stream.PassThrough()
+          // convert AudioStream into a readable stream
+          bufferStream.end(data.AudioStream)
+          // Pipe into Player
+          bufferStream.pipe(res)
+          bufferStream.on('end', () => {
+            res.status(201).end();
+          });
+        }
+    }
+  });
+
+ })
+ .on('error',function() {
+ console.log('this is the big error', arguments);
+ })
+
+ );
 });
 
 
@@ -152,24 +183,7 @@ app.post('/txtTranslate', function(req, res) {
 })
 
 
-//Apurva's text to voice
-app.get('/textToSpeech', (req, res) => {
-  t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {
-    if (err) {
-        console.log(err.code)
-    } else if (data) {
-      console.log('inside data of getSpeechStreamFromChunks');
-        if (data.AudioStream instanceof Buffer) {
-            // Initiate the source
-            var bufferStream = new Stream.PassThrough()
-            // convert AudioStream into a readable stream
-            bufferStream.end(data.AudioStream)
-            // Pipe into Player
-            bufferStream.pipe(res)
-        }
-    }
-  });
-});
+
 
 
 
