@@ -59,14 +59,16 @@ app.post('/record', upload.single('recording'), function(req, res) {
 
   console.log('post handled: request file', req.file);
 
-  // Speech.streamFile(`./${req.file.path}`, (data)=>{
-  //   if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-  //     console.log('data.results', data.results);
-  //     console.log('data.results[0].transcript', data.results[0].transcript);
-  //     res.status(201).send(data.results[0].transcript);
-  //   }
-  // });
-  // // res.status(201).end();
+  Speech.syncAudio(`./${req.file.path}`, (data)=>{
+    console.log(data)
+    res.status(201).send(data);
+    if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+      console.log('data.results', data.results);
+      console.log('data.results[0].transcript', data.results[0].transcript);
+      res.status(201).send(data);
+    }
+  });
+  // res.status(201).end();
 });
 
 app.post('/stopStream', function (req, res) {
@@ -98,17 +100,19 @@ app.post('/testCreate', (req, res) => {
 // Creates a direct data stream from the user's microphone into the Speech-to-text API
 // RETURNS the transcribed text string when the user is done talking
 app.post('/testStream', function(req, res) {
+ // res.status(201).send();
+
+ var string = '';
 
  record.start({
    sampleRate: 16000,
    threshold: 0
    // verbose: true
  })
- .pipe(Speech.liveStreamAudio((data) => {
-   console.log(data);
-   // console.log('In mikes code, data of buffer: ', data instanceof Buffer);
-   // console.log('In mikes code, data of stream: ', data instanceof);
-   if(Array.isArray(data.results) && data.results[0] !== undefined) {
+  .pipe(Speech.liveStreamAudio((data) => {
+    console.log(data);
+   
+   if(Array.isArray(data.results) && data.results[0] !== undefined && data.results[0] !== '') {
       Translater(data.results[0].transcript, 'es', (translate) =>{
         io.emit('transcription', data, translate);
         // console.log(data); 
@@ -118,60 +122,59 @@ app.post('/testStream', function(req, res) {
         io.emit('transcription', data, translate);
       })
    }
-   // Translator()
-   // res.write(data.results);
-
-   // let speech = data.results.length ? data.results[0].transcribe : '';
-   // io.on('connection', (socket) => {
-   // console.log('speech here:', speech);
-   // if (data.results.length > 0) {
-   // }
-   // });
-   if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-     // console.log('transcribed data from teststream', data.results[0]);
-     // res.status(201).end(data.results[0].transcript);
-
+   
+   if(Array.isArray(data.results) && data.results[0] !== undefined && data.results[0].isFinal) {
+    string += data.results[0].transcript;
+   } else if (data.results !== ''){
+    string = data.results
    }
- }).on('end', () => {
+   
+  })
+  .on('end', () => {
   console.log('This is the end of transcribing');
 
-  //Apurva's text to voice
-  t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {
-    if (err) {
-        console.log(err.code)
-    } else if (data) {
-      console.log('inside data of getSpeechStreamFromChunks');
-        if (data.AudioStream instanceof Buffer) {
-          // Initiate the source
-          var bufferStream = new Stream.PassThrough()
-          // convert AudioStream into a readable stream
-          bufferStream.end(data.AudioStream)
-          // Pipe into Player
-          bufferStream.pipe(res)
-          bufferStream.on('end', () => {
-            res.status(201).end();
-          });
+    //Apurva's text to voice
+    Translater(string, 'es', (translate) => {
+      io.emit('transcription', string, translate);
+
+      //Apurva's function goes here
+      t2s.getSpeechStreamFromChunks(translate, (err, data) => { //translate should be equal to the final translated text
+        if (err) {
+            console.log(err.code)
+        } else if (data) {
+          console.log('inside data of getSpeechStreamFromChunks');
+          if (data.AudioStream instanceof Buffer) {
+            // Initiate the source
+            var bufferStream = new Stream.PassThrough()
+            // convert AudioStream into a readable stream
+            bufferStream.end(data.AudioStream)
+            // Pipe into Player
+            bufferStream.pipe(res)
+            bufferStream.on('end', () => {
+              res.status(201).end();
+            });
+          }
         }
-    }
-  });
+      });
+    })
+  })
+  .on('error',function() {
+     console.log('this is the big error', arguments);
+  })
 
- })
- .on('error',function() {
- console.log('this is the big error', arguments);
- })
-
- );
+  );
 });
 
 
 // Transcribes a local audio file that already exisits
 // RETURN the transcribed text string when done
 app.post('/testFile', function(req, res) {
-  Speech.streamFile('./Server/audio/test.wav',(data)=>{
-    console.log(data.results);
-    if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).send(data.results[0].transcript);
-    }
+  Speech.syncAudio('./uploads/recording-2017-03-24T20:59:40.825Z.wav',(data)=>{
+    console.log(data);
+    res.status(201).send(data);
+    // if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+    //   res.status(201).send(data.results[0].transcript);
+    // }
   });
 });
 
