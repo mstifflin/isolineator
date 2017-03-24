@@ -113,7 +113,7 @@ app.post('/testStream', function(req, res) {
       })
     }else if(typeof data.results === 'string'){
       Translater(data.results, 'es', (translate) =>{
-        io.emit('transcription', translate);
+        io.emit('transcription', data, translate);
       })
    }
    // Translator()
