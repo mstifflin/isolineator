@@ -59,14 +59,16 @@ app.post('/record', upload.single('recording'), function(req, res) {
 
   console.log('post handled: request file', req.file);
 
-  // Speech.streamFile(`./${req.file.path}`, (data)=>{
-  //   if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-  //     console.log('data.results', data.results);
-  //     console.log('data.results[0].transcript', data.results[0].transcript);
-  //     res.status(201).send(data.results[0].transcript);
-  //   }
-  // });
-  // // res.status(201).end();
+  Speech.syncAudio(`./${req.file.path}`, (data)=>{
+    console.log(data)
+    res.status(201).send(data);
+    if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+      console.log('data.results', data.results);
+      console.log('data.results[0].transcript', data.results[0].transcript);
+      res.status(201).send(data);
+    }
+  });
+  // res.status(201).end();
 });
 
 app.post('/stopStream', function (req, res) {
@@ -167,11 +169,12 @@ app.post('/testStream', function(req, res) {
 // Transcribes a local audio file that already exisits
 // RETURN the transcribed text string when done
 app.post('/testFile', function(req, res) {
-  Speech.streamFile('./Server/audio/test.wav',(data)=>{
-    console.log(data.results);
-    if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      res.status(201).send(data.results[0].transcript);
-    }
+  Speech.syncAudio('./uploads/recording-2017-03-24T20:59:40.825Z.wav',(data)=>{
+    console.log(data);
+    res.status(201).send(data);
+    // if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+    //   res.status(201).send(data.results[0].transcript);
+    // }
   });
 });
 
