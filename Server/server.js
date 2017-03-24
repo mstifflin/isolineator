@@ -111,9 +111,8 @@ app.post('/testStream', function(req, res) {
         io.emit('transcription', data, translate);
         // console.log(data); 
       })
-   }else if(typeof data.results === 'string'){
-    Translater(data.results, 'es', (translate) =>{
-        console.log(data);
+    }else if(typeof data.results === 'string'){
+      Translater(data.results, 'es', (translate) =>{
         io.emit('transcription', translate);
       })
    }
@@ -130,7 +129,6 @@ app.post('/testStream', function(req, res) {
      // console.log('transcribed data from teststream', data.results[0]);
      res.status(201).end(data.results[0].transcript);
    }
-
  }));
 });
 

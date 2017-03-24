@@ -33,9 +33,6 @@
                 </div>
 
                 <div ng-show="recorder.isHtml5 && recorder.status.isRecording">
-                    <div ng-model = "text" ng-show ="text" class = "animate-show-hide">
-                    {{text}}
-                    </div>
                     <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer>
                 </div>
                 <br/>
@@ -66,7 +63,12 @@
             use this feature.
         </div>
     </ng-audio-recorder>
-
+    <div ng-model = "ctrl.text" ng-show ="ctrl.text" class = "animate-show-hide">
+    {{ctrl.text}}
+    </div>
+    <div ng-model = "ctrl.translate" ng-show ="ctrl.translate" class = "animate-show-hide">
+    {{ctrl.translate}}
+    </div>
     <search service='ctrl.service' result='ctrl.searchResults'>Search component goes here</search>
 
     <list logs="ctrl.logs"/>
