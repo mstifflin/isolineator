@@ -44,12 +44,10 @@ exports.streamFile = (file, callback) => {
 ///////////for direct mic to api//////////////////
   
 exports.liveStreamAudio = (callback) => {
-  console.log('in live stream');
   return Speech.createRecognizeStream(request)
     .on('error', console.error)
     .on('data', (data) => {
       // process.stdout.write(data)
-      console.log('inside the return stmt of livestream audio');
       callback(data);
     });
 }
