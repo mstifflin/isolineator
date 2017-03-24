@@ -221,6 +221,7 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     // var socket = io.connect('http://localhost');
     // var socket = io.connect('http://127.0.0.1:5000');
     // var socket = new io.Socket();
+    
     // socket.on('transcription', function(data) {
     //   // console.log('transcription:', data);
     //   if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
@@ -231,6 +232,7 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     //     $scope.text = data.results;
     //   }
     // });
+
 
     service1.postStream(function(data) {
       // console.log('data', data);
