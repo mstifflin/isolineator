@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const Speech = require('@google-cloud/speech')({
   projectId: 'Isolineator',
-  keyFilename: '../APIs/isolineator-a25b826f81b6.json'
+  keyFilename: './APIs/isolineator-a25b826f81b6.json'
 });
 
 const options = {
@@ -44,10 +44,12 @@ exports.streamFile = (file, callback) => {
 ///////////for direct mic to api//////////////////
   
 exports.liveStreamAudio = (callback) => {
+  console.log('in live stream');
   return Speech.createRecognizeStream(request)
     .on('error', console.error)
     .on('data', (data) => {
       // process.stdout.write(data)
+      console.log('inside the return stmt of livestream audio');
       callback(data);
     });
 }

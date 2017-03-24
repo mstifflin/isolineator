@@ -3,12 +3,14 @@ var express = require('express');
 var server = require('http').Server(app);
 var bodyParser = require('body-parser');
 var fs = require('fs');
+const Stream = require('stream');
 var record = require('node-record-lpcm16');
 var request = require('request');
 var multer = require('multer');
 var db = require('../mongo-db/config.js');
 var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
+var t2s = require('../Server/textToSpeech.js');
 const {Translater} = require('./TextTranslateApi.js');
 
 
@@ -128,9 +130,31 @@ app.post('/testFile', function(req, res) {
 });
 
 
+
+// Mike's translation code
 app.post('/txtTranslate', function(req, res) {
   console.log(Translater(req.body.textTranslate, 'es'));
 })
+
+
+//Apurva's text to voice
+app.get('/textToSpeech', (req, res) => {
+  t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {
+    if (err) {
+        console.log(err.code)
+    } else if (data) {
+      console.log('inside data of getSpeechStreamFromChunks');
+        if (data.AudioStream instanceof Buffer) {
+            // Initiate the source
+            var bufferStream = new Stream.PassThrough()
+            // convert AudioStream into a readable stream
+            bufferStream.end(data.AudioStream)
+            // Pipe into Player
+            bufferStream.pipe(res)
+        }
+    }
+  });
+});
 
 
 
