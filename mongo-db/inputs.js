@@ -23,6 +23,9 @@ exports.saveInputFile = (audFilePath, transcribedData, topic, metaData, callBack
 
   writestream.on('close', function (file) {
     console.log(file.filename + ' - Written To DB');
+    console.log('the file to delete: ', audFilePath);
+    // this is supposed to delete the newly created file
+    fs.unlink(audFilePath);
     if (callBack !== undefined) {
     	callBack(file);
     }

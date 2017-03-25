@@ -189,10 +189,10 @@ app.post('/testFile', function(req, res) {
 
 
 
-// Mike's translation code
+/*// Mike's translation code
 app.post('/txtTranslate', function(req, res) {
   console.log(Translater(req.body.textTranslate, 'es'));
-})
+})*/
 
 
 
