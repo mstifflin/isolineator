@@ -7,7 +7,7 @@ const Stream = require('stream');
 var record = require('node-record-lpcm16');
 var request = require('request');
 var multer = require('multer');
-var db = require('../mongo-db/config.js');
+var dbconn = require('../mongo-db/config.js');
 var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
@@ -67,16 +67,22 @@ app.post('/record', upload.single('recording'), function(req, res) {
   console.log('post handled: request file', req.file);
 
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
-    console.log(data)
-    res.status(201).send(data);
-    if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      console.log('data.results', data.results);
-      console.log('data.results[0].transcript', data.results[0].transcript);
-      res.status(201).send(data);
-    }
+    console.log('data inside syncAudio', data);
+    // res.status(201).send(data);
+    inputs.saveInputFile(`./${req.file.path}`, data, '3', {}, (file) => {
+      inputs.consoleAllDataBase();
+    });
+    // if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+    //   console.log('data.results in sync audio calbk', data.results);
+    //   console.log('data.results[0].transcript in sync audio calbk', data.results[0].transcript);
+    //   // res.status(201).send(data);
+    // }
+    
   });
-  // res.status(201).end();
+  res.status(201).end();
 });
+
+
 
 app.post('/stopStream', function (req, res) {
  record.stop();
