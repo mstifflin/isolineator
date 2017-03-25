@@ -70,10 +70,6 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     }
   };
 
-  // var socket = io.connect('http://127.0.0.1:5000');
-
-  $scope.text = '';
-
   var control = this,
     cordovaMedia = {
       recorder: null,
@@ -217,21 +213,6 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
       //indicate that this is not paused.
       status.playback = PLAYBACK.STOPPED;
     }
-
-    // var socket = io.connect('http://localhost');
-    // var socket = io.connect('http://127.0.0.1:5000');
-    // var socket = new io.Socket();
-    
-    // socket.on('transcription', function(data) {
-    //   // console.log('transcription:', data);
-    //   if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
-    //     console.log('transcription data.results is array:', data);
-    //     $scope.text = data.results[0].transcript;
-    //   } else {
-    //     console.log('transcription data.results is NOT array:', data);
-    //     $scope.text = data.results;
-    //   }
-    // });
 
 
     service1.postStream(function(data) {
@@ -958,42 +939,6 @@ angular.module('angularAudioRecorder.services')
 
       service.shouldConvertToMp3 = function () {
         return mp3Covert;
-      };
-
-      service.postRecording = function(filename, recording, date, callback) {
-        console.log('Posted');
-        var req = {};
-        req.filename = filename;
-        req.recording = recording;
-        req.date = date;
-
-        // $http({
-        //   method: 'POST',
-        //   url: '/record', 
-        //   data: JSON.stringify(req)
-        // })
-        // .then(function(data) {
-        //   if (callback) {
-        //     console.log('successfully posted');
-        //     callback(data);
-        //   }
-        // })
-        //  .catch(function(err) {
-        //    console.log(err);
-        //  });
-
-        $.ajax({
-          method: 'POST',
-          url: '/record',
-          data: JSON.stringify(req),
-          success: function(data) {
-            console.log('data posted successfully in AJAX');
-          },
-          error: function(error) {
-            console.log('error: ', error);
-          }
-
-        });
       };
 
       service.getMp3Config = function () {

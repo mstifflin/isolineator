@@ -8,8 +8,6 @@ angular.module('app')
   });
 
   socket.on('transcription', (data, trans) => {
-    // console.log('transcription:', data);
-    // console.log(trans)
     if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
       console.log(data.results[0].isFinal)
       this.text = data.results[0].transcript;

@@ -35,20 +35,12 @@ angular.module('app')
   };
 
   this.postStream = function(callback) {
-  // var formData = new FormData();
-  // formData.append('recording', recording, filename);
 
   $http({
     method: 'POST',
     url: '/testStream', 
     responseType: 'arraybuffer'
   })
-  // .then(function(data) {
-  //   console.log('data from success (poststream):', data);
-  //   if (callback) {
-  //     callback(data);
-  //   }
-  // })
   .then(function(response) {
     var audioContext = new AudioContext();
     console.log('response', response);
