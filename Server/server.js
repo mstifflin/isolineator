@@ -59,6 +59,7 @@ app.post('/record', upload.single('recording'), function(req, res) {
 
   console.log('post handled: request file', req.file);
 
+
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
     console.log(data)
     res.status(201).send(data);
@@ -66,6 +67,7 @@ app.post('/record', upload.single('recording'), function(req, res) {
       console.log('data.results', data.results);
       console.log('data.results[0].transcript', data.results[0].transcript);
       res.status(201).send(data);
+
     }
   });
   // res.status(201).end();
@@ -113,14 +115,51 @@ app.post('/testStream', function(req, res) {
     console.log(data);
    
     if(Array.isArray(data.results) && data.results[0] !== undefined && data.results[0] !== '') {
+
       Translater(data.results[0].transcript, 'es', (translate) =>{
         io.emit('transcription', data, translate);
         // console.log(data); 
-      })
-    }else if(typeof data.results === 'string'){
+      });
+    } else if (typeof data.results === 'string') {
       Translater(data.results, 'es', (translate) =>{
         io.emit('transcription', data, translate);
-      })
+
+      });
+   }
+   // Translator()
+   // res.write(data.results);
+
+   // let speech = data.results.length ? data.results[0].transcribe : '';
+   // io.on('connection', (socket) => {
+   // console.log('speech here:', speech);
+   // if (data.results.length > 0) {
+   // }
+   // });
+   if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+     // console.log('transcribed data from teststream', data.results[0]);
+     // res.status(201).end(data.results[0].transcript);
+
+   }
+ }).on('end', () => {
+  console.log('This is the end of transcribing');
+
+  //Apurva's text to voice
+  t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {
+    if (err) {
+        console.log(err.code)
+    } else if (data) {
+      console.log('inside data of getSpeechStreamFromChunks');
+        if (data.AudioStream instanceof Buffer) {
+          // Initiate the source
+          var bufferStream = new Stream.PassThrough()
+          // convert AudioStream into a readable stream
+          bufferStream.end(data.AudioStream)
+          // Pipe into Player
+          bufferStream.pipe(res)
+          bufferStream.on('end', () => {
+            res.status(201).end();
+          });
+        }
     }
    
     if(Array.isArray(data.results) && data.results.length > 0 && data.results[0].isFinal) {
