@@ -23,9 +23,13 @@
                 {{recorder.status.isStopped || recorder.status.isPaused ? 'Play' : 'Pause'}}
             </button>
 
-            <button ng-click="recorder.save()" ng-disabled="recorder.status.isRecording || !recorder.audioModel">
+            <button ng-click="recorder.save(ctrl.topic)" ng-disabled="recorder.status.isRecording || !recorder.audioModel">
                 Save
             </button>
+            <topic service='ctrl.service' result='ctrl.searchResults'>
+            TOPIC
+            </topic>
+
 
             <div style="max-width: 600px">
                 <div ng-show="recorder.status.isConverting">
