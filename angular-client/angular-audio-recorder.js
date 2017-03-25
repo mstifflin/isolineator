@@ -406,6 +406,7 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
 
   control.save = function (fileName) {
     console.log('AudioModel', control.audioModel);
+    console.log(fileName);
 
     if (!service.isAvailable() || status.isRecording || !control.audioModel) {
       console.log('return false here');

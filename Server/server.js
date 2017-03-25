@@ -100,19 +100,19 @@ app.post('/testCreate', (req, res) => {
 // Creates a direct data stream from the user's microphone into the Speech-to-text API
 // RETURNS the transcribed text string when the user is done talking
 app.post('/testStream', function(req, res) {
- // res.status(201).send();
+  // res.status(201).send();
 
- var string = '';
+  var transcribeText = '';
 
- record.start({
-   sampleRate: 16000,
-   threshold: 0
-   // verbose: true
- })
+  record.start({
+    sampleRate: 16000,
+    threshold: 0
+    // verbose: true
+  })
   .pipe(Speech.liveStreamAudio((data) => {
     console.log(data);
    
-   if(Array.isArray(data.results) && data.results[0] !== undefined && data.results[0] !== '') {
+    if(Array.isArray(data.results) && data.results[0] !== undefined && data.results[0] !== '') {
       Translater(data.results[0].transcript, 'es', (translate) =>{
         io.emit('transcription', data, translate);
         // console.log(data); 
@@ -121,26 +121,25 @@ app.post('/testStream', function(req, res) {
       Translater(data.results, 'es', (translate) =>{
         io.emit('transcription', data, translate);
       })
-   }
+    }
    
-   if(Array.isArray(data.results) && data.results[0] !== undefined && data.results[0].isFinal) {
-    string += data.results[0].transcript;
-   } else if (data.results !== ''){
-    string = data.results
-   }
-   
+    if(Array.isArray(data.results) && data.results.length > 0 && data.results[0].isFinal) {
+      transcribeText += data.results[0].transcript;
+    } else if (typeof data.results === 'string' && data.results.length > 0){
+      transcribeText = data.results
+    }
   })
   .on('end', () => {
-  console.log('This is the end of transcribing');
+    console.log('This is the end of transcribing');
 
     //Apurva's text to voice
-    Translater(string, 'es', (translate) => {
-      io.emit('transcription', string, translate);
+    Translater(transcribeText, 'es', (translate) => {
+      io.emit('transcription', transcribeText, translate);
 
       //Apurva's function goes here
       t2s.getSpeechStreamFromChunks(translate, (err, data) => { //translate should be equal to the final translated text
         if (err) {
-            console.log(err.code)
+          console.log(err.code)
         } else if (data) {
           console.log('inside data of getSpeechStreamFromChunks');
           if (data.AudioStream instanceof Buffer) {
@@ -159,7 +158,7 @@ app.post('/testStream', function(req, res) {
     })
   })
   .on('error',function() {
-     console.log('this is the big error', arguments);
+    console.log('this is the big error', arguments);
   })
 
   );

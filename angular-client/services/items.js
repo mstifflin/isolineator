@@ -69,10 +69,11 @@ angular.module('app')
      });
     };
 
-  this.postRecording = function(filename, recording, date, callback) { 
+  this.postRecording = function(topic, recording, date, callback) { 
+
 
     var formData = new FormData();
-    formData.append('recording', recording, filename);
+    formData.append('recording', recording, topic);
 
     console.log('get recording', formData.get('recording'));
 
