@@ -33,7 +33,7 @@ polly.synthesizeSpeech(params, synthCallback);
 
 exports.getSpeechStreamFromChunks = (chunk, callBack) => {
 	var params = {
-    OutputFormat: 'pcm',               
+    OutputFormat: 'mp3',               
     Text: ''+chunk,     
     VoiceId: 'Miguel'                   
   };

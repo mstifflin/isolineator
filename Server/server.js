@@ -20,6 +20,7 @@ const Player = new Speaker({
   sampleRate: 16000
 })
 
+
 var io = require ('socket.io')(server);
 
 io.on('connection', (socket) => {
@@ -65,7 +66,6 @@ app.post('/record', upload.single('recording'), function(req, res) {
 
   console.log('post handled: request file', req.file);
 
-
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
     console.log(data)
     res.status(201).send(data);
@@ -73,7 +73,6 @@ app.post('/record', upload.single('recording'), function(req, res) {
       console.log('data.results', data.results);
       console.log('data.results[0].transcript', data.results[0].transcript);
       res.status(201).send(data);
-
     }
   });
   // res.status(201).end();
@@ -82,7 +81,7 @@ app.post('/record', upload.single('recording'), function(req, res) {
 app.post('/stopStream', function (req, res) {
  record.stop();
  io.on('remove', function() {
-   io.disconnect();
+   // io.disconnect();
    console.log('socket should be disconnected');
  });
  res.status(201).end();
@@ -121,59 +120,19 @@ app.post('/testStream', function(req, res) {
     console.log(data);
    
     if(Array.isArray(data.results) && data.results[0] !== undefined && data.results[0] !== '') {
-
       Translater(data.results[0].transcript, 'es', (translate) =>{
         io.emit('transcription', data, translate);
-        console.log('data', data); 
-        console.log('translate', translate);
-      });
-    } else if (typeof data.results === 'string') {
+        // console.log(data); 
+      })
+    }else if(typeof data.results === 'string'){
       Translater(data.results, 'es', (translate) =>{
         io.emit('transcription', data, translate);
-        console.log('data', data); 
-        console.log('translate', translate);
-      });
-   }
-   // Translator()
-   // res.write(data.results);
-
-   // let speech = data.results.length ? data.results[0].transcribe : '';
-   // io.on('connection', (socket) => {
-   // console.log('speech here:', speech);
-   // if (data.results.length > 0) {
-   // }
-   // });
-   if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-     // console.log('transcribed data from teststream', data.results[0]);
-     // res.status(201).end(data.results[0].transcript);
-
-   }
- }).on('end', () => {
-  console.log('This is the end of transcribing');
-
-  //Apurva's text to voice
-  t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {
-    if (err) {
-        console.log(err.code)
-    } else if (data) {
-      console.log('inside data of getSpeechStreamFromChunks');
-        if (data.AudioStream instanceof Buffer) {
-          // Initiate the source
-          var bufferStream = new Stream.PassThrough();
-          // convert AudioStream into a readable stream
-          bufferStream.end(data.AudioStream);
-          // Pipe into Player
-          bufferStream.pipe(Player);
-          bufferStream.on('end', () => {
-
-          res.status(201).send();
-          });
-        }
+      })
     }
    
     if(Array.isArray(data.results) && data.results.length > 0 && data.results[0].isFinal) {
       transcribeText += data.results[0].transcript;
-    } else if (typeof data.results === 'string' && data.results.length > 0){
+    } else if (typeof data.results === 'string' && data.results.length > 0) {
       transcribeText = data.results
     }
   })
@@ -192,18 +151,18 @@ app.post('/testStream', function(req, res) {
           console.log('inside data of getSpeechStreamFromChunks');
           if (data.AudioStream instanceof Buffer) {
             // Initiate the source
-            var bufferStream = new Stream.PassThrough()
+            var bufferStream = new Stream.PassThrough();
             // convert AudioStream into a readable stream
-            bufferStream.end(data.AudioStream)
+            bufferStream.end(data.AudioStream);
             // Pipe into Player
-            bufferStream.pipe(res)
+            bufferStream.pipe(res);
             bufferStream.on('end', () => {
               res.status(201).end();
             });
           }
         }
       });
-    })
+    });
   })
   .on('error',function() {
     console.log('this is the big error', arguments);
@@ -212,25 +171,6 @@ app.post('/testStream', function(req, res) {
   );
 });
 
-
-app.get('/textToSpeech', (req, res) => {   
-   t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {   
-     if (err) {    
-         console.log(err.code)   
-     } else if (data) {    
-       console.log('inside data of getSpeechStreamFromChunks');    
-         if (data.AudioStream instanceof Buffer) {   
-             // Initiate the source    
-             var bufferStream = new Stream.PassThrough();   
-             // convert AudioStream into a readable stream   
-             bufferStream.end(data.AudioStream)    
-             // Pipe into Player   
-             bufferStream.pipe(Player);
-             res.status(200).end();    
-         }   
-     }   
-   });   
- });
 
 // Transcribes a local audio file that already exisits
 // RETURN the transcribed text string when done

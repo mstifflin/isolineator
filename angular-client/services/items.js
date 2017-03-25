@@ -41,12 +41,27 @@ angular.module('app')
   $http({
     method: 'POST',
     url: '/testStream', 
+    responseType: 'arraybuffer'
   })
-  .then(function(data) {
-    console.log('data from success (poststream):', data);
-    if (callback) {
-      callback(data);
-    }
+  // .then(function(data) {
+  //   console.log('data from success (poststream):', data);
+  //   if (callback) {
+  //     callback(data);
+  //   }
+  // })
+  .then(function(response) {
+    var audioContext = new AudioContext();
+    console.log('response', response);
+    audioContext.decodeAudioData(response.data, function(buffer) {
+      mainBuffer = buffer;
+      var source = audioContext.createBufferSource();
+      source.buffer = buffer;
+      source.connect(audioContext.destination);
+      source.loop = false;
+      source.start(0);
+    }, function(err) {
+      console.log(err);
+    });
   })
    .catch(function(err) {
      console.log('error in postRecording', err);
@@ -60,7 +75,7 @@ angular.module('app')
     })
     .then(function(data) {
       console.log('voice streaming has stopped', data);
-      io.disconnect();
+      // io.disconnect();
       if (callback) {
         callback(data);
       }
