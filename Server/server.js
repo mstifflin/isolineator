@@ -68,15 +68,12 @@ app.post('/record', upload.single('recording'), function(req, res) {
 
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
     console.log('data inside syncAudio', data);
-    // res.status(201).send(data);
-    inputs.saveInputFile(`./${req.file.path}`, data, '3', {}, (file) => {
-      inputs.consoleAllDataBase();
+    // (audFilePath, transcribedData, topic, metaData, callBack)
+    // currently we are hardcoding topic i.e. filename in database
+    // we can accomodate search tags in the future
+    inputs.saveInputFile(`./${req.file.path}`, data, req.file.originalname, {}, (file) => {
+      inputs.consoleLogAllDataBase();
     });
-    // if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-    //   console.log('data.results in sync audio calbk', data.results);
-    //   console.log('data.results[0].transcript in sync audio calbk', data.results[0].transcript);
-    //   // res.status(201).send(data);
-    // }
     
   });
   res.status(201).end();
