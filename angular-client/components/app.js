@@ -8,15 +8,11 @@ angular.module('app')
   });
 
   socket.on('transcription', (data, trans) => {
-    // console.log('transcription:', data);
-    // console.log(trans)
     if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
-      // console.log('transcription data.results is array:', data);
       console.log(data.results[0].isFinal)
       this.text = data.results[0].transcript;
       this.translate = trans;
     } else {
-      // console.log('transcription data.results is NOT array:', data);
       this.text = data.results;
       this.translate = trans;
     }
@@ -41,7 +37,6 @@ angular.module('app')
 
   this.recording = false;
   this.record = () => {
-    // console.log('toggling');
     this.recording = !this.recording;
   }
 

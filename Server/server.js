@@ -12,6 +12,13 @@ var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
 const {Translater} = require('./TextTranslateApi.js');
+const Speaker = require('speaker');
+
+const Player = new Speaker({
+  channels: 1,
+  bitDepth: 16,
+  sampleRate: 16000
+})
 
 
 var io = require ('socket.io')(server);
@@ -74,7 +81,7 @@ app.post('/record', upload.single('recording'), function(req, res) {
 app.post('/stopStream', function (req, res) {
  record.stop();
  io.on('remove', function() {
-   io.disconnect();
+   // io.disconnect();
    console.log('socket should be disconnected');
  });
  res.status(201).end();
@@ -125,7 +132,7 @@ app.post('/testStream', function(req, res) {
    
     if(Array.isArray(data.results) && data.results.length > 0 && data.results[0].isFinal) {
       transcribeText += data.results[0].transcript;
-    } else if (typeof data.results === 'string' && data.results.length > 0){
+    } else if (typeof data.results === 'string' && data.results.length > 0) {
       transcribeText = data.results
     }
   })
@@ -144,18 +151,18 @@ app.post('/testStream', function(req, res) {
           console.log('inside data of getSpeechStreamFromChunks');
           if (data.AudioStream instanceof Buffer) {
             // Initiate the source
-            var bufferStream = new Stream.PassThrough()
+            var bufferStream = new Stream.PassThrough();
             // convert AudioStream into a readable stream
-            bufferStream.end(data.AudioStream)
+            bufferStream.end(data.AudioStream);
             // Pipe into Player
-            bufferStream.pipe(res)
+            bufferStream.pipe(res);
             bufferStream.on('end', () => {
               res.status(201).end();
             });
           }
         }
       });
-    })
+    });
   })
   .on('error',function() {
     console.log('this is the big error', arguments);
