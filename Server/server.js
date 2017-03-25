@@ -7,7 +7,7 @@ const Stream = require('stream');
 var record = require('node-record-lpcm16');
 var request = require('request');
 var multer = require('multer');
-var db = require('../mongo-db/config.js');
+var dbconn = require('../mongo-db/config.js');
 var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
@@ -67,16 +67,19 @@ app.post('/record', upload.single('recording'), function(req, res) {
   console.log('post handled: request file', req.file);
 
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
-    console.log(data)
-    res.status(201).send(data);
-    if (data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-      console.log('data.results', data.results);
-      console.log('data.results[0].transcript', data.results[0].transcript);
-      res.status(201).send(data);
-    }
+    console.log('data inside syncAudio', data);
+    // (audFilePath, transcribedData, topic, metaData, callBack)
+    // currently we are hardcoding topic i.e. filename in database
+    // we can accomodate search tags in the future
+    inputs.saveInputFile(`./${req.file.path}`, data, req.file.originalname, {}, (file) => {
+      inputs.consoleLogAllDataBase();
+    });
+    
   });
-  // res.status(201).end();
+  res.status(201).end();
 });
+
+
 
 app.post('/stopStream', function (req, res) {
  record.stop();
@@ -186,10 +189,10 @@ app.post('/testFile', function(req, res) {
 
 
 
-// Mike's translation code
+/*// Mike's translation code
 app.post('/txtTranslate', function(req, res) {
   console.log(Translater(req.body.textTranslate, 'es'));
-})
+})*/
 
 
 
