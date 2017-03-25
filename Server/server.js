@@ -12,13 +12,6 @@ var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
 const {Translater} = require('./TextTranslateApi.js');
-const Speaker = require('speaker');
-
-const Player = new Speaker({
-  channels: 1,
-  bitDepth: 16,
-  sampleRate: 16000
-})
 
 
 var io = require ('socket.io')(server);
