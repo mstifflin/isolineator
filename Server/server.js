@@ -12,7 +12,13 @@ var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
 const {Translater} = require('./TextTranslateApi.js');
+const Speaker = require('speaker');
 
+const Player = new Speaker({
+  channels: 1,
+  bitDepth: 16,
+  sampleRate: 16000
+})
 
 var io = require ('socket.io')(server);
 
@@ -118,12 +124,14 @@ app.post('/testStream', function(req, res) {
 
       Translater(data.results[0].transcript, 'es', (translate) =>{
         io.emit('transcription', data, translate);
-        // console.log(data); 
+        console.log('data', data); 
+        console.log('translate', translate);
       });
     } else if (typeof data.results === 'string') {
       Translater(data.results, 'es', (translate) =>{
         io.emit('transcription', data, translate);
-
+        console.log('data', data); 
+        console.log('translate', translate);
       });
    }
    // Translator()
@@ -151,13 +159,14 @@ app.post('/testStream', function(req, res) {
       console.log('inside data of getSpeechStreamFromChunks');
         if (data.AudioStream instanceof Buffer) {
           // Initiate the source
-          var bufferStream = new Stream.PassThrough()
+          var bufferStream = new Stream.PassThrough();
           // convert AudioStream into a readable stream
-          bufferStream.end(data.AudioStream)
+          bufferStream.end(data.AudioStream);
           // Pipe into Player
-          bufferStream.pipe(res)
+          bufferStream.pipe(Player);
           bufferStream.on('end', () => {
-            res.status(201).end();
+
+          res.status(201).send();
           });
         }
     }
@@ -203,6 +212,25 @@ app.post('/testStream', function(req, res) {
   );
 });
 
+
+app.get('/textToSpeech', (req, res) => {   
+   t2s.getSpeechStreamFromChunks('Hola. Soy una persona impresionante. Mi nombre es Apurva.', (err, data) => {   
+     if (err) {    
+         console.log(err.code)   
+     } else if (data) {    
+       console.log('inside data of getSpeechStreamFromChunks');    
+         if (data.AudioStream instanceof Buffer) {   
+             // Initiate the source    
+             var bufferStream = new Stream.PassThrough();   
+             // convert AudioStream into a readable stream   
+             bufferStream.end(data.AudioStream)    
+             // Pipe into Player   
+             bufferStream.pipe(Player);
+             res.status(200).end();    
+         }   
+     }   
+   });   
+ });
 
 // Transcribes a local audio file that already exisits
 // RETURN the transcribed text string when done

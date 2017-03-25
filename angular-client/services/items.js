@@ -43,7 +43,7 @@ angular.module('app')
     url: '/testStream', 
   })
   .then(function(data) {
-    console.log('data from success:', data);
+    console.log('data from success (poststream):', data);
     if (callback) {
       callback(data);
     }
@@ -60,12 +60,13 @@ angular.module('app')
     })
     .then(function(data) {
       console.log('voice streaming has stopped', data);
+      io.disconnect();
       if (callback) {
         callback(data);
       }
     })
      .catch(function(err) {
-       console.log('error in postRecording', err);
+       console.log('error in stopStream', err);
      });
     };
 
