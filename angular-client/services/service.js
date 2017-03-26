@@ -16,6 +16,7 @@ angular.module('app')
   this.searchLogs = function(query, callback) {
     var req = {};
     req.query = query;
+    console.log('this is queried');
 
     $http({
       method: 'POST',
