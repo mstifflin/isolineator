@@ -214,6 +214,7 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
       status.playback = PLAYBACK.STOPPED;
     }
 
+    // COMMENTED OUT START OF LIVE STREAM SINCE NO LONGER WORKS
 
     // service1.postStream(function(data) {
     //   // console.log('data', data);
@@ -316,6 +317,8 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     //   console.log('stopStream invoked', data);
       
     // });
+
+    // COMMENTED OUT THE STOPSTREAM SINCE NO LONGER LIVE STREAMING 
 
     var date = new Date().toISOString();
 

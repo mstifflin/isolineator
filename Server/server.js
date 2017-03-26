@@ -95,6 +95,8 @@ app.post('/record', upload.single('recording'), function(req, res) {
   res.status(201).end();
 });
 
+// CREATED NEW ROUTE TO ACCOMODATE NEW WORK AROUND
+
 app.post('/onEnd', upload.single('recording'), function(req, res) {
 
   console.log('post handled: request file', req.file);

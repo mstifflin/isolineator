@@ -143,6 +143,8 @@ angular.module('app')
      });
   };
 
+  // CREATED NEW SERVICE TO ACCOMODATE NEW WORK AROUND
+
   this.transOnEnd = function(topic, recording, date, callback) { 
 
     var formData = new FormData();
