@@ -58,6 +58,9 @@ angular.module('app')
         source.connect(audioContext.destination);
         source.loop = false;
         source.start(0);
+        // source.onended(function() {
+        //   audioContext.close();
+        // });
         if (callback) {
           callback(response);
         }
