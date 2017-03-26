@@ -334,7 +334,7 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
       recordHandler.getBuffer(function () {
         recordHandler.exportWAV(function (blob) {
           completed(blob);
-          service1.testOnEnd('test', control.audioModel, date, (data) => { // Invoking service to do a post request to transcribe file
+          service1.transOnEnd('test', control.audioModel, date, (data) => { // Invoking service to do a post request to transcribe file
             console.log(data);
           });
           scopeApply();
