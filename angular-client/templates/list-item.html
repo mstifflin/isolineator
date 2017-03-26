@@ -1,4 +1,13 @@
-<div>
-  Topic: {{ctrl.log.topic}}
-  Text: {{ctrl.log.vtext}}
-</div>
+<!-- <div>
+  <h5 ng-click= 'ctrl.clicked()'>{{ctrl.log.filename}} Entry: {{ctrl.log.entrynumber}}</h5>
+  Text:{{ctrl.log.text}}
+</div> -->
+<!--  <uib-accordion close-others="true" ng-click="ctrl.clicked()">
+   <div uib-accordion-group class="panel-default" heading="{{ctrl.log.filename}}">
+        Text:{{ctrl.log.text}}
+  </div>
+ </uib-accordion> -->
+
+  <div uib-accordion-group class="panel-default" heading="{{ctrl.log.filename}} {{ctrl.log.entrynumber}}" ng-click= 'ctrl.clicked()'>
+      "{{ctrl.log.text}}"
+  </div>

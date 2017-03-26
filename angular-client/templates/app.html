@@ -71,8 +71,8 @@
     <div ng-model = "ctrl.translate" ng-show ="ctrl.translate" class = "animate-show-hide">
     {{ctrl.translate}}
     </div>
-    <search service='ctrl.service' result='ctrl.searchResults'>Search component goes here</search>
+    <search service='ctrl.service' result='ctrl.searchResults' logs="ctrl.logs">Search component goes here</search>
 
-    <list logs="ctrl.logs"/>
+    <list service="ctrl.service" logs="ctrl.logs"/>
   </div>
 </div>

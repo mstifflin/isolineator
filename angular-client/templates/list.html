@@ -1,5 +1,5 @@
-<div>
-  <h4> Logs </h4>
-  You have {{ctrl.logs.length}} logs.
-  <list-item ng-repeat="log in ctrl.logs" log=log />
-</div>
+<uib-accordion close-others="true">
+ <!-- You have {{ctrl.logs.length}} logs. -->
+ <h4> Voice Logs </h4>
+  <list-item ng-repeat="log in ctrl.logs" log=log service="ctrl.service" />
+</uib-accordion>

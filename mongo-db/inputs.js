@@ -54,7 +54,7 @@ exports.returnAllRecords = (callBack) => {
     console.log('files: ', files);
       //files is an array of objects
     for (var i = 0; i < files.length; i++) {
-      records.push({filename: files[i].filename, id: files[i]._id, entrynumber: files[i].metadata.entrynumber});	
+      records.push({filename: files[i].filename, id: files[i]._id, entrynumber: files[i].metadata.entrynumber, text: files[i].metadata.text});	
     }
     callBack(records);
 	});
@@ -71,7 +71,7 @@ exports.getRecordByTopic = (topic, callBack) => {
     console.log('topic: ', topic);
       //files is an array of objects
     for (var i = 0; i < files.length; i++) {
-      records.push({filename: files[i].filename, id: files[i]._id, entrynumber: files[i].metadata.entrynumber});	
+      records.push({filename: files[i].filename, id: files[i]._id, entrynumber: files[i].metadata.entrynumber, text: files[i].metadata.text});	
     }
     callBack(records);
 	});
