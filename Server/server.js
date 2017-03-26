@@ -57,11 +57,12 @@ app.get('/log', function(req, res) {
   });
 });
 
-app.get('/getFileByTopic', function(req, res) {
+app.post('/getFileByTopic', function(req, res) {
   // get id from req
   //(id, metadata, callback)
-  console.log('topic req body', req.query.topic);
-  inputs.getRecordByTopic(req.query.topic, (arrOfRecords) => {
+  console.log('topic req body query', req.body.query);
+  //Apurva uses req.query.topic as parameter
+  inputs.getRecordByTopic(req.body.query, (arrOfRecords) => {
     res.status(201).json(arrOfRecords);
    /*(readStream, transcribedText) => {
     readstream.pipe(res);
@@ -72,8 +73,8 @@ app.get('/getFileByTopic', function(req, res) {
   });
 });
 
-app.get('/getFileById', function(req, res) {
-  inputs.getRecordById(req.query.id, (readstream) => {
+app.post('/getFileById', function(req, res) {
+  inputs.getRecordById(req.body.id, (readstream) => {
     readstream.pipe(res);
   });
 });

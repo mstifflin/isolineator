@@ -3,6 +3,7 @@ angular.module('app')
   return {
     scope: {
       logs: '<',
+      service: '='
     },
     restrict: 'E',
     controller: function() {},

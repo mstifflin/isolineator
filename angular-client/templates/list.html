@@ -1,5 +1,5 @@
 <div>
   <h4> Logs </h4>
   You have {{ctrl.logs.length}} logs.
-  <list-item ng-repeat="log in ctrl.logs" log=log />
+  <list-item ng-repeat="log in ctrl.logs" log=log service="ctrl.service" />
 </div>
