@@ -33,6 +33,61 @@ exports.saveInputFile = (audFilePath, transcribedData, topic, metaData, callBack
 
 }
 
+exports.returnAllRecords = (callBack) => {
+	var records = [];
+	// gfs.files.count()
+	// .then((numOfRecs) => {
+  gfs.files.find().toArray(function (err, files) {
+    if (err) {
+      throw (err);
+    }
+    console.log('files: ', files);
+      //files is an array of objects
+    for (var i = 0; i < files.length; i++) {
+      records.push({filename: files[i].filename, id: files[i]._id});	
+    }
+    callBack(records);
+	});
+}
+
+exports.getRecordByTopic = (topic, callBack) => {
+
+  var records = [];
+	gfs.files.find({filename: topic}).toArray(function (err, files) {
+    if (err) {
+      throw (err);
+    }
+    console.log('files by topic: ', files);
+    console.log('topic: ', topic);
+      //files is an array of objects
+    for (var i = 0; i < files.length; i++) {
+      records.push({filename: files[i].filename, id: files[i]._id});	
+    }
+    callBack(records);
+	});
+
+
+
+ /* gfs.files.find({filename: topic}).toArray(function (err, files) {
+    if (err) {
+         throw (err);
+    }
+    var readstream = gfs.createReadStream({
+	    filename: filename
+    });
+
+    callBack(readstream, files.text);
+  });*/
+}
+
+exports.getRecordById = (id, callBack) => {
+    var readstream = gfs.createReadStream({
+	    _id: id
+    });
+
+    callBack(readstream);
+}
+
 exports.consoleLogAllDataBase = () => {
   gfs.files.find().toArray(function (err, files) {
     if (err) {
