@@ -9,14 +9,14 @@ angular.module('app')
   });
 
   socket.on('transcription', (data, trans) => {
-    if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
-      console.log(data.results[0].isFinal);
-      this.text = data.results[0].transcript;
+    // if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
+    //   console.log(data.results[0].isFinal);
+    //   this.text = data.results[0].transcript;
+    //   this.translate = trans;
+    // } else {
+      this.text = data;
       this.translate = trans;
-    } else {
-      this.text = data.results;
-      this.translate = trans;
-    }
+    // }
   });
 
   console.log('logs', this.logs);
