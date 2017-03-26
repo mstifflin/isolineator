@@ -64,12 +64,6 @@ app.post('/getFileByTopic', function(req, res) {
   //Apurva uses req.query.topic as parameter
   inputs.getRecordByTopic(req.body.query, (arrOfRecords) => {
     res.status(201).json(arrOfRecords);
-   /*(readStream, transcribedText) => {
-    readstream.pipe(res);
-    readstream.on('end', function () {
-      console.log('file piped to response!');
-      res.status(201).json({text: transcribedText});
-    });*/
   });
 });
 
@@ -88,7 +82,7 @@ app.post('/record', upload.single('recording'), function(req, res) {
     // (audFilePath, transcribedData, topic, metaData, callBack)
     // we can accomodate search tags in the future
     inputs.saveInputFile(`./${req.file.path}`, data, req.file.originalname, {}, (file) => {
-      inputs.consoleLogAllDataBase();
+      // inputs.consoleLogAllDataBase();
     });
     
   });
@@ -249,9 +243,6 @@ app.get('/getLang', (req, res) => {
     res.status(200).send(lang)
   })
 })
-
-
-
 
 
 server.listen(port, function () {
