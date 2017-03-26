@@ -10,12 +10,22 @@ var gfs = Grid(db.dbconn.db);
 
 
 exports.saveInputFile = (audFilePath, transcribedData, topic, metaData, callBack) => {
-// not handeling metaData right now. not adding entry numbers
+  gfs.files.find({filename: topic}).toArray(function (err, files) {
+    if (err) {
+      throw (err);
+    }
+  	// console.log('inside then : ', data);
 
+  	console.log('filesFound : ', files);
+  var entryNum = 1;
+  if (files.length !== 0) {
+  	entryNum = files.length + 1;
+  }
   var writestream = gfs.createWriteStream({
     filename: topic,
     metadata: {
-    	text: transcribedData
+    	text: transcribedData,
+    	entrynumber: entryNum
     }
   });
 
@@ -30,7 +40,50 @@ exports.saveInputFile = (audFilePath, transcribedData, topic, metaData, callBack
     	callBack(file);
     }
   });
+  })
+}
 
+exports.returnAllRecords = (callBack) => {
+	var records = [];
+	// gfs.files.count()
+	// .then((numOfRecs) => {
+  gfs.files.find().toArray(function (err, files) {
+    if (err) {
+      throw (err);
+    }
+    console.log('files: ', files);
+      //files is an array of objects
+    for (var i = 0; i < files.length; i++) {
+      records.push({filename: files[i].filename, id: files[i]._id, entrynumber: files[i].metadata.entrynumber});	
+    }
+    callBack(records);
+	});
+}
+
+exports.getRecordByTopic = (topic, callBack) => {
+
+  var records = [];
+	gfs.files.find({filename: topic}).toArray(function (err, files) {
+    if (err) {
+      throw (err);
+    }
+    // console.log('files by topic: ', files);
+    console.log('topic: ', topic);
+      //files is an array of objects
+    for (var i = 0; i < files.length; i++) {
+      records.push({filename: files[i].filename, id: files[i]._id, entrynumber: files[i].metadata.entrynumber});	
+    }
+    callBack(records);
+	});
+
+}
+
+exports.getRecordById = (id, callBack) => {
+    var readstream = gfs.createReadStream({
+	    _id: id
+    });
+
+    callBack(readstream);
 }
 
 exports.consoleLogAllDataBase = () => {

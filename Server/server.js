@@ -13,7 +13,6 @@ var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
 const {Translater} = require('./TextTranslateApi.js');
 
-
 var io = require ('socket.io')(server);
 
 io.on('connection', (socket) => {
@@ -50,9 +49,33 @@ var upload = multer({ storage: storage });
 
 var port = process.env.PORT || 5000;
 
-app.post('/log', function(req, res) {
- console.log('req.body.query', req.body.query);
- res.status(201).end();
+//should this not be get ?
+app.get('/log', function(req, res) {
+  inputs.returnAllRecords(function(arrOfRecords) {
+    console.log('inside callback of log');
+    res.status(201).json(arrOfRecords);
+  });
+});
+
+app.get('/getFileByTopic', function(req, res) {
+  // get id from req
+  //(id, metadata, callback)
+  console.log('topic req body', req.query.topic);
+  inputs.getRecordByTopic(req.query.topic, (arrOfRecords) => {
+    res.status(201).json(arrOfRecords);
+   /*(readStream, transcribedText) => {
+    readstream.pipe(res);
+    readstream.on('end', function () {
+      console.log('file piped to response!');
+      res.status(201).json({text: transcribedText});
+    });*/
+  });
+});
+
+app.get('/getFileById', function(req, res) {
+  inputs.getRecordById(req.query.id, (readstream) => {
+    readstream.pipe(res);
+  });
 });
 
 app.post('/record', upload.single('recording'), function(req, res) {
@@ -62,7 +85,6 @@ app.post('/record', upload.single('recording'), function(req, res) {
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
     console.log('data inside syncAudio', data);
     // (audFilePath, transcribedData, topic, metaData, callBack)
-    // currently we are hardcoding topic i.e. filename in database
     // we can accomodate search tags in the future
     inputs.saveInputFile(`./${req.file.path}`, data, req.file.originalname, {}, (file) => {
       inputs.consoleLogAllDataBase();
@@ -182,10 +204,10 @@ app.post('/testFile', function(req, res) {
 
 
 
-/*// Mike's translation code
+// Mike's translation code
 app.post('/txtTranslate', function(req, res) {
   console.log(Translater(req.body.textTranslate, 'es'));
-})*/
+})
 
 
 
