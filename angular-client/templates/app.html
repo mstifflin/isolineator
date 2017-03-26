@@ -1,7 +1,8 @@
 <div>
   <div>
     <h1 class="jumbotron">Isolineator</h1>
-
+    <div>  
+    <div>
     <ng-audio-recorder id="mainAudio" audio-model="recorded" show-player="false" time-limit="timeLimit">
         <div ng-if="recorder.isAvailable">
 
@@ -23,13 +24,10 @@
                 <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
             </button>
 
-            <button ng-click="recorder.save(ctrl.topic)" ng-disabled="recorder.status.isRecording || !recorder.audioModel" class="btn btn-default">
+            <!-- <button ng-click="recorder.save(ctrl.topic)" ng-disabled="recorder.status.isRecording || !recorder.audioModel" class="btn btn-default"> -->
+            <button ng-click="recorder.save()" ng-disabled="recorder.status.isRecording || !recorder.audioModel" class="btn btn-default">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
             </button>
-            <topic service='ctrl.service' result='ctrl.searchResults'>
-            TOPIC
-            </topic>
-            <listlang ></listlang>
 
 
             <div style="max-width: 600px">
@@ -68,14 +66,20 @@
             use this feature.
         </div>
     </ng-audio-recorder>
+    </div>
+
     <div ng-model = "ctrl.text" ng-show ="ctrl.text" class = "animate-show-hide">
     {{ctrl.text}}
     </div>
     <div ng-model = "ctrl.translate" ng-show ="ctrl.translate" class = "animate-show-hide">
     {{ctrl.translate}}
     </div>
-    <search service='ctrl.service' result='ctrl.searchResults' logs="ctrl.logs">Search component goes here</search>
 
-    <list service="ctrl.service" logs="ctrl.logs"/>
+    </div>
+    <div>
+      <search service='ctrl.service' result='ctrl.searchResults' logs="ctrl.logs">Search component goes here</search>
+
+      <list service="ctrl.service" logs="ctrl.logs"/>
+    </div>
   </div>
 </div>

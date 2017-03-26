@@ -75,7 +75,7 @@ app.post('/getFileById', function(req, res) {
 
 app.post('/record', upload.single('recording'), function(req, res) {
 
-  console.log('post handled: request file', req.file);
+  // console.log('post handled: request file', req.file);
 
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
     console.log('data inside syncAudio', data);

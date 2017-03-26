@@ -20,7 +20,7 @@ exports.saveInputFile = (audFilePath, transcribedData, inputtopic, metaData, cal
     // console.log('there is a topic and it is : ', topic);
   } 
   // else {
-    // console.log('topic was not in voice, current topic : ', topic);
+  //   console.log('topic was not in voice, current topic : ', topic);
   // }
 
 
@@ -31,7 +31,7 @@ exports.saveInputFile = (audFilePath, transcribedData, inputtopic, metaData, cal
     }
   	// console.log('inside then : ', data);
 
-  	console.log('filesFound : ', files);
+  	// console.log('filesFound : ', files);
   var entryNum = 1;
   if (files.length !== 0) {
   	entryNum = files.length + 1;
