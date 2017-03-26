@@ -215,9 +215,9 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     }
 
 
-    service1.postStream(function(data) {
-      // console.log('data', data);
-    });
+    // service1.postStream(function(data) {
+    //   // console.log('data', data);
+    // });
 
     //clear audio previously recorded
     control.audioModel = null;
@@ -312,10 +312,12 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
 
     // io.disconnect();
     //To stop stream
-    service1.stopStream(function(data) {
-      console.log('stopStream invoked', data);
+    // service1.stopStream(function(data) {
+    //   console.log('stopStream invoked', data);
       
-    });
+    // });
+
+    var date = new Date().toISOString();
 
     //To stop recording
     if (service.isCordova) {
@@ -332,6 +334,9 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
       recordHandler.getBuffer(function () {
         recordHandler.exportWAV(function (blob) {
           completed(blob);
+          service1.testOnEnd('test', control.audioModel, date, (data) => { // Invoking service to do a post request to transcribe file
+            console.log(data);
+          });
           scopeApply();
         });
       });
@@ -416,7 +421,7 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
     click.initEvent("click", true, true);
     a.dispatchEvent(click);
 
-     service1.postRecording(fileName, control.audioModel, date, function(data) {
+    service1.postRecording(fileName, control.audioModel, date, function(data) {
       console.log('data', data);
     });
 

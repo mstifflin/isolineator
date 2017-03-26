@@ -117,7 +117,6 @@ angular.module('app')
 
   this.postRecording = function(topic, recording, date, callback) { 
 
-
     var formData = new FormData();
     formData.append('recording', recording, topic);
 
@@ -138,6 +137,42 @@ angular.module('app')
       if (callback) {
         callback(data);
       }
+    })
+     .catch(function(err) {
+       console.log('error in postRecording', err);
+     });
+  };
+
+  this.transOnEnd = function(topic, recording, date, callback) { 
+
+    var formData = new FormData();
+    formData.append('recording', recording, topic);
+
+    console.log('get recording', formData.get('recording'));
+
+    $http({
+      method: 'POST',
+      url: '/onEnd', 
+      data: formData,
+      responseType: 'arraybuffer',
+      contentType: false,
+      transformRequest: angular.identity,
+      processData: false,
+      headers: {'Content-type': undefined}
+    })
+    .then(function(response) {
+      var audioContext = new AudioContext();
+      console.log('response', response);
+      audioContext.decodeAudioData(response.data, function(buffer) {
+        mainBuffer = buffer;
+        var source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        source.loop = false;
+        source.start(0);
+      }, function(err) {
+        console.log(err);
+      });
     })
      .catch(function(err) {
        console.log('error in postRecording', err);
