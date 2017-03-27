@@ -9,7 +9,7 @@
                     ng-disabled="recorder.status.isDenied === true || recorder.status.isRecording" class="btn btn-default">
                 <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
             </button>
-            <button ng-click="recorder.stopRecord()" type="button" ng-disabled="recorder.status.isRecording === false" class="btn btn-default">
+            <button ng-click="recorder.stopRecord(ctrl.currentCode)" type="button" ng-disabled="recorder.status.isRecording === false" class="btn btn-default">
                 <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
             </button>
 
@@ -76,7 +76,7 @@
     {{ctrl.text}}
     </div>
     <div ng-model = "ctrl.translate" ng-show ="ctrl.translate" class = "animate-show-hide"> <strong> 
-    Spanish: </strong>
+    Translation: </strong>
     {{ctrl.translate}} 
     
     </div>
