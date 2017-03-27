@@ -23,17 +23,12 @@ io.on('disconnect', (socket) => {
  console.log('io is disconnected');
 });
 
-
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
-
-
-// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({
  extended: true
 }));
-
 
 var storage = multer.diskStorage({
  destination: function (req, file, cb) {
@@ -75,12 +70,7 @@ app.post('/getFileById', function(req, res) {
 
 app.post('/record', upload.single('recording'), function(req, res) {
 
-  // console.log('post handled: request file', req.file);
-
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
-    console.log('data inside syncAudio', data);
-    // (audFilePath, transcribedData, topic, metaData, callBack)
-    // we can accomodate search tags in the future
     inputs.saveInputFile(`./${req.file.path}`, data, req.file.originalname, {}, (file) => {
       // inputs.consoleLogAllDataBase();
     });
@@ -89,32 +79,20 @@ app.post('/record', upload.single('recording'), function(req, res) {
   res.status(201).end();
 });
 
-// CREATED NEW ROUTE TO ACCOMODATE NEW WORK AROUND
+/* Main route to for chaining all APIs */
 
 app.post('/onEnd', upload.single('recording'), function(req, res) {
   let langCode = req.body.langCode;
-  console.log('lang code in req: ', req.body.langCode);
-  console.log('type of lang code: ', typeof req.body.langCode);
-  if (req.body.langCode === 'undefined') {
-    langCode = 'es';
-  }
-  console.log('post handled: request file', req.file);
-
   Speech.syncAudio(`./${req.file.path}`, (text)=>{
-    console.log('data inside syncAudio : on end langcode: ', langCode);
-    
     Translater(text, langCode, (translate) => {
       io.emit('transcription', text, translate);
       console.log('Translater in on end: translate: ', translate);
-      
-
       //Apurva's function goes here
       t2s.getSpeechStreamFromChunks(translate, langCode, (err, data) => { //translate should be equal to the final translated text
         console.log('inside getSpeechStreamFromChunks callbakc');
         if (err) {
           console.log(err.code)
         } else if (data) {
-          console.log('inside data of getSpeechStreamFromChunks');
           if (data.AudioStream instanceof Buffer) {
             // Initiate the source
             var bufferStream = new Stream.PassThrough();
@@ -132,36 +110,32 @@ app.post('/onEnd', upload.single('recording'), function(req, res) {
   });
 });
 
+app.get('/getLang', (req, res) => {
+  listLanguages((lang) => {
+    res.status(200).send(lang)
+  })
+})
 
-
-app.post('/stopStream', function (req, res) {
- record.stop();
- io.on('remove', function() {
-   // io.disconnect();
-   console.log('socket should be disconnected');
- });
- res.status(201).end();
-});
-
-// Creates a file first, THEN transcribes the audio from the file
-// RETURNS the transcribed text string.
-// first audio create wave file, then transcribes
-app.post('/testCreate', (req, res) => {
- record.start({
-   sampleRate: 44100,
-   threshold: 0.5,
-   verbose: true
- })
- .pipe(Speech.createAndStream('./Server/audio/test.wav', (data) => {
-   if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
-     res.status(201).end(data.results[0].transcript);
-   }
- }));
+server.listen(port, function () {
+ console.log('server listening to', port);
 });
 
 
-// Creates a direct data stream from the user's microphone into the Speech-to-text API
-// RETURNS the transcribed text string when the user is done talking
+
+
+
+
+
+/***************************************************
+
+Unused Routes:
+
+####
+Creates a direct data stream from the user's microphone into the Speech-to-text API
+RETURNS the transcribed text string when the user is done talking
+
+!!!!>>>MAIN ROUTE TO BE USED FOR PIPING AUDIO FROM FRONT-END TO SERVER<<<!!!
+
 app.post('/testStream', function(req, res) {
   // res.status(201).send();
 
@@ -192,44 +166,60 @@ app.post('/testStream', function(req, res) {
       transcribeText = data.results
     }
   })
-  .on('end', () => {
-    console.log('This is the end of transcribing');
+    .on('end', () => {
+      console.log('This is the end of transcribing');
 
-    //Apurva's text to voice
-    Translater(transcribeText, 'es', (translate) => {
-      io.emit('transcription', transcribeText, translate);
+      //Apurva's text to voice
+      Translater(transcribeText, 'es', (translate) => {
+        io.emit('transcription', transcribeText, translate);
 
-      //Apurva's function goes here
-      t2s.getSpeechStreamFromChunks(translate, (err, data) => { //translate should be equal to the final translated text
-        if (err) {
-          console.log(err.code)
-        } else if (data) {
-          console.log('inside data of getSpeechStreamFromChunks');
-          if (data.AudioStream instanceof Buffer) {
-            // Initiate the source
-            var bufferStream = new Stream.PassThrough();
-            // convert AudioStream into a readable stream
-            bufferStream.end(data.AudioStream);
-            // Pipe into Player
-            bufferStream.pipe(res);
-            bufferStream.on('end', () => {
-              res.status(201).end();
-            });
+        //Apurva's function goes here
+        t2s.getSpeechStreamFromChunks(translate, (err, data) => { //translate should be equal to the final translated text
+          if (err) {
+            console.log(err.code)
+          } else if (data) {
+            console.log('inside data of getSpeechStreamFromChunks');
+            if (data.AudioStream instanceof Buffer) {
+              // Initiate the source
+              var bufferStream = new Stream.PassThrough();
+              // convert AudioStream into a readable stream
+              bufferStream.end(data.AudioStream);
+              // Pipe into Player
+              bufferStream.pipe(res);
+              bufferStream.on('end', () => {
+                res.status(201).end();
+              });
+            }
           }
-        }
+        });
       });
-    });
-  })
-  .on('error',function() {
-    console.log('this is the big error', arguments);
-  })
-
+    })
+    .on('error',function() {
+      console.log('this is the big error', arguments);
+    })
   );
 });
 
 
-// Transcribes a local audio file that already exisits
-// RETURN the transcribed text string when done
+####
+Route to be sued if using the 'record' module to pipe audio 
+
+app.post('/stopStream', function (req, res) {
+ record.stop();
+ io.on('remove', function() {
+   // io.disconnect();
+   console.log('socket should be disconnected');
+ });
+ res.status(201).end();
+});
+
+
+
+
+####
+Transcribes a local audio file that already exisits
+RETURN the transcribed text string when done
+
 app.post('/testFile', function(req, res) {
   Speech.syncAudio('./uploads/recording-2017-03-24T20:59:40.825Z.wav',(data)=>{
     console.log(data);
@@ -241,11 +231,12 @@ app.post('/testFile', function(req, res) {
 });
 
 
-// Mike's translation code
-app.post('/txtTranslate', function(req, res) {
-  console.log(Translater(req.body.textTranslate, 'es'));
-})
+####
+Creates a file first, THEN transcribes the audio from the file
+RETURNS the transcribed text string.
+first audio create wave file, then transcribes
 
+<<<<<<< HEAD
 app.get('/getLang', (req, res) => {
   listLanguages((lang) => {
     res.status(200).send(lang)
@@ -255,4 +246,17 @@ app.get('/getLang', (req, res) => {
 
 server.listen(port, function () {
  console.log('server listening to', port);
+=======
+app.post('/testCreate', (req, res) => {
+ record.start({
+   sampleRate: 44100,
+   threshold: 0.5,
+   verbose: true
+ })
+ .pipe(Speech.createAndStream('./Server/audio/test.wav', (data) => {
+   if(data.endpointerType === 'ENDPOINTER_EVENT_UNSPECIFIED') {
+     res.status(201).end(data.results[0].transcript);
+   }
+ }));
+>>>>>>> Removing console logs and commenting out unnecessary routes
 });
