@@ -1,3 +1,6 @@
+
+const {voices} = require('./voices.js');
+
 const Translate = require('@google-cloud/translate')({
 	projectId: 'isolineator-162122',
 	keyFilename: './APIs/Isolineator-51a1a3f4914b.json'
@@ -16,12 +19,21 @@ exports.Translater = function(text, target, callback) {
 exports.listLanguages = (callback) => {
   Translate.getLanguages()
     .then((results) => {
+      let finalLanguages = [];
+      let voicesLanguages = voices.map((voice) => {
+        return voice.LanguageName;
+      });
+
       const languages = results[0];
+      languages.forEach((language) => {
+        if (voicesLanguages.includes(language.name)) {
+          finalLanguages.push(language);
+        }
+      });
+      console.log('Final Languages:');
+      finalLanguages.forEach((language) => console.log(language));
 
-      console.log('Languages:');
-      languages.forEach((language) => console.log(language));
-
-      callback(languages);
+      callback(finalLanguages);
     });
 };
 
