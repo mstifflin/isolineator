@@ -14,6 +14,11 @@ li {
   padding: 40px;	
 }
 
+.jumbotron {
+    color: white;
+    background-color: #337ab7;
+}
+
 #logs {
 	text-align: center;
 }
