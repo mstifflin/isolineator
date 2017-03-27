@@ -19,6 +19,12 @@ li {
     background-color: #003058;
 }
 
+.panel-default>.panel-heading {
+    color: #f7f7f7;
+    background-color: #b74949;
+    border-color: #ddd;
+}
+
 #logs {
 	text-align: center;
 }
