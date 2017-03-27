@@ -5,6 +5,7 @@ angular.module('app')
     $http.get('/log')
     .then(function({data}) {
       if(callback) {
+      console.log(data);
         callback(data);
       }
     })
@@ -15,15 +16,11 @@ angular.module('app')
 
   this.getFileByTopic = function(query, callback) {
 
-    console.log('this is queried');
+    console.log('this is queried', query);
 
-    $http({
-      method: 'POST',
-      url: '/getFileByTopic', 
-      // data: JSON.stringify(req)
-      data: JSON.stringify({'query': query})
-    })
-    // $http.get('/log')
+    let config = {params: {query: query}};
+
+    $http.get('/getFileByTopic', config)
     .then(function(data) {
       console.log('success data:', data);
       if(callback) {
@@ -40,10 +37,10 @@ angular.module('app')
     console.log('getFilebyId called');
 
     $http({
-      method: 'POST',
+      method: 'GET',
       url: '/getFileById',
       // data: JSON.stringify(req)
-      data: JSON.stringify({'id': id}),
+      params: {'id': id},
       responseType: 'arraybuffer'
     })
     // $http.get('/log')
@@ -66,7 +63,6 @@ angular.module('app')
           source.stop(0);
           audioContext.close();
         };
-
         if (callback) {
           callback(response);
         }
@@ -77,49 +73,6 @@ angular.module('app')
       console.log('error in getFileById:', err);
     });
   };
-
-  this.postStream = function(callback) {
-
-    $http({
-      method: 'POST',
-      url: '/testStream', 
-      responseType: 'arraybuffer'
-    })
-    .then(function(response) {
-      var audioContext = new AudioContext();
-      console.log('response', response);
-      audioContext.decodeAudioData(response.data, function(buffer) {
-        mainBuffer = buffer;
-        var source = audioContext.createBufferSource();
-        source.buffer = buffer;
-        source.connect(audioContext.destination);
-        source.loop = false;
-        source.start(0);
-      }, function(err) {
-        console.log(err);
-      });
-    })
-     .catch(function(err) {
-       console.log('error in postRecording', err);
-     });
-  };
-
-  this.stopStream = function(callback) {
-    $http({
-      method: 'POST',
-      url: '/stopStream', 
-    })
-    .then(function(data) {
-      console.log('voice streaming has stopped', data);
-      // io.disconnect();
-      if (callback) {
-        callback(data);
-      }
-    })
-     .catch(function(err) {
-       console.log('error in stopStream', err);
-     });
-    };
 
   this.postRecording = function(topic, recording, date, callback) { 
 
@@ -148,6 +101,24 @@ angular.module('app')
        console.log('error in postRecording', err);
      });
   };
+
+  this.stopStream = function(callback) {
+    $http({
+      method: 'POST',
+      url: '/stopStream', 
+    })
+    .then(function(data) {
+      console.log('voice streaming has stopped', data);
+      // io.disconnect();
+      if (callback) {
+        callback(data);
+      }
+    })
+     .catch(function(err) {
+       console.log('error in stopStream', err);
+     });
+    };
+
 
   // CREATED NEW SERVICE TO ACCOMODATE NEW WORK AROUND
 
@@ -198,5 +169,32 @@ angular.module('app')
         console.log(err);
       });
   };
+  
+  // SERVICE USED TO INVOCE LIVE STREAMING FUNCTION
 
+  // this.postStream = function(callback) {
+
+  //   $http({
+  //     method: 'POST',
+  //     url: '/testStream', 
+  //     responseType: 'arraybuffer'
+  //   })
+  //   .then(function(response) {
+  //     var audioContext = new AudioContext();
+  //     console.log('response', response);
+  //     audioContext.decodeAudioData(response.data, function(buffer) {
+  //       mainBuffer = buffer;
+  //       var source = audioContext.createBufferSource();
+  //       source.buffer = buffer;
+  //       source.connect(audioContext.destination);
+  //       source.loop = false;
+  //       source.start(0);
+  //     }, function(err) {
+  //       console.log(err);
+  //     });
+  //   })
+  //    .catch(function(err) {
+  //      console.log('error in postRecording', err);
+  //    });
+  // };
 });

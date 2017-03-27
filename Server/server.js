@@ -51,21 +51,23 @@ app.get('/log', function(req, res) {
   });
 });
 
-app.post('/getFileByTopic', function(req, res) {
+app.get('/getFileByTopic', function(req, res) {
   // get id from req
   //(id, metadata, callback)
-  console.log('topic req body query', req.body.query);
+  console.log('topic req body query', req.query);
   //Apurva uses req.query.topic as parameter
-  inputs.getRecordByTopic(req.body.query, (arrOfRecords) => {
+  inputs.getRecordByTopic(req.query.query, (arrOfRecords) => {
     res.status(201).json(arrOfRecords);
   });
 });
 
-app.post('/getFileById', function(req, res) {
-  inputs.getRecordById(req.body.id, (readstream) => {
+app.get('/getFileById', function(req, res) {
+  inputs.getRecordById(req.query.id, (readstream) => {
     readstream.pipe(res);
   });
 });
+
+
 
 app.post('/record', upload.single('recording'), function(req, res) {
 
@@ -235,17 +237,6 @@ Creates a file first, THEN transcribes the audio from the file
 RETURNS the transcribed text string.
 first audio create wave file, then transcribes
 
-<<<<<<< HEAD
-app.get('/getLang', (req, res) => {
-  listLanguages((lang) => {
-    res.status(200).send(lang)
-  })
-})
-
-
-server.listen(port, function () {
- console.log('server listening to', port);
-=======
 app.post('/testCreate', (req, res) => {
  record.start({
    sampleRate: 44100,
@@ -257,10 +248,6 @@ app.post('/testCreate', (req, res) => {
      res.status(201).end(data.results[0].transcript);
    }
  }));
-<<<<<<< HEAD
->>>>>>> Removing console logs and commenting out unnecessary routes
-});
-=======
 });
 
 
