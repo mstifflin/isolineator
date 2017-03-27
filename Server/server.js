@@ -95,6 +95,41 @@ app.post('/record', upload.single('recording'), function(req, res) {
   res.status(201).end();
 });
 
+// CREATED NEW ROUTE TO ACCOMODATE NEW WORK AROUND
+
+app.post('/onEnd', upload.single('recording'), function(req, res) {
+
+  console.log('post handled: request file', req.file);
+
+  Speech.syncAudio(`./${req.file.path}`, (text)=>{
+    console.log('data inside syncAudio', text);
+
+    Translater(text, 'es', (translate) => {
+      io.emit('transcription', text, translate);
+
+      //Apurva's function goes here
+      t2s.getSpeechStreamFromChunks(translate, (err, data) => { //translate should be equal to the final translated text
+        if (err) {
+          console.log(err.code)
+        } else if (data) {
+          console.log('inside data of getSpeechStreamFromChunks');
+          if (data.AudioStream instanceof Buffer) {
+            // Initiate the source
+            var bufferStream = new Stream.PassThrough();
+            // convert AudioStream into a readable stream
+            bufferStream.end(data.AudioStream);
+            // Pipe into Player
+            bufferStream.pipe(res);
+            bufferStream.on('end', () => {
+              res.status(201).end();
+            });
+          }
+        }
+      });
+    });
+  });
+});
+
 
 
 app.post('/stopStream', function (req, res) {
