@@ -44,7 +44,6 @@ var upload = multer({ storage: storage });
 
 var port = process.env.PORT || 5000;
 
-//should this not be get ?
 app.get('/log', function(req, res) {
   inputs.returnAllRecords(function(arrOfRecords) {
     res.status(201).json(arrOfRecords);
@@ -52,10 +51,6 @@ app.get('/log', function(req, res) {
 });
 
 app.get('/getFileByTopic', function(req, res) {
-  // get id from req
-  //(id, metadata, callback)
-  console.log('topic req body query', req.query);
-  //Apurva uses req.query.topic as parameter
   inputs.getRecordByTopic(req.query.query, (arrOfRecords) => {
     res.status(201).json(arrOfRecords);
   });
@@ -67,30 +62,20 @@ app.get('/getFileById', function(req, res) {
   });
 });
 
-
-
 app.post('/record', upload.single('recording'), function(req, res) {
-
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
     inputs.saveInputFile(`./${req.file.path}`, data, req.file.originalname, {}, (file) => {
-      // inputs.consoleLogAllDataBase();
-    });
-    
+    }); 
   });
   res.status(201).end();
 });
-
-/* Main route to for chaining all APIs */
 
 app.post('/onEnd', upload.single('recording'), function(req, res) {
   let langCode = req.body.langCode;
   Speech.syncAudio(`./${req.file.path}`, (text)=>{
     Translater(text, langCode, (translate) => {
       io.emit('transcription', text, translate);
-      console.log('Translater in on end: translate: ', translate);
-      //Apurva's function goes here
       t2s.getSpeechStreamFromChunks(translate, langCode, (err, data) => { //translate should be equal to the final translated text
-        console.log('inside getSpeechStreamFromChunks callbakc');
         if (err) {
           console.log(err.code)
         } else if (data) {
@@ -120,6 +105,40 @@ app.get('/getLang', (req, res) => {
 server.listen(port, function () {
  console.log('server listening to', port);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

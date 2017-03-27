@@ -5,7 +5,6 @@ angular.module('app')
     $http.get('/log')
     .then(function({data}) {
       if(callback) {
-      console.log(data);
         callback(data);
       }
     })
@@ -16,13 +15,10 @@ angular.module('app')
 
   this.getFileByTopic = function(query, callback) {
 
-    console.log('this is queried', query);
-
     let config = {params: {query: query}};
 
     $http.get('/getFileByTopic', config)
     .then(function(data) {
-      console.log('success data:', data);
       if(callback) {
         callback(data);
       }
@@ -34,20 +30,14 @@ angular.module('app')
 
   this.getFileById = function(id, callback) {
     
-    console.log('getFilebyId called');
-
     $http({
       method: 'GET',
       url: '/getFileById',
-      // data: JSON.stringify(req)
       params: {'id': id},
       responseType: 'arraybuffer'
     })
-    // $http.get('/log')
     .then(function(response) {
-      console.log('success data:', response);
       var audioContext = new AudioContext();
-      console.log('response', response);
       audioContext.decodeAudioData(response.data, function(buffer) {
         mainBuffer = buffer;
         var source = audioContext.createBufferSource();
@@ -79,20 +69,16 @@ angular.module('app')
     var formData = new FormData();
     formData.append('recording', recording, topic);
 
-    console.log('get recording', formData.get('recording'));
-
     $http({
       method: 'POST',
       url: '/record', 
       data: formData,
-      // contentType: 'multipart/form-data',
       contentType: false,
       transformRequest: angular.identity,
       processData: false,
       headers: {'Content-type': undefined}
     })
     .then(function(data) {
-      // console.log('data from success:', data);
       if (callback) {
         callback(data);
       }
@@ -102,34 +88,11 @@ angular.module('app')
      });
   };
 
-  this.stopStream = function(callback) {
-    $http({
-      method: 'POST',
-      url: '/stopStream', 
-    })
-    .then(function(data) {
-      console.log('voice streaming has stopped', data);
-      // io.disconnect();
-      if (callback) {
-        callback(data);
-      }
-    })
-     .catch(function(err) {
-       console.log('error in stopStream', err);
-     });
-    };
-
-
-  // CREATED NEW SERVICE TO ACCOMODATE NEW WORK AROUND
-
   this.transOnEnd = function(topic, recording, date, lang, callback) { 
 
     var formData = new FormData();
     formData.append('recording', recording, topic);
     formData.append('langCode', lang)
-
-    console.log('get recording', formData.get('recording'));
-    console.log('formdata in transOnEnd: ', formData);
 
     $http({
       method: 'POST',
@@ -143,7 +106,6 @@ angular.module('app')
     })
     .then(function(response) {
       var audioContext = new AudioContext();
-      console.log('response', response);
       audioContext.decodeAudioData(response.data, function(buffer) {
         mainBuffer = buffer;
         var source = audioContext.createBufferSource();
@@ -170,7 +132,7 @@ angular.module('app')
       });
   };
   
-  // SERVICE USED TO INVOCE LIVE STREAMING FUNCTION
+  // SERVICE USED TO INVOKE LIVE STREAMING FUNCTION IN SERVER
 
   // this.postStream = function(callback) {
 
@@ -197,4 +159,23 @@ angular.module('app')
   //      console.log('error in postRecording', err);
   //    });
   // };
+
+  //SERVICE USED TO STOP LIVE STREAM
+
+  // this.stopStream = function(callback) {
+  //   $http({
+  //     method: 'POST',
+  //     url: '/stopStream', 
+  //   })
+  //   .then(function(data) {
+  //     console.log('voice streaming has stopped', data);
+  //     // io.disconnect();
+  //     if (callback) {
+  //       callback(data);
+  //     }
+  //   })
+  //    .catch(function(err) {
+  //      console.log('error in stopStream', err);
+  //    });
+  //   };
 });
