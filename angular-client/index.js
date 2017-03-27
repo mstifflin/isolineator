@@ -1,4 +1,4 @@
-angular.module('app', ['angularAudioRecorder', 'ui.bootstrap'])
+angular.module('app', ['angularAudioRecorder', 'ui.bootstrap', 'ngAnimate', 'angular-loading-bar'])
     .controller('AppController', function ($scope, $timeout) {
       console.log('Loaded');
       $scope.timeLimit = 100;
@@ -10,4 +10,9 @@ angular.module('app', ['angularAudioRecorder', 'ui.bootstrap'])
       //.setSwfUrl('/lib/recorder.swf')
       .withMp3Conversion(false)
     ;
-    });
+
+    })
+    .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+      // cfpLoadingBarProvider.includeBar = false;
+      cfpLoadingBarProvider.parentSelector = '.text';
+    }]);
