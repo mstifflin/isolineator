@@ -45,8 +45,7 @@ angular.module('app')
         source.connect(audioContext.destination);
         source.loop = false;
         source.start(0);
-        // var play = document.getElementById(id);
-        // var stop = document.querySelector('.stop');
+
         var stop = document.getElementById(id);
 
         stop.onclick = function() {
@@ -57,7 +56,6 @@ angular.module('app')
           callback(response);
         }
       });
-
     })
     .catch(function(err) {
       console.log('error in getFileById:', err);
