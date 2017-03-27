@@ -31,6 +31,14 @@ angular.module('app')
     this.logs = data;
   }
 
+  this.histclicked = () => {
+    console.log('inside histclicked');
+    this.service.getAll((data) => {
+    console.log('data', data);
+    this.logs = data;
+  });
+  }
+
 })
 
 .directive('app', function() {

@@ -1,13 +1,13 @@
 angular.module('app')
 .controller('LogCtrl', function($scope) {
-      // console.log('inside logctrl scope : ', $scope);
+      console.log('inside histlogctrl scope : ', $scope);
       
     },)
 .directive('historylog', function() {
   return {
     scope: {
       service: '<',
-      result: '<',
+      result: '=',
       logs: '<'
     },
     // controller: 
