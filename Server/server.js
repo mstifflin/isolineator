@@ -109,7 +109,8 @@ app.post('/onEnd', upload.single('recording'), function(req, res) {
       
 
       //Apurva's function goes here
-      t2s.getSpeechStreamFromChunks(translate, (err, data) => { //translate should be equal to the final translated text
+      t2s.getSpeechStreamFromChunks(translate, langCode, (err, data) => { //translate should be equal to the final translated text
+        console.log('inside getSpeechStreamFromChunks callbakc');
         if (err) {
           console.log(err.code)
         } else if (data) {

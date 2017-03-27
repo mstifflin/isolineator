@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const Stream = require('stream');
+const Voices = require('./voices.js');
 
 //load aws creds
 AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
@@ -31,11 +32,19 @@ exports.createSpeechFileFromChunks = (chunk, fileName, callBack) => {
 polly.synthesizeSpeech(params, synthCallback);
 }
 
-exports.getSpeechStreamFromChunks = (chunk, callBack) => {
+exports.getSpeechStreamFromChunks = (chunk, langCode, callBack) => {
+  var voiceId = 'Miguel';
+  Voices.voices.forEach((voice) => {
+    if (voice.LanguageCode.indexOf(langCode) === 0) {
+      voiceId = voice.Id;
+    }
+  });
+
+  console.log('VoiceId: ', voiceId);
 	var params = {
     OutputFormat: 'mp3',               
     Text: ''+chunk,     // This is where you'll specify whatever text you want to render.
-    VoiceId: 'Miguel'                   
+    VoiceId: voiceId                   
   };
   console.log('getSpeechStreamFromChunks : chunk: ', chunk);
   var synthCallback = callBack;
