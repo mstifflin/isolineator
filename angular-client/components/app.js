@@ -4,7 +4,7 @@ angular.module('app')
   var socket = io.connect();
 
   isolineatorService.getAll((data) => {
-    console.log('data', data);
+    console.log('data in app js', data);
     this.logs = data;
   });
 
