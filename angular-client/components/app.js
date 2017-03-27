@@ -40,7 +40,7 @@ angular.module('app')
     controller: 'AppCtrl',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: 'templates/app.html'
+    templateUrl: 'templates/app2.html'
   }
 
 })
