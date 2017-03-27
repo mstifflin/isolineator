@@ -12,7 +12,7 @@
                     ng-disabled="recorder.status.isDenied === true || recorder.status.isRecording">
                 Start Record
             </button>
-            <button ng-click="recorder.stopRecord()" type="button" ng-disabled="recorder.status.isRecording === false">
+            <button ng-click="recorder.stopRecord(ctrl.currentCode)" type="button" ng-disabled="recorder.status.isRecording === false">
                 Stop Record
             </button>
 
@@ -27,6 +27,7 @@
             <topic service='ctrl.service' result='ctrl.searchResults'>
             TOPIC
             </topic>
+            <listlang ></listlang>
 
 
             <div style="max-width: 600px">

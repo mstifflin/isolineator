@@ -98,13 +98,13 @@ app.post('/record', upload.single('recording'), function(req, res) {
 // CREATED NEW ROUTE TO ACCOMODATE NEW WORK AROUND
 
 app.post('/onEnd', upload.single('recording'), function(req, res) {
-
+  let langCode = req.body.langCode;
   console.log('post handled: request file', req.file);
 
   Speech.syncAudio(`./${req.file.path}`, (text)=>{
     console.log('data inside syncAudio', text);
 
-    Translater(text, 'es', (translate) => {
+    Translater(text, langCode, (translate) => {
       io.emit('transcription', text, translate);
 
       //Apurva's function goes here
@@ -244,9 +244,9 @@ app.post('/txtTranslate', function(req, res) {
   console.log(Translater(req.body.textTranslate, 'es'));
 })
 
-app.post('/getLang', (req, res) => {
+app.get('/getLang', (req, res) => {
   listLanguages((lang) => {
-    res.status(201).send(lang)
+    res.status(200).send(lang)
   })
 })
 
