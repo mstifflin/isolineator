@@ -1,5 +1,10 @@
 angular.module('app')
 .controller('LangCtrl', function($scope, isolineatorService) {
+
+  this.listStyle = {
+    'overflow': 'scroll',
+    'height': '300px'
+  }
   
   //CHOOSE THIS FOR JUST 4 LANG
   // this.lang = [
