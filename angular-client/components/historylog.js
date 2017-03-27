@@ -1,7 +1,6 @@
 angular.module('app')
 .controller('LogCtrl', function($scope) {
       console.log('inside histlogctrl scope : ', $scope);
-      
 })
 .directive('historylog', function() {
   return {

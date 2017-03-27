@@ -17,9 +17,7 @@ angular.module('app')
       //     });
       //   }
       // };
-      
-      
-})
+    })
 .directive('interpreter', function() {
   return {
     scope: {
