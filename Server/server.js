@@ -47,7 +47,6 @@ var port = process.env.PORT || 5000;
 //should this not be get ?
 app.get('/log', function(req, res) {
   inputs.returnAllRecords(function(arrOfRecords) {
-    console.log('inside callback of log');
     res.status(201).json(arrOfRecords);
   });
 });
@@ -258,5 +257,11 @@ app.post('/testCreate', (req, res) => {
      res.status(201).end(data.results[0].transcript);
    }
  }));
+<<<<<<< HEAD
 >>>>>>> Removing console logs and commenting out unnecessary routes
 });
+=======
+});
+
+
+******************************************************/
