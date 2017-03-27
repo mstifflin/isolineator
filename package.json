@@ -1,8 +1,8 @@
 {
-  "name": "",
+  "name": "The Isolineators",
   "version": "",
-  "description": "",
-  "author": "",
+  "description": "Translation app ",
+  "author": "Apurva Shastry, Christopher Yang, Raphael Feliciano",
   "license": "",
   "engines": {
     "node": ">=6.4.0"
