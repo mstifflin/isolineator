@@ -1,6 +1,6 @@
 angular.module('app')
 .controller('InterCtrl', function($scope) {
-      console.log('inside interpreter scope : ', $scope);
+  console.log('inside interpreter scope : ', $scope);
 
       // this.clicked = function() {
       //   // console.log('attempting search');
@@ -19,7 +19,7 @@ angular.module('app')
       // };
       
       
-    })
+})
 .directive('interpreter', function() {
   return {
     scope: {

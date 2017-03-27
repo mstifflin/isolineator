@@ -15,5 +15,4 @@ angular.module('app', ['angularAudioRecorder', 'ui.bootstrap', 'ngAnimate', 'ang
     .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
       // cfpLoadingBarProvider.includeBar = false;
       cfpLoadingBarProvider.parentSelector = '.text';
-      // cfpLoadingBarProvider.spinnerTemplate = <body> </body>;
     }]);
