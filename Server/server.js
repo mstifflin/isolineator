@@ -1,19 +1,19 @@
-var app = require('express')();
-var express = require('express');
-var server = require('http').Server(app);
-var bodyParser = require('body-parser');
-var fs = require('fs');
+const app = require('express')();
+const express = require('express');
+const server = require('http').Server(app);
+const bodyParser = require('body-parser');
+const fs = require('fs');
 const Stream = require('stream');
-var record = require('node-record-lpcm16');
-var request = require('request');
-var multer = require('multer');
-var dbconn = require('../mongo-db/config.js');
-var inputs = require('../mongo-db/inputs.js');
-var Speech = require('../Server/speechToText.js');
-var t2s = require('../Server/textToSpeech.js');
+const record = require('node-record-lpcm16');
+const request = require('request');
+const multer = require('multer');
+const dbconn = require('../mongo-db/config.js');
+const inputs = require('../mongo-db/inputs.js');
+const Speech = require('../Server/speechToText.js');
+const t2s = require('../Server/textToSpeech.js');
 const {Translater, listLanguages} = require('./TextTranslateApi.js');
 
-var io = require ('socket.io')(server);
+const io = require ('socket.io')(server);
 
 io.on('connection', (socket) => {
  console.log('io connected');
