@@ -4,22 +4,13 @@ angular.module('app')
   var socket = io.connect();
 
   isolineatorService.getAll((data) => {
-    console.log('data in app js', data);
     this.logs = data;
   });
 
   socket.on('transcription', (data, trans) => {
-    // if (Array.isArray(data.results) && data.results[0].transcript !== undefined) {
-    //   console.log(data.results[0].isFinal);
-    //   this.text = data.results[0].transcript;
-    //   this.translate = trans;
-    // } else {
       this.text = data;
       this.translate = trans;
-    // }
   });
-
-  console.log('logs', this.logs);
 
   this.recording = false;
   this.record = () => {
@@ -32,9 +23,7 @@ angular.module('app')
   }
 
   this.histclicked = () => {
-    console.log('inside histclicked');
     this.service.getAll((data) => {
-    console.log('data', data);
     this.logs = data;
   });
   }
@@ -48,7 +37,7 @@ angular.module('app')
     controller: 'AppCtrl',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: 'templates/app2.html'
+    templateUrl: 'templates/app.html'
   }
 
 })

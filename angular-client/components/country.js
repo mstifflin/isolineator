@@ -1,7 +1,5 @@
 angular.module('app')
 .controller('CountryCtrl', function($scope, isolineatorService) {
-
-
 })
 .directive('country', function() {
   return {
