@@ -57,29 +57,15 @@ angular.module('app')
         source.buffer = buffer;
         source.connect(audioContext.destination);
         source.loop = false;
-        // source.start(0);
-        // source.onended(function() {
-        //   audioContext.close();
-        // });
-        // audioContext.close();
-        // $('.play').click(function() {
-        //   source.start(0);
-        // });
-        // var play = document.querySelector('#' + id + ' .play');
-        var play = document.getElementById(id);
-        // var play = document.getElement('audio');
-        // play.src = source;
+        source.start(0);
+        // var play = document.getElementById(id);
         // var stop = document.querySelector('.stop');
+        var stop = document.getElementById(id);
 
-        play.onclick = function() {
-          source.start(0);
-          play.setAttribute('disabled', 'disabled');
+        stop.onclick = function() {
+          source.stop(0);
+          audioContext.close();
         };
-        // stop.onclick = function() {
-        //   source.stop(0);
-        //   play.removeAttribute('disabled');
-        //   audioContext.close();
-        // }
 
         if (callback) {
           callback(response);

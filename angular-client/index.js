@@ -1,4 +1,4 @@
-angular.module('app', ['angularAudioRecorder', 'ui.bootstrap'])
+angular.module('app', ['angularAudioRecorder', 'ui.bootstrap', 'ngAnimate'])
     .controller('AppController', function ($scope, $timeout) {
       console.log('Loaded');
       $scope.timeLimit = 100;

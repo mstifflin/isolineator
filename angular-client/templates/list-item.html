@@ -1,20 +1,10 @@
-<!-- <div>
-  <h5 ng-click= 'ctrl.clicked()'>{{ctrl.log.filename}} Entry: {{ctrl.log.entrynumber}}</h5>
-  Text:{{ctrl.log.text}}
-</div> -->
-<!--  <uib-accordion close-others="true" ng-click="ctrl.clicked()">
-   <div uib-accordion-group class="panel-default" heading="{{ctrl.log.filename}}">
-        Text:{{ctrl.log.text}}
-  </div>
- </uib-accordion> -->
-  <div uib-accordion-group class="panel-default" heading="{{ctrl.log.filename}} {{ctrl.log.entrynumber}}" ng-click= 'ctrl.clicked()'>
-      <div>
-        <button id='{{ctrl.log.id}}' class='play'> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> </button>
-        <!-- <button class="stop"> Stop </button> -->
-      </div>
-      <div>
+<div uib-accordion-group class="panel-default" heading="{{ctrl.log.filename}} {{ctrl.log.entrynumber}}" >
+      <p>
+        <!-- <button id='{{ctrl.log.id}}' class='play' ng-click= 'ctrl.clicked()'> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> </button> -->
+        <button class='play' ng-click= 'ctrl.clicked()'> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> </button>
+        <button id='{{ctrl.log.id}}' class="stop"> <span class="glyphicon glyphicon-stop" aria-hidden="true"></button>
+      </p>
+      <p>
       "{{ctrl.log.text}}"
-      </div>
-      <!-- <audio> </audio> -->
-
-  </div>
+      </p>
+</div>
