@@ -7,7 +7,6 @@ angular.module('app')
     },
     restrict: 'E',
     controller: function($scope) {
-      // console.log('inside list item scope: ', $scope);
       this.playing = false;
       this.clicked = function() {
         console.log('attempting to play recording');
@@ -16,12 +15,9 @@ angular.module('app')
           console.log('data');
         });
       };
-
       this.stop = function() {
         this.playing = !this.playing;
-      }
-
-      
+      };
     },
     controllerAs: 'ctrl',
     bindToController: true,
