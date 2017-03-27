@@ -93,13 +93,20 @@ app.post('/record', upload.single('recording'), function(req, res) {
 
 app.post('/onEnd', upload.single('recording'), function(req, res) {
   let langCode = req.body.langCode;
+  console.log('lang code in req: ', req.body.langCode);
+  console.log('type of lang code: ', typeof req.body.langCode);
+  if (req.body.langCode === 'undefined') {
+    langCode = 'es';
+  }
   console.log('post handled: request file', req.file);
 
   Speech.syncAudio(`./${req.file.path}`, (text)=>{
-    console.log('data inside syncAudio', text);
-
+    console.log('data inside syncAudio : on end langcode: ', langCode);
+    
     Translater(text, langCode, (translate) => {
       io.emit('transcription', text, translate);
+      console.log('Translater in on end: translate: ', translate);
+      
 
       //Apurva's function goes here
       t2s.getSpeechStreamFromChunks(translate, (err, data) => { //translate should be equal to the final translated text
