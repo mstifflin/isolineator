@@ -1,10 +1,5 @@
 <div uib-accordion-group class="panel-default" heading="{{ctrl.log.filename}} {{ctrl.log.entrynumber}}" >
-      <p>
-        <!-- <button id='{{ctrl.log.id}}' class='play' ng-click= 'ctrl.clicked()'> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> </button> -->
-        <button class='play' ng-click= 'ctrl.clicked()'> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> </button>
-        <button id='{{ctrl.log.id}}' class="stop"> <span class="glyphicon glyphicon-stop" aria-hidden="true"></button>
-      </p>
-      <p>
+        <button class='play' ng-click= 'ctrl.clicked()' ng-show = '!ctrl.playing'> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> </button>
+        <button id='{{ctrl.log.id}}' class="stop" ng-click= 'ctrl.stop()' ng-show ='ctrl.playing'> <span class="glyphicon glyphicon-stop" aria-hidden="true"></button>
       "{{ctrl.log.text}}"
-      </p>
 </div>
