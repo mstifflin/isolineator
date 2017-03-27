@@ -145,12 +145,14 @@ angular.module('app')
 
   // CREATED NEW SERVICE TO ACCOMODATE NEW WORK AROUND
 
-  this.transOnEnd = function(topic, recording, date, callback) { 
+  this.transOnEnd = function(topic, recording, date, lang, callback) { 
 
     var formData = new FormData();
     formData.append('recording', recording, topic);
+    formData.append('langCode', lang)
 
     console.log('get recording', formData.get('recording'));
+    console.log(formData);
 
     $http({
       method: 'POST',
@@ -179,7 +181,16 @@ angular.module('app')
      .catch(function(err) {
        console.log('error in postRecording', err);
      });
+  };
 
+  this.getLang = (callback) => {
+    $http.get('/getLang')
+      .then((data) => {
+        callback(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
 });

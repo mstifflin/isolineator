@@ -11,7 +11,7 @@ var dbconn = require('../mongo-db/config.js');
 var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
-const {Translater} = require('./TextTranslateApi.js');
+const {Translater, listLanguages} = require('./TextTranslateApi.js');
 
 var io = require ('socket.io')(server);
 
@@ -98,13 +98,13 @@ app.post('/record', upload.single('recording'), function(req, res) {
 // CREATED NEW ROUTE TO ACCOMODATE NEW WORK AROUND
 
 app.post('/onEnd', upload.single('recording'), function(req, res) {
-
+  let langCode = req.body.langCode;
   console.log('post handled: request file', req.file);
 
   Speech.syncAudio(`./${req.file.path}`, (text)=>{
     console.log('data inside syncAudio', text);
 
-    Translater(text, 'es', (translate) => {
+    Translater(text, langCode, (translate) => {
       io.emit('transcription', text, translate);
 
       //Apurva's function goes here
@@ -239,13 +239,16 @@ app.post('/testFile', function(req, res) {
 });
 
 
-
 // Mike's translation code
 app.post('/txtTranslate', function(req, res) {
   console.log(Translater(req.body.textTranslate, 'es'));
 })
 
-
+app.get('/getLang', (req, res) => {
+  listLanguages((lang) => {
+    res.status(200).send(lang)
+  })
+})
 
 
 
