@@ -37,7 +37,7 @@ angular.module('app')
     controller: 'AppCtrl',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: 'templates/app2.html'
+    templateUrl: 'templates/app.html'
   }
 
 })

@@ -1,4 +1,3 @@
-
 const {voices} = require('./voices.js');
 
 const Translate = require('@google-cloud/translate')({
@@ -9,7 +8,6 @@ const Translate = require('@google-cloud/translate')({
 
 exports.Translater = function(text, target, callback) {
 	Translate.translate(text, target).then((results) => {
-    // console.log(results[0])
     callback(results[0]);
   }).catch((error) => {
   		console.log(error);
@@ -30,7 +28,6 @@ exports.listLanguages = (callback) => {
           finalLanguages.push(language);
         }
       });
-      console.log('Final Languages:');
       finalLanguages.forEach((language) => console.log(language));
 
       callback(finalLanguages);

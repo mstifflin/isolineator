@@ -2,10 +2,8 @@ const AWS = require('aws-sdk');
 const Stream = require('stream');
 const Voices = require('./voices.js');
 
-//load aws creds
 AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
 
-//get polly object
 var polly = new AWS.Polly();
 
 exports.createSpeechFileFromChunks = (chunk, fileName, callBack) => {
@@ -14,17 +12,13 @@ exports.createSpeechFileFromChunks = (chunk, fileName, callBack) => {
     Text: ''+chunk,     // This is where you'll specify whatever text you want to render.
     VoiceId: 'Miguel'                   // Specify the voice ID / name from the previous step.
   };
-  // console.log('chunk : ', chunk);
-  // console.log('chunk type : ', typeof chunk);
   var synthCallback = function (err, data) {
     if (err) console.log(err, err.stack); // an error occurred
     else console.log(data); // successful response
     fs.writeFile(fileName + '.mp3', data.AudioStream, function (err) {
       if (err) { 
-        console.log('An error occurred while writing the file.');
-        console.log(err);
+        console.log('An error occurred while writing the file.', err);
       }
-      console.log('Finished writing the file to the filesystem')
     });
   };
 
@@ -39,14 +33,11 @@ exports.getSpeechStreamFromChunks = (chunk, langCode, callBack) => {
       voiceId = voice.Id;
     }
   });
-
-  console.log('VoiceId: ', voiceId);
 	var params = {
     OutputFormat: 'mp3',               
     Text: ''+chunk,     // This is where you'll specify whatever text you want to render.
     VoiceId: voiceId                   
   };
-  console.log('getSpeechStreamFromChunks : chunk: ', chunk);
   var synthCallback = callBack;
   polly.synthesizeSpeech(params, synthCallback);
 }
