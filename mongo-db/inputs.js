@@ -9,8 +9,23 @@ var gfs = Grid(db.dbconn.db);
 exports.saveInputFile = (audFilePath, transcribedData, inputtopic, metaData, callBack) => {
   var topic = inputtopic;
   var transcribedArr = transcribedData.split(' ');
+
   if (transcribedArr[0] === 'topic') {
-    topic = transcribedArr[1];
+    let i = 1;
+    let lastIndex = -1;
+    while(i < transcribedArr.length - 1 && lastIndex === -1) {
+      console.log('inside while: i :', i);
+      if (transcribedArr[i] === 'stop' && transcribedArr[i+1] === 'stop') {
+        lastIndex = i;
+      }
+      i++;
+    }
+    if (i === transcribedArr.length - 1) {
+      lastIndex = transcribedArr[transcribedArr.length - 1];
+      topic = (transcribedArr.slice(1)).join(' ');
+    } else {
+      topic = (transcribedArr.slice(1, lastIndex)).join(' ');
+    }
   } 
 
   gfs.files.find({filename: topic}).toArray(function (err, files) {

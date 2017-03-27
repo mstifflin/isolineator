@@ -87,6 +87,7 @@ app.post('/onEnd', upload.single('recording'), function(req, res) {
             // Pipe into Player
             bufferStream.pipe(res);
             bufferStream.on('end', () => {
+              fs.unlink(`./${req.file.path}`);
               res.status(201).end();
             });
           }
