@@ -11,7 +11,7 @@ var dbconn = require('../mongo-db/config.js');
 var inputs = require('../mongo-db/inputs.js');
 var Speech = require('../Server/speechToText.js');
 var t2s = require('../Server/textToSpeech.js');
-const {Translater} = require('./TextTranslateApi.js');
+const {Translater, listLanguages} = require('./TextTranslateApi.js');
 
 var io = require ('socket.io')(server);
 
@@ -239,13 +239,16 @@ app.post('/testFile', function(req, res) {
 });
 
 
-
 // Mike's translation code
 app.post('/txtTranslate', function(req, res) {
   console.log(Translater(req.body.textTranslate, 'es'));
 })
 
-
+app.post('/getLang', (req, res) => {
+  listLanguages((lang) => {
+    res.status(201).send(lang)
+  })
+})
 
 
 

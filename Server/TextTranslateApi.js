@@ -13,6 +13,17 @@ exports.Translater = function(text, target, callback) {
   })
 };
 
+exports.listLanguages = (callback) => {
+  Translate.getLanguages()
+    .then((results) => {
+      const languages = results[0];
+
+      console.log('Languages:');
+      languages.forEach((language) => console.log(language));
+
+      callback(languages);
+    });
+};
 
 
 
