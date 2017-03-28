@@ -64,6 +64,7 @@ app.get('/getFileById', function(req, res) {
 
 app.post('/record', upload.single('recording'), function(req, res) {
   Speech.syncAudio(`./${req.file.path}`, (data)=>{
+    console.log('saving file')
     inputs.saveInputFile(`./${req.file.path}`, data, req.file.originalname, {}, (file) => {
     }); 
   });
