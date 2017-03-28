@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const Stream = require('stream');
 const Voices = require('./voices.js');
 
-AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
+// AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
 
 var polly = new AWS.Polly();
 
