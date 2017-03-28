@@ -10,7 +10,7 @@ const multer = require('multer');
 const dbconn = require('../mongo-db/config.js');
 const inputs = require('../mongo-db/inputs.js');
 const Speech = require('../Server/speechToText.js');
-//const t2s = require('../Server/textToSpeech.js');
+const t2s = require('../Server/textToSpeech.js');
 const {Translater, listLanguages} = require('./TextTranslateApi.js');
 
 const io = require ('socket.io')(server);
