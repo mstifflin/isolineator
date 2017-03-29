@@ -26,10 +26,6 @@ io.on('disconnect', (socket) => {
  console.log('io is disconnected');
 });
 
-
-
-
-
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
