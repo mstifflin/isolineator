@@ -1,12 +1,14 @@
+  <label for="username">Username:</label>
+  <input class="username" id="username-input" value='' ng-model="ctrl.username" /> 
 <ul>
   <li ng-repeat='message in ctrl.messages track by $index'>
-  {{message}}
+    {{message.username}}: {{message.message}}
   </li>
 <ul/>
-<form> 
+<form>
   <input id="english-input" value='' ng-model="ctrl.englishText" />
   <input type="submit" 
-         ng-click="ctrl.sendEnglishText(ctrl.englishText)" 
+         ng-click="ctrl.sendEnglishText(ctrl.englishText, ctrl.username)" 
          value='Send' />
 
   <input id="foreign-language-input" value='' 
