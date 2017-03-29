@@ -121,6 +121,23 @@ server.listen(port, function () {
  console.log('server listening to', port);
 });
 
+//REQUEST BODY NEEDS: 
+// USERNAME
+// CHATROOM
+// ORIGINAL MESSAGE
+// THE LANGUAGE THE RESPONSE SHOULD SEND IN (should be one of the keys below)
+
+// var translated = {
+//   arMessage: 'ar', 
+//   chMessage: 'zh-CN', 
+//   deMessage: 'de', 
+//   enMessage: 'en', 
+//   frMessage: 'fr', 
+//   jaMessage: 'ja',
+//   koMessage: 'ko', 
+//   ruMessage: 'ru', 
+//   esMessage: 'es'
+// };
 app.get('/testEndpoint', TranslateMessage);
 
 
