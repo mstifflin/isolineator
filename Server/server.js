@@ -23,6 +23,8 @@ io.on('disconnect', (socket) => {
  console.log('io is disconnected');
 });
 
+console.log(process.env.SPEECH_TO_TEXT_API);
+
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
