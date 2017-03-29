@@ -26,10 +26,6 @@ io.on('disconnect', (socket) => {
  console.log('io is disconnected');
 });
 
-
-
-
-
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
@@ -37,9 +33,11 @@ app.use(bodyParser.json({
  extended: true
 }));
 
+
+//trying to figure out why the files aren't saving to uploads, continue from here
 var storage = multer.diskStorage({
  destination: function (req, file, cb) {
-   cb(null, 'uploads/');
+   cb(null, 'Uploads/');
  },
  filename: function (req, file, cb) {
    var date = new Date().toISOString();

@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var fs = require('fs');
-var mongoURI = 'mongodb://localhost/isodb';
+
+var mongoURI = process.env.DB_URL || 'mongodb://localhost:27017/isodb';
+
 mongoose.connect(mongoURI);
 
 var dbconn = mongoose.connection;
@@ -10,3 +12,5 @@ dbconn.on('open', function () {
 });
 
 module.exports.dbconn = dbconn;
+
+
