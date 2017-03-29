@@ -7,7 +7,7 @@ logs
 
 ## NPM ##
 node_modules/
-Uploads/
+Uploads/*.wav
 
 # Runtime data
 pids
