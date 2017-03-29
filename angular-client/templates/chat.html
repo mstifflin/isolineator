@@ -4,9 +4,11 @@
   <li ng-repeat='message in ctrl.messages track by $index'>
     {{message.username}}: {{message.message}}
   </li>
-<ul/>
-
-<form>
+</ul>
+<select ng-model="ctrl.translateTo">
+  <option ng-repeat="language in ctrl.languages track by $index" value={{language.code}}>{{language.name}}</option>
+</select>
+<form> 
   <input id="english-input" value='' ng-model="ctrl.englishText" />
   <input type="submit" 
          ng-click="ctrl.sendEnglishText(ctrl.englishText, ctrl.username)" 
