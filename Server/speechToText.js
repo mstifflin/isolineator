@@ -1,9 +1,11 @@
 const fs = require('fs');
 
+var credentials = JSON.stringify(process.env.SPEECH_TO_TEXT_API);
+
 const Speech = require('@google-cloud/speech')({
   projectId: 'isolineator-162918',
   // keyFilename: './APIs/isolineator-a25b826f81b6.json'
-  credentials: process.env.SPEECH_TO_TEXT_API
+  credentials: credentials
 });
 
 const options = {
