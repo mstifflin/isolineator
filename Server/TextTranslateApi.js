@@ -3,7 +3,7 @@ const {voices} = require('./voices.js');
 const Translate = require('@google-cloud/translate')({
 	projectId: 'isolineator-162918',
 	//keyFilename: './APIs/Isolineator-a25b826f81b6.json'
-  keyFileName: process.env.SPEECH_TO_TEXT_API
+  keyFileName: JSON.parse(process.env.SPEECH_TO_TEXT_API)
 })
 
 

@@ -3,7 +3,7 @@ const fs = require('fs');
 const Speech = require('@google-cloud/speech')({
   projectId: 'isolineator-162918',
   //keyFilename: './APIs/isolineator-a25b826f81b6.json'
-  keyFilename: process.env.SPEECH_TO_TEXT_API
+  keyFilename: JSON.parse(process.env.SPEECH_TO_TEXT_API)
 });
 
 const options = {
