@@ -5,7 +5,6 @@ var MessagesSchema = mongoose.Schema({
   origMessage: String,
   chatroom: String,
   createdAt: String,
-  originalLang: String,
   arMessage: String, //Arabic
   cnMessage: String, //Simplified Chinese
   enMessage: String, //English
@@ -19,9 +18,19 @@ var MessagesSchema = mongoose.Schema({
 
 var Message = mongoose.model('Message', MessagesSchema);
 
+Message.saveTranslations = (doc) => {
+  var newMessage = new Message(doc);
+  newMessage.save(function(err) {
+    if (err) { console.log(err); }
+  });
+}
+
 var ChatroomsSchema = mongoose.Schema({
   chatroom: String,
   password: String
 });
 
 var Chatroom = mongoose.model('Chatroom', ChatroomsSchema);
+
+exports.Message = Message;
+exports.Chatroom = Chatroom;
