@@ -1,6 +1,17 @@
 const fs = require('fs');
 
-var credentials = JSON.stringify(process.env.SPEECH_TO_TEXT_API);
+var credentials = {
+  type: "service_account",
+  project_id: "isolineator-162918",
+  private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+  private_key: process.env.GOOGLE_PRIVATE_KEY,
+  client_email: "isolineator@isolineator-162918.iam.gserviceaccount.com",
+  client_id: "108655960826759356460",
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://accounts.google.com/o/oauth2/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/isolineator%40isolineator-162918.iam.gserviceaccount.com"
+}
 
 const Speech = require('@google-cloud/speech')({
   projectId: 'isolineator-162918',
