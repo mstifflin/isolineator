@@ -4,10 +4,9 @@ const Voices = require('./voices.js');
 
 // AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
 
-var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
-var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
-
-console.log(AWS_SECRET_ACCESS_KEY);
+AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+AWS.config.region = "us-west-2";
 
 var polly = new AWS.Polly();
 
