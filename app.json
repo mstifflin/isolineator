@@ -6,9 +6,6 @@
     "DB_URL": {
       "required": true
     },
-    "SPEECH_TO_TEXT_API": {
-      "required": true
-    },
     "AWS_ACCESS_KEY_ID": {
       "required": true
     },
