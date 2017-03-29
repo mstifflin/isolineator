@@ -3,10 +3,11 @@ angular.module('app')
   var socket = io();
   this.englishText = '';
   this.foreignText = '';
+  this.username = '';
   this.messages = [];
 
-  this.sendEnglishText = (text) => {
-      socket.emit('message', text);
+  this.sendEnglishText = (text, username) => {
+      socket.emit('message', {message: text, username: username});
       this.englishText = '';
   };
 
