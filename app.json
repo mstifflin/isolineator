@@ -9,7 +9,16 @@
     "SPEECH_TO_TEXT_API": {
       "required": true
     },
-    "AWS_KEY": {
+    "AWS_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "GOOGLE_PRIVATE_KEY": {
+      "required": true
+    },
+    "GOOGLE_PRIVATE_KEY_ID": {
       "required": true
     }
   },
