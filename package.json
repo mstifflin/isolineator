@@ -8,7 +8,8 @@
     "node": ">=6.4.0"
   },
   "scripts": {
-    "start": "node Server/server.js"
+    "start": "node Server/server.js",
+    "postinstal": "mkdir Uploads"
   },
   "dependencies": {
     "@google-cloud/speech": "^0.7.0",
