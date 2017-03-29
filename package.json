@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node Server/server.js",
-    "postinstal": "mkdir Uploads"
+    "postinstal": "mkdir uploads"
   },
   "dependencies": {
     "@google-cloud/speech": "^0.7.0",
