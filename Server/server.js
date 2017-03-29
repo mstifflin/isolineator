@@ -33,6 +33,8 @@ app.use(bodyParser.json({
  extended: true
 }));
 
+
+//trying to figure out why the files aren't saving to uploads, continue from here
 var storage = multer.diskStorage({
  destination: function (req, file, cb) {
    cb(null, 'uploads/');
