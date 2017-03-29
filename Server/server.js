@@ -16,9 +16,7 @@ const {Translater, listLanguages} = require('./TextTranslateApi.js');
 const io = require ('socket.io')(server);
   
 io.on('connection', (socket) => {
- console.log('io connected');
  socket.on('message', (message) => {
-   console.log(message);
    io.emit('message', message);
  })
 
@@ -111,6 +109,13 @@ app.get('/getLang', (req, res) => {
   listLanguages((lang) => {
     res.status(200).send(lang)
   })
+})
+
+
+app.post('/translateText', (req, res) => {
+  Translater(req.body.text, req.body.languageCode, (translatedText) => {
+    res.send(translatedText);
+  });
 })
 
 server.listen(port, function () {
