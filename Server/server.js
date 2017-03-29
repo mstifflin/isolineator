@@ -10,7 +10,7 @@ const multer = require('multer');
 const dbconn = require('../mongo-db/config.js');
 const inputs = require('../mongo-db/inputs.js');
 const Speech = require('../Server/speechToText.js');
-//const t2s = require('../Server/textToSpeech.js');
+const t2s = require('../Server/textToSpeech.js');
 const {Translater, listLanguages} = require('./TextTranslateApi.js');
 
 const io = require ('socket.io')(server);
@@ -37,7 +37,7 @@ app.use(bodyParser.json({
 //trying to figure out why the files aren't saving to uploads, continue from here
 var storage = multer.diskStorage({
  destination: function (req, file, cb) {
-   cb(null, 'uploads/');
+   cb(null, 'Uploads/');
  },
  filename: function (req, file, cb) {
    var date = new Date().toISOString();
