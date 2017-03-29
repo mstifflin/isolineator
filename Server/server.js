@@ -109,12 +109,13 @@ app.get('/getLang', (req, res) => {
   })
 })
 
-
 app.post('/translateText', (req, res) => {
   Translater(req.body.text, req.body.languageCode, (translatedText) => {
     res.send(translatedText);
   });
 })
+
+app.post('/inputLang', Speech.updateLanguage);
 
 server.listen(port, function () {
  console.log('server listening to', port);

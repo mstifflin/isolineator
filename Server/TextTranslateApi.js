@@ -24,7 +24,7 @@ if (process.env.GOOGLE_PRIVATE_KEY_ID) {
   })
 }
 
-
+// Translater will detect the language and translate it to whatever target is specified
 exports.Translater = function(text, target, callback) {
 	Translate.translate(text, target).then((results) => {
     callback(results[0]);
