@@ -2,8 +2,6 @@ const AWS = require('aws-sdk');
 const Stream = require('stream');
 const Voices = require('./voices.js');
 
-
-
 var polly = new AWS.Polly();
 
 exports.createSpeechFileFromChunks = (chunk, fileName, callBack) => {
