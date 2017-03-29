@@ -14,14 +14,23 @@ const t2s = require('../Server/textToSpeech.js');
 const {Translater, listLanguages} = require('./TextTranslateApi.js');
 
 const io = require ('socket.io')(server);
-
+  
 io.on('connection', (socket) => {
  console.log('io connected');
+ socket.on('message', (message) => {
+   console.log(message);
+   io.emit('message', message);
+ })
+
 });
 
 io.on('disconnect', (socket) => {
  console.log('io is disconnected');
 });
+
+
+
+
 
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));

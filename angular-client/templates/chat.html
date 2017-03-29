@@ -1,0 +1,12 @@
+<ul>
+  <li ng-repeat='message in ctrl.messages track by $index'>
+  {{message}}
+  </li>
+<ul/>
+<form ng-submit="placeholder"> 
+  <input id="m" value='' ng-model="ctrl.englishText" />
+  <input type="submit" 
+         ng-click="ctrl.sendEnglishText(ctrl.englishText)" 
+         value='Send' />
+</form>
+
