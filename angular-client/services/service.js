@@ -129,6 +129,18 @@ angular.module('app')
         console.log(err);
       });
   };
+
+  this.translateText = (text, languageCode, cb) => {
+    return $http({
+        method: 'POST',
+        url: '/translateText', 
+        data: {
+          text: text,
+          languageCode: languageCode 
+        },
+        headers: {'Content-type': 'application/json'}
+     })
+  }
   
   // SERVICE USED TO INVOKE LIVE STREAMING FUNCTION IN SERVER
 
