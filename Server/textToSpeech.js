@@ -4,6 +4,11 @@ const Voices = require('./voices.js');
 
 // AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
 
+var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+
+console.log(AWS_SECRET_ACCESS_KEY);
+
 var polly = new AWS.Polly();
 
 exports.createSpeechFileFromChunks = (chunk, fileName, callBack) => {
