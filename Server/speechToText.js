@@ -24,10 +24,10 @@ if (process.env.GOOGLE_PRIVATE_KEY_ID) {
   });
 }
 
-
-const options = {
+var options = {
   encoding: 'LINEAR16',
-  sampleRate: 44100
+  sampleRate: 44100,
+  languageCode: 'en'
 };
 
 const request = {
@@ -47,6 +47,11 @@ exports.createAndStream = (file, callback) => {
     })
 };
 
+//Update language of recording
+exports.updateLanguage = (req, res) => {
+  options.languageCode = req.body.langCode;
+  res.end();
+}
 
 //################for streaming audio from a file already created###################
 exports.streamFile = (file, callback) => {
@@ -73,6 +78,7 @@ exports.syncAudio = (file, callback) => {
   Speech.recognize(file, options)
   .then((results) => {
     const transcription = results[0];
+    console.log('TRANSCRIPTION IN SYNC AUDIO IN SPEECH TO TEXT: ', transcription);
     return transcription;
   })
   .then((data) => {

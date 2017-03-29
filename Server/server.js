@@ -11,7 +11,7 @@ const dbconn = require('../mongo-db/config.js');
 const inputs = require('../mongo-db/inputs.js');
 const Speech = require('../Server/speechToText.js');
 const t2s = require('../Server/textToSpeech.js');
-const {Translater, listLanguages} = require('./TextTranslateApi.js');
+const {Translater, listLanguages, TranslateMessage} = require('./TextTranslateApi.js');
 
 const io = require ('socket.io')(server);
   
@@ -110,17 +110,36 @@ app.get('/getLang', (req, res) => {
   })
 })
 
-
 app.post('/translateText', (req, res) => {
   Translater(req.body.text, req.body.languageCode, (translatedText) => {
     res.send(translatedText);
   });
 })
 
+app.post('/inputLang', Speech.updateLanguage);
+
 server.listen(port, function () {
  console.log('server listening to', port);
 });
 
+//REQUEST BODY NEEDS: 
+// USERNAME
+// CHATROOM
+// ORIGINAL MESSAGE
+// THE LANGUAGE THE RESPONSE SHOULD SEND IN (should be one of the keys below)
+
+// var translated = {
+//   arMessage: 'ar', 
+//   chMessage: 'zh-CN', 
+//   deMessage: 'de', 
+//   enMessage: 'en', 
+//   frMessage: 'fr', 
+//   jaMessage: 'ja',
+//   koMessage: 'ko', 
+//   ruMessage: 'ru', 
+//   esMessage: 'es'
+// };
+app.get('/testEndpoint', TranslateMessage);
 
 
 
