@@ -2,11 +2,13 @@ const AWS = require('aws-sdk');
 const Stream = require('stream');
 const Voices = require('./voices.js');
 
-// AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
-
-AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-AWS.config.region = "us-west-2";
+if (process.env.AWS_ACCESS_KEY_ID) {
+  AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+  AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+  AWS.config.region = "us-west-2";
+} else {
+  AWS.config.loadFromPath('./APIs/isolineatorCreds.json');
+}
 
 var polly = new AWS.Polly();
 
