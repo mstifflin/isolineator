@@ -1,4 +1,5 @@
 const translate = require('./TextTranslateApi.js').translateMessage;
+const {getMessages} = require('../mongo-db/messages.js');
 
 module.exports = function(io){
   var clients = {};
@@ -30,7 +31,18 @@ module.exports = function(io){
     });
 
     socket.on('changeLanguage', (code) => {
+      // console.log(socket);
       clients[socket.id].language = code;
+      getMessages('Lobby', code)
+      .then((results) => {
+        results.forEach(function(result) {
+          var message = {
+            username: result.username,
+            message: result[code + 'Message']
+          }
+          io.emit('message', message);
+        });
+      });
     });
 
     socket.on('disconnect', (socket) => {
