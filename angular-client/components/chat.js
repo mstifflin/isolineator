@@ -30,11 +30,23 @@ angular.module('app')
     socket.emit('changeLanguage', this.translateTo);
   }
 
-  socket.on('message', (message) => {
+  socket.on(this.chatroom, (message) => {
     $scope.$apply(() => {
       this.messages.push(message);
     });
   });
+
+  // $scope.$watch('chatroom', function(newRoom, oldRoom, scope) {
+  //   console.log('hi');
+  //   socket.off(oldRoom, () => {
+  //     console.log('room changed');
+  //   });
+  //   socket.on(newRoom, (message) => {
+  //     $scope.$apply(() => {
+  //       this.messages.push(message);
+  //     });
+  //   })
+  // })
 
   this.toggleAddRoom = () => {
     this.addRoom = !this.addRoom;
@@ -47,6 +59,7 @@ angular.module('app')
     this.chatroom = room;
     this.addRoom = false;
     this.newRoom = '';
+    $scope.digest();
   }
 
   this.translate = (text) => {
