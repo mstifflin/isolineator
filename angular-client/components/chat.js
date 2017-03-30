@@ -14,7 +14,6 @@ angular.module('app')
   //chatting is a boolean passed to the interpreter directive & html
   //so we can hide features we don't want
 
-
   isolineatorService.getChatLang((data) => {
     this.languages = data.data;
   });
