@@ -1,14 +1,27 @@
   <label for="username">Username:</label>
-  <input class="username" id="username-input" value='' ng-model="ctrl.username" /> 
+  <input class="username" id="username-input" value='' ng-model="ctrl.username" />
+  <select ng-model="ctrl.chatroom">
+    <option ng-repeat="room in ctrl.chatrooms track by $index" value={{room}}>{{room}}</option>
+  </select>
+  <button ng-click="ctrl.toggleAddRoom()">+</button>
+  <form ng-if="ctrl.addRoom">
+    <label for="newRoom">Add Room:</label>
+    <input class="newRoom" id="new-room-input" value='' ng-model="ctrl.newRoom" />
+    <input type="submit" ng-click="ctrl.createNewRoom(ctrl.newRoom)" value="create" />
+  </form>
 <ul>
   <li ng-repeat='message in ctrl.messages track by $index'>
-    {{message.username}}: {{message.message}}
+    {{message.username}}: {{message.message}}, {{message.room}}
   </li>
 </ul>
 <select ng-model="ctrl.translateTo" ng-change="ctrl.changeLanguage()">
   <option ng-repeat="language in ctrl.languages track by $index" value={{language.code}}>{{language.name}}</option>
 </select>
 <form> 
+  <input id="english-input" value='' ng-model="ctrl.englishText" />
+  <input type="submit" 
+         ng-click="ctrl.sendEnglishText(ctrl.englishText, ctrl.username, ctrl.chatroom)" 
+         value='Send' />
   <input id="foreign-language-input" value='' 
          ng-model="ctrl.foreignText" />
   <input type="submit" 

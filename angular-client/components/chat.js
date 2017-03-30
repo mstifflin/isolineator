@@ -6,6 +6,9 @@ angular.module('app')
   this.username = '';
   this.translateTo = 'en';
   this.messages = [];
+  this.chatrooms = ['lobby'];
+  this.chatroom = 'lobby';
+  this.addRoom = false;
   isolineatorService.getChatLang((data) => {
     this.languages = data.data;
   });
@@ -15,12 +18,13 @@ angular.module('app')
       var message = { 
         username: this.username,
         text: this.foreignText,
-        langCode: this.translateTo
+        langCode: this.translateTo,
+        chatroom: this.room
       };
       socket.emit('message', message);
       this.foreignText = '';
     }
-  };
+  }
 
   this.changeLanguage = () => {
     socket.emit('changeLanguage', this.translateTo);
@@ -31,7 +35,27 @@ angular.module('app')
       this.messages.push(message);
     });
   });
-  
+
+  this.toggleAddRoom = () => {
+    this.addRoom = !this.addRoom;
+  }
+
+  this.createNewRoom = (room) => {
+    if (this.chatrooms.indexOf(room) === -1) {
+      this.chatrooms.push(room); 
+    }
+    this.chatroom = room;
+    this.addRoom = false;
+    this.newRoom = '';
+  }
+
+  this.translate = (text) => {
+    isolineatorService.translateText(text, this.translateTo)
+    .then(o => {
+      this.englishText = o.data;
+      this.foreignText = '';
+    });
+  }
 })
 .directive('chat', function() {
   return {
