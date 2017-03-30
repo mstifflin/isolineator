@@ -30,15 +30,8 @@ angular.module('app')
     $scope.$apply(() => {
       this.messages.push(message);
     });
-  })
-
-  // this.translate = (text) => {
-  //   isolineatorService.translateText(this.username, text, this.translateTo)
-  //   .then(o => {
-  //     this.englishText = o.data;
-  //     this.foreignText = '';
-  //   });
-  // }
+  });
+  
 })
 .directive('chat', function() {
   return {

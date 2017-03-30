@@ -116,19 +116,6 @@ app.get('/getChatLang', (req, res) => {
   res.send(JSON.stringify(languages));
 });
 
-app.post('/translateText', (req, res) => {
-  Translater(req.body.text, req.body.languageCode, (translatedText) => {
-    var message = {
-      username: req.body.username,
-      text: translatedText
-    };
-    io.emit('message', message);
-
-    // socketManager.emitMessage(translatedText);
-    res.send(translatedText);
-  });
-});
-
 app.post('/inputLang', Speech.updateLanguage);
 
 server.listen(port, function () {
