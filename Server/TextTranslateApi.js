@@ -62,7 +62,7 @@ exports.translateMessage = (messageObj, callback) => {
   
   var translated = {
     arMessage: 'ar', 
-    chMessage: 'zh-CN', 
+    'zh-CNMessage': 'zh-CN', 
     deMessage: 'de', 
     enMessage: 'en', 
     frMessage: 'fr', 
