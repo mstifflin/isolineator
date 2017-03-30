@@ -8,13 +8,23 @@ angular.module('app')
   this.messages = [];
   isolineatorService.getChatLang((data) => {
     this.languages = data.data;
-    console.log('languages', this.languages);
   });
 
-  this.sendEnglishText = (text, username) => {
-      socket.emit('message', {message: text, username: username});
-      this.englishText = '';
+  this.sendMessage = () => {
+    if (this.foreignText) {
+      var message = { 
+        username: this.username,
+        text: this.foreignText,
+        langCode: this.translateTo
+      };
+      socket.emit('message', message);
+      this.foreignText = '';
+    }
   };
+
+  this.changeLanguage = () => {
+    socket.emit('changeLanguage', this.translateTo);
+  }
 
   socket.on('message', (message) => {
     $scope.$apply(() => {
@@ -22,13 +32,13 @@ angular.module('app')
     });
   })
 
-  this.translate = (text) => {
-    isolineatorService.translateText(text, this.translateTo)
-    .then(o => {
-      this.englishText = o.data;
-      this.foreignText = '';
-    });
-  }
+  // this.translate = (text) => {
+  //   isolineatorService.translateText(this.username, text, this.translateTo)
+  //   .then(o => {
+  //     this.englishText = o.data;
+  //     this.foreignText = '';
+  //   });
+  // }
 })
 .directive('chat', function() {
   return {
