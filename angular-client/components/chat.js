@@ -6,9 +6,9 @@ angular.module('app')
   this.username = '';
   this.translateTo = 'en';
   this.messages = [];
-  isolineatorService.getLang((data) => {
+  isolineatorService.getChatLang((data) => {
     this.languages = data.data;
-    console.log('languages', this.languages.length);
+    console.log('languages', this.languages);
   });
 
   this.sendEnglishText = (text, username) => {

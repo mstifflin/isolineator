@@ -108,13 +108,28 @@ app.get('/getLang', (req, res) => {
   listLanguages((lang) => {
     res.status(200).send(lang)
   })
-})
+});
+
+app.get('/getChatLang', (req, res) => {
+  var languages = [
+    {code: 'arMessage', name: 'Arabic'},
+    {code: 'chMessage', name: 'Simplified Chinese'},
+    {code: 'deMessage', name: 'German'},
+    {code: 'enMessage', name: 'English'},
+    {code: 'frMessage', name: 'French'},
+    {code: 'jaMessage', name: 'Japanese'},
+    {code: 'koMessage', name: 'Korean'},
+    {code: 'ruMessage', name: 'Russian'},
+    {code: 'esMessage', name: 'Spanish'}
+  ];
+  res.send(JSON.stringify(languages));
+});
 
 app.post('/translateText', (req, res) => {
   Translater(req.body.text, req.body.languageCode, (translatedText) => {
     res.send(translatedText);
   });
-})
+});
 
 app.post('/inputLang', Speech.updateLanguage);
 
