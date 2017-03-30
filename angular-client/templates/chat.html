@@ -11,17 +11,13 @@
   </form>
 <ul>
   <li ng-repeat='message in ctrl.messages track by $index'>
-    {{message.username}}: {{message.message}}, {{message.room}}
+    {{message.username}}: {{message.text}}
   </li>
 </ul>
 <select ng-model="ctrl.translateTo" ng-change="ctrl.changeLanguage()">
   <option ng-repeat="language in ctrl.languages track by $index" value={{language.code}}>{{language.name}}</option>
 </select>
 <form> 
-  <input id="english-input" value='' ng-model="ctrl.englishText" />
-  <input type="submit" 
-         ng-click="ctrl.sendEnglishText(ctrl.englishText, ctrl.username, ctrl.chatroom)" 
-         value='Send' />
   <input id="foreign-language-input" value='' 
          ng-model="ctrl.foreignText" />
   <input type="submit" 

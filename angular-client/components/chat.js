@@ -19,7 +19,7 @@ angular.module('app')
         username: this.username,
         text: this.foreignText,
         langCode: this.translateTo,
-        chatroom: this.room
+        chatroom: this.chatroom
       };
       socket.emit('message', message);
       this.foreignText = '';
@@ -59,7 +59,6 @@ angular.module('app')
     this.chatroom = room;
     this.addRoom = false;
     this.newRoom = '';
-    $scope.digest();
   }
 
   this.translate = (text) => {
