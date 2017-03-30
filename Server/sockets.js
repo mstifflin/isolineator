@@ -15,8 +15,8 @@ module.exports = function(io){
             username: message.username,
             text: translatedMessages[clients[socketId].language + 'Message']
           };
-          // clients[socketId].emit('message', translatedMessage)
-          io.sockets.in(message.room).emit('message', translatedMessage);
+          clients[socketId].emit('message', translatedMessage)
+          // io.sockets.in(message.room).emit('message', translatedMessage);
         }
       });
     }); 
