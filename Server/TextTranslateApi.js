@@ -1,5 +1,5 @@
 const {voices} = require('./voices.js');
-const {Message} = require('../mongo-db/messages.js');
+const {saveTranslations, getTranslations} = require('../mongo-db/messages.js');
 
 if (process.env.GOOGLE_PRIVATE_KEY_ID) {
   var credentials = {
@@ -54,13 +54,11 @@ exports.listLanguages = (callback) => {
     });
 };
 
-// var supportedLanguages = ['ar', 'zh-CN', 'de', 'en', 'fr', 'ja', 'ko', 'ru', 'es'];
-
-exports.TranslateMessage = (req, res) => {
-  var username = 'testUser';
-  var message = 'Please, where is the bathroom?';
-  var chatroom = 'Lobby';
-  var toLang = 'chMessage';
+exports.translateMessage = (req, res) => {
+  var username = req.body.username || 'testUser';
+  var message = req.body.message || 'Please, where is the bathroom?';
+  var chatroom = req.body.chatroom || 'Lobby';
+  var toLang = req.body.toLang || 'ruMessage';
   
   var translated = {
     arMessage: 'ar', 
@@ -86,7 +84,7 @@ exports.TranslateMessage = (req, res) => {
         translated.origMessage = message;
         translated.chatroom = chatroom;
         translated.createdAt = new Date();
-        Message.saveTranslations(translated);
+        saveTranslations(translated);
         res.send(translated[toLang]);
       }
     }).catch((error) => {

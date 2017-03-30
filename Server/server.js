@@ -11,7 +11,8 @@ const dbconn = require('../mongo-db/config.js');
 const inputs = require('../mongo-db/inputs.js');
 const Speech = require('../Server/speechToText.js');
 const t2s = require('../Server/textToSpeech.js');
-const {Translater, listLanguages, TranslateMessage} = require('./TextTranslateApi.js');
+const {Translater, listLanguages, translateMessage} = require('./TextTranslateApi.js');
+const {getMessages} = require('../mongo-db/messages.js');
 
 const io = require ('socket.io')(server);
   
@@ -121,12 +122,6 @@ server.listen(port, function () {
  console.log('server listening to', port);
 });
 
-//REQUEST BODY NEEDS: 
-// USERNAME
-// CHATROOM
-// ORIGINAL MESSAGE
-// THE LANGUAGE THE RESPONSE SHOULD SEND IN (should be one of the keys below)
-
 // var translated = {
 //   arMessage: 'ar', 
 //   chMessage: 'zh-CN', 
@@ -138,7 +133,12 @@ server.listen(port, function () {
 //   ruMessage: 'ru', 
 //   esMessage: 'es'
 // };
-app.get('/testEndpoint', TranslateMessage);
+
+//needs: req.body.username, req.body.chatroom, req.body.message, req.body.toLang
+app.get('/testTranslate', translateMessage);
+
+//needs: 'req.body.chatroom' and 'req.body.toLang' (the language to retrieve, must be a key (not value) from the obj above)
+app.get('/testGetMessages', getMessages);
 
 
 
