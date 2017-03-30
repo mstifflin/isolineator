@@ -18,36 +18,23 @@ angular.module('app')
       var message = { 
         username: this.username,
         text: this.foreignText,
-        langCode: this.translateTo,
-        chatroom: this.chatroom
+        langCode: this.translateTo
       };
       socket.emit('message', message);
       this.foreignText = '';
     }
-  }
+  };
 
   this.changeLanguage = () => {
     socket.emit('changeLanguage', this.translateTo);
   }
 
-  socket.on(this.chatroom, (message) => {
+  socket.on('message', (message) => {
     $scope.$apply(() => {
       this.messages.push(message);
     });
   });
-
-  // $scope.$watch('chatroom', function(newRoom, oldRoom, scope) {
-  //   console.log('hi');
-  //   socket.off(oldRoom, () => {
-  //     console.log('room changed');
-  //   });
-  //   socket.on(newRoom, (message) => {
-  //     $scope.$apply(() => {
-  //       this.messages.push(message);
-  //     });
-  //   })
-  // })
-
+  
   this.toggleAddRoom = () => {
     this.addRoom = !this.addRoom;
   }
