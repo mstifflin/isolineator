@@ -17,6 +17,7 @@ const {getMessages} = require('../mongo-db/messages.js');
 const io = require ('socket.io')(server);
 const socketManager = require('./sockets.js')(io);
   
+
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
@@ -72,7 +73,6 @@ app.post('/onEnd', upload.single('recording'), function(req, res) {
 
   Speech.syncAudio(`./${req.file.path}`, translateFrom, (text)=>{
     Translater(text, translateTo, (translate) => {
-      console.log('translating', translate )
       io.emit('transcription', text, translate);
       t2s.getSpeechStreamFromChunks(translate, translateTo, (err, data) => { //translate should be equal to the final translated text
         if (err) {
