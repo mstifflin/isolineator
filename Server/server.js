@@ -17,17 +17,6 @@ const {getMessages} = require('../mongo-db/messages.js');
 const io = require ('socket.io')(server);
 const socketManager = require('./sockets.js')(io);
   
-io.on('connection', (socket) => {
- socket.on('message', (message) => {
-  console.log(message);
-   io.emit(message.chatroom, message);
- })
-});
-
-io.on('disconnect', (socket) => {
- console.log('io is disconnected');
-});
-
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
