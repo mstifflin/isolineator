@@ -15,17 +15,8 @@ const {Translater, listLanguages, translateMessage} = require('./TextTranslateAp
 const {getMessages} = require('../mongo-db/messages.js');
 
 const io = require ('socket.io')(server);
+const socketManager = require('./sockets.js')(io);
   
-io.on('connection', (socket) => {
- socket.on('message', (message) => {
-   io.emit('message', message);
- })
-
-});
-
-io.on('disconnect', (socket) => {
- console.log('io is disconnected');
-});
 
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
@@ -123,12 +114,6 @@ app.get('/getChatLang', (req, res) => {
     {code: 'es', name: 'Spanish'}
   ];
   res.send(JSON.stringify(languages));
-});
-
-app.post('/translateText', (req, res) => {
-  Translater(req.body.text, req.body.languageCode, (translatedText) => {
-    res.send(translatedText);
-  });
 });
 
 app.post('/inputLang', Speech.updateLanguage);
