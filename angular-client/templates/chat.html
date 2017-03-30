@@ -1,6 +1,6 @@
   <label for="username">Username:</label>
   <input class="username" id="username-input" value='' ng-model="ctrl.username" />
-  <select ng-model="ctrl.chatroom">
+  <select ng-model="ctrl.chatroom" ng-change="ctrl.joinRoom(ctrl.chatroom, '{{ctrl.chatroom}}')">
     <option ng-repeat="room in ctrl.chatrooms track by $index" value={{room}}>{{room}}</option>
   </select>
   <button ng-click="ctrl.toggleAddRoom()">+</button>

@@ -11,13 +11,20 @@ module.exports = function(io){
       translate(message, (translatedText) => {
         var translatedMessage = {
           username: message.username,
-          message: translatedText
+          text: translatedText
         };
 
-
-        io.emit('message', translatedMessage);
+        io.sockets.in(message.room).emit('message', translatedMessage);
       });
     });
+
+    socket.on('subscribe', function(room) {
+      socket.join(room);
+    })
+
+    socket.on('unsubscribe', function(room) {
+      socket.leave(room);
+    })
 
     socket.on('changeLanguage', (code) => {
       clients[socket.id].language = code;

@@ -6,9 +6,9 @@ angular.module('app')
   this.username = '';
   this.translateTo = 'en';
   this.messages = [];
-  // this.chatrooms = ['lobby'];
-  // this.chatroom = 'lobby';
-  // this.addRoom = false;
+  this.chatrooms = ['lobby'];
+  this.chatroom = 'lobby';
+  this.addRoom = false;
   isolineatorService.getChatLang((data) => {
     this.languages = data.data;
   });
@@ -18,7 +18,8 @@ angular.module('app')
       var message = { 
         username: this.username,
         text: this.foreignText,
-        langCode: this.translateTo
+        langCode: this.translateTo,
+        room: this.chatroom
       };
       socket.emit('message', message);
       this.foreignText = '';
@@ -35,18 +36,26 @@ angular.module('app')
     });
   });
   
-  // this.toggleAddRoom = () => {
-  //   this.addRoom = !this.addRoom;
-  // }
+  socket.emit('subscribe', this.chatroom);
 
-  // this.createNewRoom = (room) => {
-  //   if (this.chatrooms.indexOf(room) === -1) {
-  //     this.chatrooms.push(room); 
-  //   }
-  //   this.chatroom = room;
-  //   this.addRoom = false;
-  //   this.newRoom = '';
-  // }
+  this.toggleAddRoom = () => {
+    this.addRoom = !this.addRoom;
+  }
+
+  this.createNewRoom = (room) => {
+    if (this.chatrooms.indexOf(room) === -1) {
+      this.chatrooms.push(room); 
+    }
+    this.joinRoom(room, this.chatroom);
+    this.chatroom = room;
+    this.addRoom = false;
+    this.newRoom = '';
+  }
+
+  this.joinRoom = (newRoom, oldRoom) => {
+    socket.emit('subscribe', newRoom);
+    socket.emit('unsubscribe', oldRoom);
+  }
 })
 .directive('chat', function() {
   return {
