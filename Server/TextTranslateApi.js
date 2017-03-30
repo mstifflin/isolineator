@@ -85,7 +85,7 @@ exports.translateMessage = (messageObj, callback) => {
         translated.chatroom = chatroom;
         translated.createdAt = new Date();
         saveTranslations(translated);
-        callback(translated[toLang]);
+        callback(translated);
       }
     }).catch((error) => {
         console.log(error);
