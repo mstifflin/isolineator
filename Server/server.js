@@ -17,7 +17,6 @@ const {getMessages} = require('../mongo-db/messages.js');
 const io = require ('socket.io')(server);
 const socketManager = require('./sockets.js')(io);
   
-
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
