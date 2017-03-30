@@ -13,6 +13,8 @@ angular.module('app')
     this.languages = data.data;
   });
 
+  socket.emit('changeLanguage', this.translateTo);
+  
   this.sendMessage = () => {
     if (this.foreignText) {
       var message = { 
@@ -27,6 +29,7 @@ angular.module('app')
   };
 
   this.changeLanguage = () => {
+    this.messages = [];
     socket.emit('changeLanguage', this.translateTo);
   }
 
