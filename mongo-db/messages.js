@@ -28,7 +28,7 @@ var saveTranslations = (doc) => {
 var getMessages = (req, res) => {
   var chatroom = req.body.chatroom || 'Lobby';
   var toLang = req.body.toLang || 'frMessage';
-  var Query = Message.find({chatroom: chatroom}, `username ${toLang} createdAt`).exec();
+  var Query = Message.find(/*{chatroom: chatroom},*/ `username ${toLang} createdAt`).exec();
   Query.then((results) => {
     res.send(JSON.stringify(results));
   });
