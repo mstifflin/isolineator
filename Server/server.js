@@ -118,7 +118,7 @@ app.get('/getChatLang', (req, res) => {
 app.post('/inputLang', Speech.updateLanguage);
 
 server.listen(port, function () {
- console.log('server listening to', port);
+  console.log('server listening to', port);
 });
 
 // var translated = {
