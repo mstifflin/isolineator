@@ -123,7 +123,6 @@ angular.module('app')
   this.getLang = (callback) => {
     $http.get('/getLang')
       .then((data) => {
-        console.log('data in getlang in services: ', data);
         callback(data);
       })
       .catch((err) => {

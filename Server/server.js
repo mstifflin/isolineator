@@ -112,15 +112,15 @@ app.get('/getLang', (req, res) => {
 
 app.get('/getChatLang', (req, res) => {
   var languages = [
-    {code: 'arMessage', name: 'Arabic'},
-    {code: 'chMessage', name: 'Simplified Chinese'},
-    {code: 'deMessage', name: 'German'},
-    {code: 'enMessage', name: 'English'},
-    {code: 'frMessage', name: 'French'},
-    {code: 'jaMessage', name: 'Japanese'},
-    {code: 'koMessage', name: 'Korean'},
-    {code: 'ruMessage', name: 'Russian'},
-    {code: 'esMessage', name: 'Spanish'}
+    {code: 'ar', name: 'Arabic'},
+    {code: 'zh-CN', name: 'Simplified Chinese'},
+    {code: 'de', name: 'German'},
+    {code: 'en', name: 'English'},
+    {code: 'fr', name: 'French'},
+    {code: 'ja', name: 'Japanese'},
+    {code: 'ko', name: 'Korean'},
+    {code: 'ru', name: 'Russian'},
+    {code: 'es', name: 'Spanish'}
   ];
   res.send(JSON.stringify(languages));
 });
