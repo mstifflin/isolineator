@@ -54,11 +54,11 @@ exports.listLanguages = (callback) => {
     });
 };
 
-exports.translateMessage = (req, res) => {
-  var username = req.body.username || 'testUser';
-  var message = req.body.message || 'Please, where is the bathroom?';
-  var chatroom = req.body.chatroom || 'Lobby';
-  var toLang = req.body.toLang || 'ruMessage';
+exports.translateMessage = (messageObj, callback) => {
+  var username = messageObj.username;
+  var message = messageObj.text;
+  var chatroom = messageObj.chatroom || 'Lobby';
+  var toLang = messageObj.langCode + 'Message';
   
   var translated = {
     arMessage: 'ar', 
@@ -85,7 +85,7 @@ exports.translateMessage = (req, res) => {
         translated.chatroom = chatroom;
         translated.createdAt = new Date();
         saveTranslations(translated);
-        res.send(translated[toLang]);
+        callback(translated[toLang]);
       }
     }).catch((error) => {
         console.log(error);

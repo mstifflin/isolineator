@@ -1,4 +1,4 @@
-const Translator = require('./TextTranslateApi.js').Translater;
+const translate = require('./TextTranslateApi.js').translateMessage;
 
 module.exports = function(io){
   var clients = {};
@@ -8,11 +8,13 @@ module.exports = function(io){
 
     socket.on('message', (message) => {
       clients[socket.id].username = message.username;
-      Translator(message.text, message.langCode, (translatedText) => {
+      translate(message, (translatedText) => {
         var translatedMessage = {
           username: message.username,
           message: translatedText
         };
+
+
         io.emit('message', translatedMessage);
       });
     });
