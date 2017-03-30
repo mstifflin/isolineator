@@ -86,11 +86,12 @@ angular.module('app')
      });
   };
 
-  this.transOnEnd = function(topic, recording, date, lang, callback) { 
+  this.transOnEnd = function(topic, recording, date, translateFrom, translateTo, callback) { 
 
     var formData = new FormData();
     formData.append('recording', recording, topic);
-    formData.append('langCode', lang)
+    formData.append('translateTo', translateTo)
+    formData.append('translateFrom', translateFrom)
 
     $http({
       method: 'POST',

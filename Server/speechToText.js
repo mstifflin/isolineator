@@ -27,7 +27,7 @@ if (process.env.GOOGLE_PRIVATE_KEY_ID) {
 var options = {
   encoding: 'LINEAR16',
   sampleRate: 44100,
-  languageCode: 'ru'
+  languageCode: 'en'
 };
 
 const request = {
@@ -49,7 +49,6 @@ exports.createAndStream = (file, callback) => {
 
 //Update language of recording
 exports.updateLanguage = (req, res) => {
-  console.log('getting code', req.body.languageCode)
   options.languageCode = req.body.languageCode;
   res.end();
 }
@@ -75,7 +74,9 @@ exports.liveStreamAudio = (callback) => {
 }
 
 //################normal synchronus####################
-exports.syncAudio = (file, callback) => {
+exports.syncAudio = (file, translateFrom, callback) => {
+  options.languageCode = translateFrom || 'en';
+
   Speech.recognize(file, options)
   .then((results) => {
     const transcription = results[0];

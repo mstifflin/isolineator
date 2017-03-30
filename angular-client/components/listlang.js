@@ -26,9 +26,9 @@ angular.module('app')
 })
 .directive('listlang', function() {
   return {
-    scope: {
-      chatting: '<'
-    },
+    // scope: {
+    //   chatting: '<'
+    // },
     restrict: 'E',
     controller: 'LangCtrl',
     controllerAs: 'ctrl',

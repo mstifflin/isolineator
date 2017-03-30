@@ -67,11 +67,14 @@ app.post('/record', upload.single('recording'), function(req, res) {
 });
 
 app.post('/onEnd', upload.single('recording'), function(req, res) {
-  let langCode = req.body.langCode;
-  Speech.syncAudio(`./${req.file.path}`, (text)=>{
-    Translater(text, langCode, (translate) => {
+  let translateFrom = req.body.translateFrom;
+  let translateTo = req.body.translateTo;
+
+  Speech.syncAudio(`./${req.file.path}`, translateFrom, (text)=>{
+    Translater(text, translateTo, (translate) => {
+      console.log('translating', translate )
       io.emit('transcription', text, translate);
-      t2s.getSpeechStreamFromChunks(translate, langCode, (err, data) => { //translate should be equal to the final translated text
+      t2s.getSpeechStreamFromChunks(translate, translateTo, (err, data) => { //translate should be equal to the final translated text
         if (err) {
           console.log(err.code)
         } else if (data) {
