@@ -11,7 +11,8 @@ const dbconn = require('../mongo-db/config.js');
 const inputs = require('../mongo-db/inputs.js');
 const Speech = require('../Server/speechToText.js');
 const t2s = require('../Server/textToSpeech.js');
-const {Translater, listLanguages, TranslateMessage} = require('./TextTranslateApi.js');
+const {Translater, listLanguages, translateMessage} = require('./TextTranslateApi.js');
+const {getMessages} = require('../mongo-db/messages.js');
 
 const io = require ('socket.io')(server);
   
@@ -107,25 +108,34 @@ app.get('/getLang', (req, res) => {
   listLanguages((lang) => {
     res.status(200).send(lang)
   })
-})
+});
+
+app.get('/getChatLang', (req, res) => {
+  var languages = [
+    {code: 'ar', name: 'Arabic'},
+    {code: 'zh-CN', name: 'Simplified Chinese'},
+    {code: 'de', name: 'German'},
+    {code: 'en', name: 'English'},
+    {code: 'fr', name: 'French'},
+    {code: 'ja', name: 'Japanese'},
+    {code: 'ko', name: 'Korean'},
+    {code: 'ru', name: 'Russian'},
+    {code: 'es', name: 'Spanish'}
+  ];
+  res.send(JSON.stringify(languages));
+});
 
 app.post('/translateText', (req, res) => {
   Translater(req.body.text, req.body.languageCode, (translatedText) => {
     res.send(translatedText);
   });
-})
+});
 
 app.post('/inputLang', Speech.updateLanguage);
 
 server.listen(port, function () {
  console.log('server listening to', port);
 });
-
-//REQUEST BODY NEEDS: 
-// USERNAME
-// CHATROOM
-// ORIGINAL MESSAGE
-// THE LANGUAGE THE RESPONSE SHOULD SEND IN (should be one of the keys below)
 
 // var translated = {
 //   arMessage: 'ar', 
@@ -138,7 +148,12 @@ server.listen(port, function () {
 //   ruMessage: 'ru', 
 //   esMessage: 'es'
 // };
-app.get('/testEndpoint', TranslateMessage);
+
+//needs: req.body.username, req.body.chatroom, req.body.message, req.body.toLang
+app.get('/testTranslate', translateMessage);
+
+//needs: 'req.body.chatroom' and 'req.body.toLang' (the language to retrieve, must be a key (not value) from the obj above)
+app.get('/testGetMessages', getMessages);
 
 
 

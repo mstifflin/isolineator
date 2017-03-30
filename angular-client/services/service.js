@@ -130,6 +130,17 @@ angular.module('app')
       });
   };
 
+  this.getChatLang = (callback) => {
+    $http.get('/getChatLang')
+      .then((data) => {
+        console.log('data in getchatlang in services: ', data);
+        callback(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   this.translateText = (text, languageCode, cb) => {
     return $http({
         method: 'POST',

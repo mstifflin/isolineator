@@ -63,8 +63,8 @@ exports.streamFile = (file, callback) => {
     callback(data)
   })
 };
+
 ///////////for direct mic to api//////////////////
-  
 exports.liveStreamAudio = (callback) => {
   return Speech.createRecognizeStream(request)
     .on('error', console.error)
@@ -78,7 +78,6 @@ exports.syncAudio = (file, callback) => {
   Speech.recognize(file, options)
   .then((results) => {
     const transcription = results[0];
-    console.log('TRANSCRIPTION IN SYNC AUDIO IN SPEECH TO TEXT: ', transcription);
     return transcription;
   })
   .then((data) => {

@@ -18,10 +18,19 @@ var MessagesSchema = mongoose.Schema({
 
 var Message = mongoose.model('Message', MessagesSchema);
 
-Message.saveTranslations = (doc) => {
+var saveTranslations = (doc) => {
   var newMessage = new Message(doc);
   newMessage.save(function(err) {
     if (err) { console.log(err); }
+  });
+}
+
+var getMessages = (req, res) => {
+  var chatroom = req.body.chatroom || 'Lobby';
+  var toLang = req.body.toLang || 'frMessage';
+  var Query = Message.find({chatroom: chatroom}, `username ${toLang} createdAt`).exec();
+  Query.then((results) => {
+    res.send(JSON.stringify(results));
   });
 }
 
@@ -32,5 +41,6 @@ var ChatroomsSchema = mongoose.Schema({
 
 var Chatroom = mongoose.model('Chatroom', ChatroomsSchema);
 
-exports.Message = Message;
+exports.saveTranslations = saveTranslations;
+exports.getMessages = getMessages;
 exports.Chatroom = Chatroom;
