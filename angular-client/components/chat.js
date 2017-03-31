@@ -13,6 +13,7 @@ angular.module('app')
     this.languages = data.data;
   });
 
+  socket.emit('subscribe', this.chatroom);
   socket.emit('changeLanguage', this.translateTo);
   
   this.sendMessage = () => {
@@ -39,8 +40,6 @@ angular.module('app')
     });
   });
   
-  socket.emit('subscribe', this.chatroom);
-
   this.toggleAddRoom = () => {
     this.addRoom = !this.addRoom;
   }
@@ -56,6 +55,7 @@ angular.module('app')
   }
 
   this.joinRoom = (newRoom, oldRoom) => {
+    this.messages = [];
     socket.emit('subscribe', newRoom);
     socket.emit('unsubscribe', oldRoom);
   }
