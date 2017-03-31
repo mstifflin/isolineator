@@ -6,7 +6,7 @@ var MessagesSchema = mongoose.Schema({
   chatroom: String,
   createdAt: String,
   arMessage: String, //Arabic
-  cnMessage: String, //Simplified Chinese
+  'zh-CNMessage': String, //Simplified Chinese
   enMessage: String, //English
   frMessage: String, //French
   deMessage: String, //German
@@ -25,13 +25,10 @@ var saveTranslations = (doc) => {
   });
 }
 
-var getMessages = (req, res) => {
-  var chatroom = req.body.chatroom || 'Lobby';
-  var toLang = req.body.toLang || 'frMessage';
-  var Query = Message.find({chatroom: chatroom}, `username ${toLang} createdAt`).exec();
-  Query.then((results) => {
-    res.send(JSON.stringify(results));
-  });
+var getMessages = (chatroom, toLang) => {
+  var chatroom = chatroom || 'Lobby';
+  var toLang = toLang + 'Message' || 'zh-CNMessage';
+  return Message.find({chatroom: chatroom}, `username ${toLang} createdAt`).exec();
 }
 
 var ChatroomsSchema = mongoose.Schema({

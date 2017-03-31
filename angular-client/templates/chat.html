@@ -11,7 +11,7 @@
   </form>
 <ul>
   <li ng-repeat='message in ctrl.messages track by $index'>
-    {{message.username}}: {{message.text}}
+    {{message.username}}: {{message.message}}
   </li>
 </ul>
 <select ng-model="ctrl.translateTo" ng-change="ctrl.changeLanguage()">

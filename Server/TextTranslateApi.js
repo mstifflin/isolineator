@@ -48,7 +48,7 @@ exports.listLanguages = (callback) => {
           finalLanguages.push(language);
         }
       });
-      finalLanguages.forEach((language) => console.log(language));
+      // finalLanguages.forEach((language) => console.log(language));
 
       callback(finalLanguages);
     });
@@ -57,12 +57,12 @@ exports.listLanguages = (callback) => {
 exports.translateMessage = (messageObj, callback) => {
   var username = messageObj.username;
   var message = messageObj.text;
-  var chatroom = messageObj.chatroom || 'Lobby';
+  var chatroom = messageObj.room || 'Lobby';
   var toLang = messageObj.langCode + 'Message';
   
   var translated = {
     arMessage: 'ar', 
-    chMessage: 'zh-CN', 
+    'zh-CNMessage': 'zh-CN', 
     deMessage: 'de', 
     enMessage: 'en', 
     frMessage: 'fr', 
