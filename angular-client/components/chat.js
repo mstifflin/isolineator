@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('ChatCtrl', function($scope, isolineatorService) {
+.controller('ChatCtrl', function($scope, $timeout, isolineatorService) {
   var socket = io();
   this.englishText = '';
   this.foreignText = '';
@@ -19,12 +19,13 @@ angular.module('app')
 
   socket.emit('subscribe', this.chatroom);
   socket.emit('changeLanguage', this.translateTo);
-  
+
   socket.on('connect', () => {
-    isolineatorService.setSocketId(socket.id)
+    isolineatorService.setSocketId(socket.id);
   });
 
   this.sendMessage = () => {
+    if (this.username === '') { this.username = 'anonymous'; }
     if (this.foreignText) {
       var message = { 
         username: this.username,
@@ -39,9 +40,9 @@ angular.module('app')
 
   //waiting for the audio
   socket.on('transcription', (data, trans) => {
-      console.log(data, trans)
-      this.foreignText = trans;
-      this.englishText = data;
+    console.log(data, trans)
+    this.foreignText = trans;
+    this.englishText = data;
   });
 
   this.changeLanguage = () => {
@@ -53,6 +54,10 @@ angular.module('app')
     $scope.$apply(() => {
       this.messages.push(message);
     });
+    $timeout(function() {
+      var scroller = document.getElementById("autoscroll");
+      scroller.scrollTop = scroller.scrollHeight;
+    }, 0, false);                                                                                                 
   });
   
   this.toggleAddRoom = () => {
@@ -85,5 +90,3 @@ angular.module('app')
     templateUrl: 'templates/chat.html'
   }
 })
-
-

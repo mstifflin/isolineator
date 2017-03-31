@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('AppCtrl', function($scope, isolineatorService) {
+.controller('AppCtrl', function($scope, $timeout, isolineatorService) {
 
   var socket = io.connect();
 
@@ -23,9 +23,17 @@ angular.module('app')
   }
 
   this.histclicked = () => {
-    this.service.getAll((data) => {
-    this.logs = data;
-  });
+      this.service.getAll((data) => {
+      this.logs = data;
+    });
+  }
+
+  this.chatclicked = function() {
+    $timeout(function() {
+      var scroller = document.getElementById("autoscroll");
+      console.log('scroller in chatclicked: ', scroller);
+      scroller.scrollTop = scroller.scrollHeight;
+    }, 0, false);                                                                                                 
   }
 
 })
