@@ -9,8 +9,9 @@ angular.module('app')
   this.chatroom = 'lobby';
   this.addRoom = false;
   this.chatting = true;
+
   this.otherUserIsTyping = ''
-  this.sameUserFlag = false;
+  this.stallClear = false;
   //chatting is a boolean passed to the interpreter directive & html
   //so we can hide features we don't want
 
@@ -35,20 +36,21 @@ angular.module('app')
   socket.on('isTyping', (status) => {
     $scope.$apply(() => {
       if (this.otherUserIsTyping === status) {
-        this.sameUserFlag = true;
+        this.stallClear = true;
       } else {
         this.otherUserIsTyping = status;
-        this.sameUserFlag = false;
+        this.stallClear = false;
       }
     });
 
 
     setTimeout(() => {
       $scope.$apply(() => {
-        if (this.sameUserFlag === true) {
-          this.sameUserFlag = false;
+        if (this.stallClear === true) {
+          this.stallClear = false;
         } else {
           this.otherUserIsTyping = '';
+          this.stallClear = true;
         }
       });
     }, 3000)
