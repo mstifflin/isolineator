@@ -17,12 +17,14 @@ const {getMessages} = require('../mongo-db/messages.js');
 const io = require ('socket.io')(server);
 const socketManager = require('./sockets.js')(io);
   
+
 app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
 app.use(bodyParser.json({
  extended: true
 }));
+
 
 //trying to figure out why the files aren't saving to uploads, continue from here
 var storage = multer.diskStorage({
@@ -67,11 +69,14 @@ app.post('/record', upload.single('recording'), function(req, res) {
 });
 
 app.post('/onEnd', upload.single('recording'), function(req, res) {
-  let langCode = req.body.langCode;
-  Speech.syncAudio(`./${req.file.path}`, (text)=>{
-    Translater(text, langCode, (translate) => {
-      io.emit('transcription', text, translate);
-      t2s.getSpeechStreamFromChunks(translate, langCode, (err, data) => { //translate should be equal to the final translated text
+  let translateFrom = req.body.translateFrom;
+  let translateTo = req.body.translateTo;
+  let socketId =  req.body.socketId;
+
+  Speech.syncAudio(`./${req.file.path}`, translateFrom, (text)=>{
+    Translater(text, translateTo, (translate) => {
+      io.to(socketId).emit('transcription', text, translate);
+      t2s.getSpeechStreamFromChunks(translate, translateTo, (err, data) => { //translate should be equal to the final translated text
         if (err) {
           console.log(err.code)
         } else if (data) {
@@ -117,7 +122,7 @@ app.get('/getChatLang', (req, res) => {
 app.post('/inputLang', Speech.updateLanguage);
 
 server.listen(port, function () {
-  console.log('server listening to', port);
+ console.log('server listening to', port);
 });
 
 // var translated = {
@@ -131,6 +136,12 @@ server.listen(port, function () {
 //   ruMessage: 'ru', 
 //   esMessage: 'es'
 // };
+
+//needs: req.body.username, req.body.chatroom, req.body.message, req.body.toLang
+app.get('/testTranslate', translateMessage);
+
+//needs: 'req.body.chatroom' and 'req.body.toLang' (the language to retrieve, must be a key (not value) from the obj above)
+app.get('/testGetMessages', getMessages);
 
 
 

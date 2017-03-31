@@ -9,6 +9,10 @@ angular.module('app')
   this.chatrooms = ['lobby'];
   this.chatroom = 'lobby';
   this.addRoom = false;
+  this.chatting = true;
+  //chatting is a boolean passed to the interpreter directive & html
+  //so we can hide features we don't want
+
   isolineatorService.getChatLang((data) => {
     this.languages = data.data;
   });
@@ -16,6 +20,10 @@ angular.module('app')
   socket.emit('subscribe', this.chatroom);
   socket.emit('changeLanguage', this.translateTo);
   
+  socket.on('connect', () => {
+    isolineatorService.setSocketId(socket.id)
+  });
+
   this.sendMessage = () => {
     if (this.foreignText) {
       var message = { 
@@ -27,7 +35,14 @@ angular.module('app')
       socket.emit('message', message);
       this.foreignText = '';
     }
-  };
+  }
+
+  //waiting for the audio
+  socket.on('transcription', (data, trans) => {
+      console.log(data, trans)
+      this.foreignText = trans;
+      this.englishText = data;
+  });
 
   this.changeLanguage = () => {
     this.messages = [];

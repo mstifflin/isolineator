@@ -1,5 +1,10 @@
 angular.module('app')
 .service('isolineatorService', function($http, $window) {
+  this.socketId;
+
+  this.setSocketId = (socketId) => {
+    this.socketId = socketId;
+  } 
 
   this.getAll = function(callback) {
     $http.get('/log')
@@ -86,11 +91,15 @@ angular.module('app')
      });
   };
 
-  this.transOnEnd = function(topic, recording, date, lang, callback) { 
+  this.transOnEnd = function(topic, recording, date, translateFrom, translateTo, callback) { 
 
     var formData = new FormData();
     formData.append('recording', recording, topic);
-    formData.append('langCode', lang)
+    formData.append('translateTo', translateTo)
+    formData.append('translateFrom', translateFrom)
+
+    console.log(this.socketId)
+    formData.append('socketId', this.socketId)
 
     $http({
       method: 'POST',
@@ -150,6 +159,18 @@ angular.module('app')
         },
         headers: {'Content-type': 'application/json'}
      })
+  }
+
+  this.changeAudioLanguage = (languageCode) => {
+     $http({
+        method: 'POST',
+        url: '/inputLang', 
+        data: {
+          languageCode: languageCode 
+        },
+        headers: {'Content-type': 'application/json'}
+     })
+    .catch(err => console.log('error changing language'))
   }
   
   // SERVICE USED TO INVOKE LIVE STREAMING FUNCTION IN SERVER

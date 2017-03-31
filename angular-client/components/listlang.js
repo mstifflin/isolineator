@@ -18,10 +18,17 @@ angular.module('app')
   this.onClick = (newLang) => {
     this.currentLang = newLang.name;
     this.currentCode = newLang.code;
+    if (this.chatting) {
+      console.log('sending', newLang.code)
+      isolineatorService.changeAudioLanguage(newLang.code);
+    }
   }
 })
 .directive('listlang', function() {
   return {
+    // scope: {
+    //   chatting: '<'
+    // },
     restrict: 'E',
     controller: 'LangCtrl',
     controllerAs: 'ctrl',

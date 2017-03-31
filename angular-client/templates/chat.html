@@ -14,6 +14,7 @@
     {{message.username}}: {{message.message}}
   </li>
 </ul>
+
 <select ng-model="ctrl.translateTo" ng-change="ctrl.changeLanguage()">
   <option ng-repeat="language in ctrl.languages track by $index" value={{language.code}}>{{language.name}}</option>
 </select>
@@ -24,4 +25,12 @@
          ng-click="ctrl.sendMessage()" 
          value='Send' />
 </form>
+<div class="bodycontainer">
+
+
+  <!-- ctrl.chatting is boolean passed from chat directive
+  that has been added to elements we want to hide -->
+  <interpreter chatting="ctrl.chatting" translate-to="ctrl.translateTo" >Interpreter goes here
+  </interpreter>
+</div>
 

@@ -288,6 +288,10 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
   };
 
   control.stopRecord = function (lang) {
+
+    var translateTo = this.translateTo ? this.translateTo : lang;
+    var translateFrom = this.translateTo ? lang : 'en'    
+
     var id = control.id;
     if (!service.isAvailable() || !status.isRecording) {
       return false;
@@ -338,7 +342,7 @@ var RecorderController = function (element, service, service1, recorderUtils, $s
       recordHandler.getBuffer(function () {
         recordHandler.exportWAV(function (blob) {
           completed(blob);
-          service1.transOnEnd('test', control.audioModel, date, lang, (data) => { // Invoking service to do a post request to transcribe file
+          service1.transOnEnd('test', control.audioModel, date, translateFrom, translateTo, (data) => { // Invoking service to do a post request to transcribe file
             console.log(data);
           });
           scopeApply();
@@ -605,6 +609,8 @@ angular.module('angularAudioRecorder.directives')
       return {
         restrict: 'EA',
         scope: {
+          chatting: '<',
+          translateTo: '<',
           audioModel: '=',
           id: '@',
           onRecordStart: '&',
