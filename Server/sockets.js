@@ -2,35 +2,31 @@ const translate = require('./TextTranslateApi.js').translateMessage;
 const {getMessages} = require('../mongo-db/messages.js');
 
 module.exports = function(io){
-  var clients = {};
+  var clientLanguages = {};
+
 
   io.sockets.on('connection', (socket) => {
-    // socket.language = 'en';
-    clients[socket.id] = socket;
+    clientLanguages[socket.id] = 'en';
 
     socket.on('message', (message) => {
-      var room = message.room;
-      clients[socket.id].username = message.username;
+      var connectedClients = Object.keys(io.sockets.adapter.rooms[message.room].sockets);
+
       translate(message, (translatedMessages) => {
-        for (var socketId in clients) {
-          if (clients[socketId].room === room) {
-            var translatedMessage = {
-              username: message.username,
-              message: translatedMessages[clients[socketId].language + 'Message']
-            };
-            clients[socketId].emit('message', translatedMessage)
-          }
-        }
+        connectedClients.forEach(socketId => {
+          io.to(socketId).emit('message', {
+            username: message.username,
+            message: translatedMessages[clientLanguages[socketId] + 'Message']
+          });
+        });
       });
     }); 
 
     socket.on('isTyping', (userInfo) => {
-      socket.to(userInfo.room).emit('isTyping', `${userInfo.username} is typing...`);
+      socket.to(userInfo.room).emit('isTyping', `${userInfo.username} is typing...`);    
     })
 
     socket.on('subscribe', function(room) {
-      clients[socket.id].room = room;
-      var code = clients[socket.id].language;
+      var code = clientLanguages[socket.id];
       getMessages(room, code)
       .then((results) => {
         results.forEach(function(result) {
@@ -48,14 +44,14 @@ module.exports = function(io){
       socket.leave(room);
     });
 
-    socket.on('changeLanguage', (code) => {
-      clients[socket.id].language = code;
-      getMessages(clients[socket.id].room, code)
+    socket.on('changeLanguage', (params) => {
+      clientLanguages[socket.id] = params.code;
+      getMessages(params.room, params.code)
       .then((results) => {
         results.forEach(function(result) {
           var message = {
             username: result.username,
-            message: result[code + 'Message']
+            message: result[params.code + 'Message']
           }
           socket.emit('message', message);
         });
@@ -63,8 +59,7 @@ module.exports = function(io){
     });
 
     socket.on('disconnect', (socket) => {
-      delete clients[socket.id];
-      console.log('disconnected in sockets.js');
+      delete clientLanguages[socket.id];
     });
   });
 }
