@@ -39,6 +39,7 @@ angular.module('app')
 
   //waiting for the audio
   socket.on('transcription', (data, trans) => {
+      console.log(data, trans)
       this.foreignText = trans;
       this.englishText = data;
   });

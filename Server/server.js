@@ -25,6 +25,7 @@ app.use(bodyParser.json({
  extended: true
 }));
 
+
 //trying to figure out why the files aren't saving to uploads, continue from here
 var storage = multer.diskStorage({
  destination: function (req, file, cb) {
@@ -121,7 +122,7 @@ app.get('/getChatLang', (req, res) => {
 app.post('/inputLang', Speech.updateLanguage);
 
 server.listen(port, function () {
-  console.log('server listening to', port);
+ console.log('server listening to', port);
 });
 
 // var translated = {
@@ -135,6 +136,12 @@ server.listen(port, function () {
 //   ruMessage: 'ru', 
 //   esMessage: 'es'
 // };
+
+//needs: req.body.username, req.body.chatroom, req.body.message, req.body.toLang
+app.get('/testTranslate', translateMessage);
+
+//needs: 'req.body.chatroom' and 'req.body.toLang' (the language to retrieve, must be a key (not value) from the obj above)
+app.get('/testGetMessages', getMessages);
 
 
 
