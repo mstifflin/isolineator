@@ -10,7 +10,6 @@ angular.module('app')
   this.chatroom = 'lobby';
   this.addRoom = false;
   this.chatting = true;
-
   //chatting is a boolean passed to the interpreter directive & html
   //so we can hide features we don't want
 
@@ -21,6 +20,10 @@ angular.module('app')
   socket.emit('subscribe', this.chatroom);
   socket.emit('changeLanguage', this.translateTo);
   
+  socket.on('connect', () => {
+    isolineatorService.setSocketId(socket.id)
+  });
+
   this.sendMessage = () => {
     if (this.foreignText) {
       var message = { 

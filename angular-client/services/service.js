@@ -1,5 +1,10 @@
 angular.module('app')
 .service('isolineatorService', function($http, $window) {
+  this.socketId;
+
+  this.setSocketId = (socketId) => {
+    this.socketId = socketId;
+  } 
 
   this.getAll = function(callback) {
     $http.get('/log')
@@ -92,6 +97,9 @@ angular.module('app')
     formData.append('recording', recording, topic);
     formData.append('translateTo', translateTo)
     formData.append('translateFrom', translateFrom)
+
+    console.log(this.socketId)
+    formData.append('socketId', this.socketId)
 
     $http({
       method: 'POST',

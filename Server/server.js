@@ -70,10 +70,11 @@ app.post('/record', upload.single('recording'), function(req, res) {
 app.post('/onEnd', upload.single('recording'), function(req, res) {
   let translateFrom = req.body.translateFrom;
   let translateTo = req.body.translateTo;
+  let socketId =  req.body.socketId;
 
   Speech.syncAudio(`./${req.file.path}`, translateFrom, (text)=>{
     Translater(text, translateTo, (translate) => {
-      io.emit('transcription', text, translate);
+      io.to(socketId).emit('transcription', text, translate);
       t2s.getSpeechStreamFromChunks(translate, translateTo, (err, data) => { //translate should be equal to the final translated text
         if (err) {
           console.log(err.code)
