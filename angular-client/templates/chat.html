@@ -17,12 +17,16 @@
   </ul>
 </div>
 
+  <div ng-model="ctrl.otherUserIsTyping">{{ctrl.otherUserIsTyping}}</div>
+
 <select ng-model="ctrl.translateTo" ng-change="ctrl.changeLanguage()">
   <option ng-repeat="language in ctrl.languages track by $index" value={{language.code}}>{{language.name}}</option>
 </select>
 <form> 
   <input id="foreign-language-input" value='' 
-         ng-model="ctrl.foreignText" />
+         ng-model="ctrl.messageText" 
+         ng-change="ctrl.isTyping()"
+  />
   <input type="submit" 
          ng-click="ctrl.sendMessage()" 
          value='Send' />

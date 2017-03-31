@@ -24,6 +24,10 @@ module.exports = function(io){
       });
     }); 
 
+    socket.on('isTyping', (userInfo) => {
+      socket.to(userInfo.room).emit('isTyping', `${userInfo.username} is typing...`);
+    })
+
     socket.on('subscribe', function(room) {
       clients[socket.id].room = room;
       var code = clients[socket.id].language;

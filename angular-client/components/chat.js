@@ -1,8 +1,7 @@
 angular.module('app')
 .controller('ChatCtrl', function($scope, $timeout, isolineatorService) {
   var socket = io();
-  this.englishText = '';
-  this.foreignText = '';
+  this.messageText = '';
   this.username = '';
   this.translateTo = 'en';
   this.messages = [];
@@ -10,6 +9,8 @@ angular.module('app')
   this.chatroom = 'lobby';
   this.addRoom = false;
   this.chatting = true;
+  this.otherUserIsTyping = ''
+  this.sameUserFlag = false;
   //chatting is a boolean passed to the interpreter directive & html
   //so we can hide features we don't want
 
@@ -24,25 +25,52 @@ angular.module('app')
     isolineatorService.setSocketId(socket.id);
   });
 
+  this.isTyping = (stuff) => {
+    socket.emit('isTyping', {
+      username: this.username,
+      room: this.chatroom
+    })
+  }
+
+  socket.on('isTyping', (status) => {
+    $scope.$apply(() => {
+      if (this.otherUserIsTyping === status) {
+        this.sameUserFlag = true;
+      } else {
+        this.otherUserIsTyping = status;
+        this.sameUserFlag = false;
+      }
+    });
+
+
+    setTimeout(() => {
+      $scope.$apply(() => {
+        if (this.sameUserFlag === true) {
+          this.sameUserFlag = false;
+        } else {
+          this.otherUserIsTyping = '';
+        }
+      });
+    }, 3000)
+  })
+
+
   this.sendMessage = () => {
-    if (this.username === '') { this.username = 'anonymous'; }
-    if (this.foreignText) {
+    if (this.messageText) {
       var message = { 
-        username: this.username,
-        text: this.foreignText,
+        username: this.username || 'anonymous',
+        text: this.messageText,
         langCode: this.translateTo,
         room: this.chatroom
       };
       socket.emit('message', message);
-      this.foreignText = '';
+      this.messageText = '';
     }
   }
 
   //waiting for the audio
   socket.on('transcription', (data, trans) => {
-    console.log(data, trans)
-    this.foreignText = trans;
-    this.englishText = data;
+      this.messageText = trans;
   });
 
   this.changeLanguage = () => {
