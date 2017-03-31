@@ -63,3 +63,25 @@ li {
 	margin: 0 auto;
 	text-align: center;
 }
+
+#autoscroll {
+  height: 300px;
+  width: 45%;
+  margin: 0 auto;
+  border: 2px solid #E8E8E8;
+  overflow: scroll;
+  padding-bottom: 7px;
+}
+
+.usermessage {
+  text-align: left;
+}
+
+.username {
+  font-weight: bold;
+}
+.message {
+}
+
+.allmessages {
+}

@@ -9,11 +9,13 @@
     <input class="newRoom" id="new-room-input" value='' ng-model="ctrl.newRoom" />
     <input type="submit" ng-click="ctrl.createNewRoom(ctrl.newRoom)" value="create" />
   </form>
-<ul>
-  <li ng-repeat='message in ctrl.messages track by $index'>
-    {{message.username}}: {{message.message}}
-  </li>
-</ul>
+<div id="autoscroll">
+  <ul class="allmessages">
+    <li class="usermessage" ng-repeat='message in ctrl.messages track by $index'>
+      <span class="username">{{message.username}}: </span> <span class="message"> {{message.message}} </span>
+    </li>
+  </ul>
+</div>
 
 <select ng-model="ctrl.translateTo" ng-change="ctrl.changeLanguage()">
   <option ng-repeat="language in ctrl.languages track by $index" value={{language.code}}>{{language.name}}</option>
