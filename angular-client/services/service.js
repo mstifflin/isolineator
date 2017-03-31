@@ -129,6 +129,16 @@ angular.module('app')
      });
   };
 
+  this.getRoom = (roomname, callback) => {
+    $http.get('/rooms/' + roomname)
+      .then((room) => {
+        callback(null, room.data);
+      })
+      .catch((err) => {
+        callback(err, null);
+      });
+  }
+
   this.getLang = (callback) => {
     $http.get('/getLang')
       .then((data) => {

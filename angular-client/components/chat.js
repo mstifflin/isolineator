@@ -101,12 +101,17 @@ angular.module('app')
     this.addRoom = !this.addRoom;
   }
 
-  this.createNewRoom = (room) => {
-    if (this.chatrooms.indexOf(room) === -1) {
-      this.chatrooms.push(room); 
-    }
-    this.joinRoom(room, this.chatroom);
-    this.chatroom = room;
+  this.createNewRoom = (roomname) => {
+    isolineatorService.getRoom(roomname, (err, room) => {
+      // if (err) this.roomError = err;
+      if (err) console.log(err);
+      else {
+        this.chatrooms.push(room.chatroom);
+        this.chatroom = room.chatroom;
+      }
+    });
+    this.joinRoom(roomname, this.chatroom);
+    this.chatroom = roomname;
     this.addRoom = false;
     this.newRoom = '';
     $timeout(function(){

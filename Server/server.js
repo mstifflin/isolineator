@@ -12,7 +12,7 @@ const inputs = require('../mongo-db/inputs.js');
 const Speech = require('../Server/speechToText.js');
 const t2s = require('../Server/textToSpeech.js');
 const {Translater, listLanguages, translateMessage} = require('./TextTranslateApi.js');
-const {getMessages} = require('../mongo-db/messages.js');
+const {getMessages, createRoom, getRoomByName} = require('../mongo-db/messages.js');
 
 const io = require ('socket.io')(server);
 const socketManager = require('./sockets.js')(io);
@@ -102,6 +102,25 @@ app.get('/getLang', (req, res) => {
   listLanguages((lang) => {
     res.status(200).send(lang)
   })
+});
+
+app.get('/rooms/:room', (req, res) => {
+  let roomname = req.params.room;
+  getRoomByName(roomname, (err, room) => {
+    if (err) {
+      res.statusCode(500);
+    } else if (!room) {
+      res.statusCode(404);
+    } else {
+      res.status(200).send(room);
+    }
+  });
+});
+
+app.post('/rooms', (req, res) => {
+  createRoom({ chatroom: req.body.roomname , password: req.body.password }, (err) => {
+
+  });
 });
 
 app.get('/getChatLang', (req, res) => {
