@@ -3,11 +3,8 @@ const {getMessages} = require('../mongo-db/messages.js');
 
 module.exports = function(io){
   var clientLanguages = {};
-
-
   io.sockets.on('connection', (socket) => {
     clientLanguages[socket.id] = 'en';
-
     socket.on('message', (message) => {
       var connectedClients = Object.keys(io.sockets.adapter.rooms[message.room].sockets);
       translate(message, (translatedMessages) => {

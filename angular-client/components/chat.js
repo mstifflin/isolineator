@@ -131,7 +131,7 @@ angular.module('app')
             this.joinRoom(room.chatroom, this.chatroom);
             $timeout(function(){
               $scope.activeTabIndex = this.chatrooms.length;
-              this.changeRoom(room);
+              this.changeRoom(room.chatroom);
             }.bind(this));
           }
         }
@@ -179,6 +179,7 @@ angular.module('app')
   }
 
   this.joinRoom = (newRoom) => {
+    console.log('new room in join room: ', newRoom);
     socket.emit('subscribe', newRoom);
     this.chatroom = newRoom;
     this.addRoom = false;
