@@ -86,6 +86,7 @@ angular.module('app')
   }
 
   socket.on('message', (message) => {
+    console.log('receiving??? ', message);
     $scope.$apply(() => {
       if (!this.messages[message.room]) { 
         this.messages[message.room] = []; 

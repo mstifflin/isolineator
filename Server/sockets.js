@@ -10,7 +10,6 @@ module.exports = function(io){
 
     socket.on('message', (message) => {
       var connectedClients = Object.keys(io.sockets.adapter.rooms[message.room].sockets);
-
       translate(message, (translatedMessages) => {
         connectedClients.forEach(socketId => {
           io.to(socketId).emit('message', {
