@@ -5,9 +5,9 @@ angular.module('app')
   this.username = '';
   this.translateTo = 'en';
   this.messages = {};
+  this.newMessage = {};
   this.chatrooms = ['lobby'];
   this.chatroom = 'lobby';
-  this.addRoom = false;
   this.chatting = true;
   this.promptPassword = false;
   this.roomPassword = '';
@@ -34,13 +34,16 @@ angular.module('app')
     })
   }
 
-  socket.on('isTyping', (status) => {
+  socket.on('isTyping', (userInfo) => {
+    var status = userInfo.username + ' is typing...'
     $scope.$apply(() => {
       if (this.otherUserIsTyping === status) {
         this.stallClear = true;
       } else {
-        this.otherUserIsTyping = status;
-        this.stallClear = false;
+        if (this.chatroom === userInfo.room) {
+          this.otherUserIsTyping = status;
+          this.stallClear = false;
+        }
       }
     });
 
@@ -75,7 +78,7 @@ angular.module('app')
   });
 
   this.changeLanguage = () => {
-    this.messages = [];
+    this.messages[this.chatroom] = [];
     socket.emit('changeLanguage', {
       code: this.translateTo,
       room: this.chatroom 
@@ -83,11 +86,14 @@ angular.module('app')
   }
 
   socket.on('message', (message) => {
+    console.log('receiving??? ', message);
     $scope.$apply(() => {
       if (!this.messages[message.room]) { 
         this.messages[message.room] = []; 
       }
-      
+      if (this.chatroom !== message.room) {
+        this.newMessage[message.room] = true;
+      }
       this.messages[message.room].push(message);
     });
     $timeout(function() {
@@ -123,6 +129,10 @@ angular.module('app')
             this.roomError = '';
             this.chatrooms.push(room.chatroom);
             this.joinRoom(room.chatroom, this.chatroom);
+            $timeout(function(){
+              $scope.activeTabIndex = this.chatrooms.length;
+              this.changeRoom(room.chatroom);
+            }.bind(this));
           }
         }
       });
@@ -165,9 +175,11 @@ angular.module('app')
 
   this.changeRoom = (room) => {
     this.chatroom = room;
+    this.newMessage[room] = false;
   }
 
   this.joinRoom = (newRoom) => {
+    console.log('new room in join room: ', newRoom);
     socket.emit('subscribe', newRoom);
     this.chatroom = newRoom;
     this.addRoom = false;

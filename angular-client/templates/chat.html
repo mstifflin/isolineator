@@ -17,7 +17,7 @@
     <uib-tab index="$index + 1" ng-repeat="room in ctrl.chatrooms" 
        ng-click="ctrl.changeRoom(room)">
       <uib-tab-heading>
-        {{room}} <p ng-if="ctrl.newMessages">!</p>
+        {{room}} <a ng-if="ctrl.newMessage[room]">!</a>
         <a ng-click="ctrl.leaveRoom(room)"> x </a> 
       </uib-tab-heading>
       <div class="autoscroll">
