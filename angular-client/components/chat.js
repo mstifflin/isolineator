@@ -20,13 +20,12 @@ angular.module('app')
   });
 
   socket.emit('subscribe', this.chatroom);
-  socket.emit('changeLanguage', this.translateTo);
 
   socket.on('connect', () => {
     isolineatorService.setSocketId(socket.id);
   });
 
-  this.isTyping = (stuff) => {
+  this.isTyping = () => {
     socket.emit('isTyping', {
       username: this.username,
       room: this.chatroom
@@ -77,7 +76,10 @@ angular.module('app')
 
   this.changeLanguage = () => {
     this.messages = [];
-    socket.emit('changeLanguage', this.translateTo);
+    socket.emit('changeLanguage', {
+      code: this.translateTo,
+      room: this.chatroom 
+    }); 
   }
 
   socket.on('message', (message) => {
