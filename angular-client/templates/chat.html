@@ -7,10 +7,11 @@
         <input class="newRoom" id="new-room-input" value='' ng-model="ctrl.newRoom" />
         <input type="submit" ng-if="!ctrl.promptPassword" ng-click="ctrl.goToRoom(ctrl.newRoom)" value="Submit" />
         <div ng-show="ctrl.promptPassword">
-          <label for="password">{{!ctrl.roomHasPassword ? 'Set a password:' : 'Enter password:'}}</label>
+          <label for="password">{{ctrl.roomPassword ?  'Enter password: ' : 'Set a password: '}}</label>
           <input type="password" ng-model="ctrl.password" />
+          <input type="submit" ng-click="ctrl.roomPassword ? ctrl.validatePassword(ctrl.newRoom) : ctrl.createRoom(ctrl.newRoom)" value="Submit" />
+          <p>{{ctrl.roomError}}</p>
         </div>
-        <input type="submit" ng-if="ctrl.promptPassword" ng-click="ctrl.createRoom(ctrl.newRoom)" value="Submit" />
       </form>
     </uib-tab>
     <uib-tab index="$index + 1" ng-repeat="room in ctrl.chatrooms" 

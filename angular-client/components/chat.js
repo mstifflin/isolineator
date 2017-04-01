@@ -10,7 +10,7 @@ angular.module('app')
   this.addRoom = false;
   this.chatting = true;
   this.promptPassword = false;
-  this.roomHasPassword;
+  this.roomPassword = '';
 
   this.otherUserIsTyping = ''
   this.stallClear = false;
@@ -110,15 +110,17 @@ angular.module('app')
       isolineatorService.getRoom(roomname, (err, room) => {
         if (err) {
           if (err.status === 404) {
-            this.roomHasPassword = false;
+            this.roomPassword = '';
             this.promptPassword = true;
           }
         }
         else {
           if (room.password) {
-            this.roomHasPassword = true;
+            this.roomPassword = room.password;
             this.promptPassword = true;
           } else {
+            this.roomPassword = '';
+            this.roomError = '';
             this.chatrooms.push(room.chatroom);
             this.joinRoom(room.chatroom, this.chatroom);
           }
@@ -138,11 +140,27 @@ angular.module('app')
         console.log(err);
       } else {
         this.password = '';
+        this.roomPassword = '';
+        this.roomError = '';
         this.promptPassword = false;
         this.chatrooms.push(newRoom.chatroom);
         this.joinRoom(newRoom.chatroom, this.chatroom);
       }
     });
+  }
+
+  this.validatePassword = (roomname) => {
+    if (this.password === this.roomPassword) { 
+      this.password = '';
+      this.roomPassword = '';
+      this.roomError = '';
+      this.promptPassword = false;
+      this.chatrooms.push(roomname);
+      this.joinRoom(roomname, this.chatroom);
+    } else {
+      this.roomError = 'Incorrect password.';
+      this.password = '';
+    }
   }
 
   this.changeRoom = (room) => {
