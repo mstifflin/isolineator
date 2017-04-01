@@ -15,7 +15,8 @@ module.exports = function(io){
         connectedClients.forEach(socketId => {
           io.to(socketId).emit('message', {
             username: message.username,
-            message: translatedMessages[clientLanguages[socketId] + 'Message']
+            message: translatedMessages[clientLanguages[socketId] + 'Message'],
+            room: message.room
           });
         });
       });
@@ -32,7 +33,8 @@ module.exports = function(io){
         results.forEach(function(result) {
           var message = {
             username: result.username,
-            message: result[code + 'Message']
+            message: result[code + 'Message'],
+            room: room
           }
           socket.emit('message', message);
         });
@@ -51,7 +53,8 @@ module.exports = function(io){
         results.forEach(function(result) {
           var message = {
             username: result.username,
-            message: result[params.code + 'Message']
+            message: result[params.code + 'Message'],
+            room: params.room
           }
           socket.emit('message', message);
         });

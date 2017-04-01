@@ -1,7 +1,7 @@
   <label for="username">Username:</label>
   <input class="username" id="username-input" value='' ng-model="ctrl.username" />
 
-  <uib-tabset active="active">
+  <uib-tabset active="activeTabIndex">
     <uib-tab index="0" heading="+">
       <form>
         <label for="newRoom">Add Room:</label>
@@ -17,7 +17,7 @@
       </uib-tab-heading>
       <div class="autoscroll">
         <ul class="allmessages">
-          <li class="usermessage" ng-repeat='message in ctrl.messages track by $index'>
+          <li class="usermessage" ng-repeat='message in ctrl.messages[room] track by $index'>
             <span class="username">{{message.username}}: </span> <span class="message"> {{message.message}} </span>
           </li>
         </ul>

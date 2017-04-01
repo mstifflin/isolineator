@@ -4,7 +4,7 @@ angular.module('app')
   this.messageText = '';
   this.username = '';
   this.translateTo = 'en';
-  this.messages = [];
+  this.messages = {};
   this.chatrooms = ['lobby'];
   this.chatroom = 'lobby';
   this.addRoom = false;
@@ -27,7 +27,7 @@ angular.module('app')
 
   this.isTyping = () => {
     socket.emit('isTyping', {
-      username: this.username,
+      username: this.username || 'anonymous',
       room: this.chatroom
     })
   }
@@ -84,7 +84,10 @@ angular.module('app')
 
   socket.on('message', (message) => {
     $scope.$apply(() => {
-      this.messages.push(message);
+      if (!this.messages[message.room]) { 
+        this.messages[message.room] = []; 
+      }
+      this.messages[message.room].push(message);
     });
     $timeout(function() {
       var scrollers = document.getElementsByClassName("autoscroll");
@@ -92,7 +95,7 @@ angular.module('app')
         var scroller = scrollers[i];
         scroller.scrollTop = scroller.scrollHeight;
       }
-    }, 0, false);                                                                                                 
+    }, 0, false);
   });
   
   this.toggleAddRoom = () => {
@@ -124,8 +127,8 @@ angular.module('app')
         this.chatrooms.splice(index, 1);
         $timeout(function(){
           $scope.activeTabIndex = 0;
-        }, 0, false);
-        this.chatroom = this.chatrooms[0];
+        });
+        this.chatroom = null;
         return;
       }
     }.bind(this));
