@@ -27,15 +27,6 @@ angular.module('app')
       this.logs = data;
     });
   }
-
-  this.chatclicked = function() {
-    $timeout(function() {
-      var scroller = document.getElementById("autoscroll");
-      console.log('scroller in chatclicked: ', scroller);
-      scroller.scrollTop = scroller.scrollHeight;
-    }, 0, false);                                                                                                 
-  }
-
 })
 
 .directive('app', function() {

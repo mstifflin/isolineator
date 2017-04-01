@@ -64,7 +64,7 @@ li {
 	text-align: center;
 }
 
-#autoscroll {
+.autoscroll {
   height: 300px;
   width: 45%;
   margin: 0 auto;

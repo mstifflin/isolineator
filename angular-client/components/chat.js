@@ -87,8 +87,11 @@ angular.module('app')
       this.messages.push(message);
     });
     $timeout(function() {
-      var scroller = document.getElementById("autoscroll");
-      scroller.scrollTop = scroller.scrollHeight;
+      var scrollers = document.getElementsByClassName("autoscroll");
+      for (var i = 0; i < scrollers.length; i++) {
+        var scroller = scrollers[i];
+        scroller.scrollTop = scroller.scrollHeight;
+      }
     }, 0, false);                                                                                                 
   });
   
@@ -106,10 +109,26 @@ angular.module('app')
     this.newRoom = '';
   }
 
-  this.joinRoom = (newRoom, oldRoom) => {
-    this.messages = [];
+  this.changeRoom = (room) => {
+    this.chatroom = room;
+  }
+
+  this.joinRoom = (newRoom) => {
     socket.emit('subscribe', newRoom);
-    socket.emit('unsubscribe', oldRoom);
+  }
+
+  this.leaveRoom = (chatroom) => {
+    socket.emit('unsubscribe', chatroom);
+    this.chatrooms.forEach(function(room, index) {
+      if (chatroom === room) {
+        this.chatrooms.splice(index, 1);
+        $timeout(function(){
+          $scope.activeTabIndex = 0;
+        }, 0, false);
+        this.chatroom = this.chatrooms[0];
+        return;
+      }
+    }.bind(this));
   }
 })
 .directive('chat', function() {
