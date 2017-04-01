@@ -40,7 +40,7 @@ var Chatroom = mongoose.model('Chatroom', ChatroomsSchema);
 
 var createRoom = (room, cb) => {
   var newRoom = new Chatroom(room);
-  newRoom.save((err) => {
+  newRoom.save(err => {
     if (err) cb(err);
   });
 }

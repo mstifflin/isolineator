@@ -101,10 +101,17 @@ angular.module('app')
     this.addRoom = !this.addRoom;
   }
 
-  this.createNewRoom = (roomname) => {
+  this.goToRoom = (roomname) => {
     isolineatorService.getRoom(roomname, (err, room) => {
-      // if (err) this.roomError = err;
-      if (err) console.log(err);
+      if (err) {
+        if (err.status === 404) {
+          // prompt user to set a password
+          var room = { chatroom: roomname };
+          isolineatorService.createRoom(room, (err, newRoom) => {
+            this.joinRoom(roomname, this.chatroom);
+          });
+        }
+      }
       else {
         if (room.password) {
           // prompt for password and validate
@@ -112,6 +119,7 @@ angular.module('app')
         }
         this.chatrooms.push(room.chatroom);
         this.chatroom = room.chatroom;
+        this.joinRoom(roomname, this.chatroom);
       }
     });
     this.joinRoom(roomname, this.chatroom);

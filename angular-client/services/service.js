@@ -134,9 +134,22 @@ angular.module('app')
       .then((room) => {
         callback(null, room.data);
       })
-      .catch((err) => {
+      .catch(err => {
         callback(err, null);
       });
+  }
+
+  this.createRoom = (room, callback) => {
+    console.log(room);
+    $http.post('/rooms', room)
+      .then(() => {
+        this.getRoom(room.chatroom, (newRoom) => {
+          callback(null, newRoom);
+        });
+      })
+      .catch(err => {
+        callback(err, null);
+      })
   }
 
   this.getLang = (callback) => {

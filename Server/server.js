@@ -118,10 +118,11 @@ app.get('/rooms/:room', (req, res) => {
 });
 
 app.post('/rooms', (req, res) => {
-  createRoom({ chatroom: req.body.roomname , password: req.body.password }, (err) => {
-    if (err) {
-      res.sendStatus(500);
-    }
+  createRoom({ 
+    chatroom: req.body.chatroom, 
+    password: req.body.password || null 
+  }, err => {
+    if (err) res.sendStatus(500);
   });
 });
 
