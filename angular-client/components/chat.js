@@ -9,6 +9,8 @@ angular.module('app')
   this.chatroom = 'lobby';
   this.addRoom = false;
   this.chatting = true;
+  this.promptPassword = false;
+  this.roomHasPassword;
 
   this.otherUserIsTyping = ''
   this.stallClear = false;
@@ -108,29 +110,39 @@ angular.module('app')
       isolineatorService.getRoom(roomname, (err, room) => {
         if (err) {
           if (err.status === 404) {
-            // prompt user to set a password
-            var roomObj = { chatroom: roomname };
-            isolineatorService.createRoom(roomObj, (err, newRoom) => {
-              if (err) {
-                // set error message on screen
-                console.log(err);
-              } else {
-                this.chatrooms.push(newRoom.chatroom);
-                this.joinRoom(newRoom.chatroom, this.chatroom);
-              }
-            });
+            this.roomHasPassword = false;
+            this.promptPassword = true;
           }
         }
         else {
           if (room.password) {
-            // prompt for password and validate
-            // this.askPassword;
+            this.roomHasPassword = true;
+            this.promptPassword = true;
+          } else {
+            this.chatrooms.push(room.chatroom);
+            this.joinRoom(room.chatroom, this.chatroom);
           }
-          this.chatrooms.push(room.chatroom);
-          this.joinRoom(room.chatroom, this.chatroom);
         }
       });
     }
+  }
+
+  this.createRoom = (roomname) => {
+    var roomObj = { 
+      chatroom: roomname, 
+      password: this.password || null 
+    };
+    isolineatorService.createRoom(roomObj, (err, newRoom) => {
+      if (err) {
+        // set error message on screen
+        console.log(err);
+      } else {
+        this.password = '';
+        this.promptPassword = false;
+        this.chatrooms.push(newRoom.chatroom);
+        this.joinRoom(newRoom.chatroom, this.chatroom);
+      }
+    });
   }
 
   this.changeRoom = (room) => {
