@@ -101,17 +101,36 @@ angular.module('app')
     this.addRoom = !this.addRoom;
   }
 
-  this.createNewRoom = (room) => {
-    if (this.chatrooms.indexOf(room) === -1) {
-      this.chatrooms.push(room); 
+  this.goToRoom = (roomname) => {
+    if (this.chatrooms.includes(roomname)) {
+      this.joinRoom(roomname, this.chatroom);
+    } else {
+      isolineatorService.getRoom(roomname, (err, room) => {
+        if (err) {
+          if (err.status === 404) {
+            // prompt user to set a password
+            var roomObj = { chatroom: roomname };
+            isolineatorService.createRoom(roomObj, (err, newRoom) => {
+              if (err) {
+                // set error message on screen
+                console.log(err);
+              } else {
+                this.chatrooms.push(newRoom.chatroom);
+                this.joinRoom(newRoom.chatroom, this.chatroom);
+              }
+            });
+          }
+        }
+        else {
+          if (room.password) {
+            // prompt for password and validate
+            // this.askPassword;
+          }
+          this.chatrooms.push(room.chatroom);
+          this.joinRoom(room.chatroom, this.chatroom);
+        }
+      });
     }
-    this.joinRoom(room, this.chatroom);
-    this.chatroom = room;
-    this.addRoom = false;
-    this.newRoom = '';
-    $timeout(function(){
-      $scope.activeTabIndex = this.chatrooms.length;
-    }.bind(this));
   }
 
   this.changeRoom = (room) => {
@@ -120,6 +139,12 @@ angular.module('app')
 
   this.joinRoom = (newRoom) => {
     socket.emit('subscribe', newRoom);
+    this.chatroom = newRoom;
+    this.addRoom = false;
+    this.newRoom = '';
+    $timeout(function(){
+      $scope.activeTabIndex = this.chatrooms.length;
+    }.bind(this));
   }
 
   this.leaveRoom = (chatroom) => {

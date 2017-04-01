@@ -129,6 +129,28 @@ angular.module('app')
      });
   };
 
+  this.getRoom = (roomname, callback) => {
+    $http.get('/rooms/' + roomname)
+      .then((room) => {
+        callback(null, room.data);
+      })
+      .catch(err => {
+        callback(err, null);
+      });
+  }
+
+  this.createRoom = (room, callback) => {
+    $http.post('/rooms', room)
+      .then(() => {
+        this.getRoom(room.chatroom, (err, newRoom) => {
+          callback(null, newRoom);
+        });
+      })
+      .catch(err => {
+        callback(err, null);
+      })
+  }
+
   this.getLang = (callback) => {
     $http.get('/getLang')
       .then((data) => {

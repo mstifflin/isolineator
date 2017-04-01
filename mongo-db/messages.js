@@ -38,6 +38,23 @@ var ChatroomsSchema = mongoose.Schema({
 
 var Chatroom = mongoose.model('Chatroom', ChatroomsSchema);
 
+var createRoom = (room, cb) => {
+  var newRoom = new Chatroom(room);
+  newRoom.save(err => {
+    if (err) cb(err);
+    else cb(null);
+  });
+}
+
+var getRoomByName = (roomname, cb) => {
+  Chatroom.findOne({ chatroom: roomname }, (err, room) => {
+    if (err) cb(err, null);
+    else cb(null, room);
+  })
+}
+
 exports.saveTranslations = saveTranslations;
 exports.getMessages = getMessages;
 exports.Chatroom = Chatroom;
+exports.createRoom = createRoom;
+exports.getRoomByName = getRoomByName;
