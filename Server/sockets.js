@@ -23,7 +23,7 @@ module.exports = function(io){
     }); 
 
     socket.on('isTyping', (userInfo) => {
-      socket.to(userInfo.room).emit('isTyping', `${userInfo.username} is typing...`);    
+      socket.to(userInfo.room).emit('isTyping', userInfo);    
     })
 
     socket.on('subscribe', function(room) {
