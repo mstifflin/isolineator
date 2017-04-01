@@ -102,33 +102,35 @@ angular.module('app')
   }
 
   this.goToRoom = (roomname) => {
-    isolineatorService.getRoom(roomname, (err, room) => {
-      if (err) {
-        if (err.status === 404) {
-          // prompt user to set a password
-          var room = { chatroom: roomname };
-          isolineatorService.createRoom(room, (err, newRoom) => {
-            this.joinRoom(roomname, this.chatroom);
-          });
+    if (this.chatrooms.includes(roomname)) {
+      this.joinRoom(roomname, this.chatroom);
+    } else {
+      isolineatorService.getRoom(roomname, (err, room) => {
+        if (err) {
+          if (err.status === 404) {
+            // prompt user to set a password
+            var roomObj = { chatroom: roomname };
+            isolineatorService.createRoom(roomObj, (err, newRoom) => {
+              if (err) {
+                // set error message on screen
+                console.log(err);
+              } else {
+                this.chatrooms.push(newRoom.chatroom);
+                this.joinRoom(newRoom.chatroom, this.chatroom);
+              }
+            });
+          }
         }
-      }
-      else {
-        if (room.password) {
-          // prompt for password and validate
-          // this.askPassword;
+        else {
+          if (room.password) {
+            // prompt for password and validate
+            // this.askPassword;
+          }
+          this.chatrooms.push(room.chatroom);
+          this.joinRoom(room.chatroom, this.chatroom);
         }
-        this.chatrooms.push(room.chatroom);
-        this.chatroom = room.chatroom;
-        this.joinRoom(roomname, this.chatroom);
-      }
-    });
-    this.joinRoom(roomname, this.chatroom);
-    this.chatroom = roomname;
-    this.addRoom = false;
-    this.newRoom = '';
-    $timeout(function(){
-      $scope.activeTabIndex = this.chatrooms.length;
-    }.bind(this));
+      });
+    }
   }
 
   this.changeRoom = (room) => {
@@ -137,6 +139,12 @@ angular.module('app')
 
   this.joinRoom = (newRoom) => {
     socket.emit('subscribe', newRoom);
+    this.chatroom = newRoom;
+    this.addRoom = false;
+    this.newRoom = '';
+    $timeout(function(){
+      $scope.activeTabIndex = this.chatrooms.length;
+    }.bind(this));
   }
 
   this.leaveRoom = (chatroom) => {

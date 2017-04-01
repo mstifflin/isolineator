@@ -42,6 +42,7 @@ var createRoom = (room, cb) => {
   var newRoom = new Chatroom(room);
   newRoom.save(err => {
     if (err) cb(err);
+    else cb(null);
   });
 }
 

@@ -140,10 +140,9 @@ angular.module('app')
   }
 
   this.createRoom = (room, callback) => {
-    console.log(room);
     $http.post('/rooms', room)
       .then(() => {
-        this.getRoom(room.chatroom, (newRoom) => {
+        this.getRoom(room.chatroom, (err, newRoom) => {
           callback(null, newRoom);
         });
       })

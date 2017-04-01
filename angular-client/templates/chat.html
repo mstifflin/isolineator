@@ -5,7 +5,7 @@
       <form>
         <label for="newRoom">Add Room:</label>
         <input class="newRoom" id="new-room-input" value='' ng-model="ctrl.newRoom" />
-        <input type="submit" ng-click="ctrl.createNewRoom(ctrl.newRoom)" value="create" />
+        <input type="submit" ng-click="ctrl.goToRoom(ctrl.newRoom)" value="create" />
       </form>
     </uib-tab>
     <uib-tab index="$index + 1" ng-repeat="room in ctrl.chatrooms" 
