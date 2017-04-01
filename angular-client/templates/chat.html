@@ -10,9 +10,9 @@
       </form>
     </uib-tab>
     <uib-tab index="$index + 1" ng-repeat="room in ctrl.chatrooms" 
-      ng-click="ctrl.joinRoom(ctrl.chatroom)" >
-      <uib-tab-heading ng-click="ctrl.changeRoom(room)">
-        {{room}}
+       ng-click="ctrl.changeRoom(room)">
+      <uib-tab-heading>
+        {{room}} <p ng-if="ctrl.newMessages">!</p>
         <a ng-click="ctrl.leaveRoom(room)"> x </a> 
       </uib-tab-heading>
       <div class="autoscroll">

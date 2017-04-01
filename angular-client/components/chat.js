@@ -42,7 +42,6 @@ angular.module('app')
       }
     });
 
-
     setTimeout(() => {
       $scope.$apply(() => {
         if (this.stallClear === true) {
@@ -54,7 +53,6 @@ angular.module('app')
       });
     }, 3000)
   })
-
 
   this.sendMessage = () => {
     if (this.messageText) {
@@ -87,6 +85,7 @@ angular.module('app')
       if (!this.messages[message.room]) { 
         this.messages[message.room] = []; 
       }
+      
       this.messages[message.room].push(message);
     });
     $timeout(function() {
@@ -110,6 +109,9 @@ angular.module('app')
     this.chatroom = room;
     this.addRoom = false;
     this.newRoom = '';
+    $timeout(function(){
+      $scope.activeTabIndex = this.chatrooms.length;
+    }.bind(this));
   }
 
   this.changeRoom = (room) => {
