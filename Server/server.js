@@ -108,9 +108,9 @@ app.get('/rooms/:room', (req, res) => {
   let roomname = req.params.room;
   getRoomByName(roomname, (err, room) => {
     if (err) {
-      res.statusCode(500);
+      res.sendStatus(500);
     } else if (!room) {
-      res.statusCode(404);
+      res.sendStatus(404);
     } else {
       res.status(200).send(room);
     }
@@ -119,7 +119,9 @@ app.get('/rooms/:room', (req, res) => {
 
 app.post('/rooms', (req, res) => {
   createRoom({ chatroom: req.body.roomname , password: req.body.password }, (err) => {
-
+    if (err) {
+      res.sendStatus(500);
+    }
   });
 });
 

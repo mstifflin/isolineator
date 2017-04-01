@@ -46,7 +46,6 @@ var createRoom = (room, cb) => {
 }
 
 var getRoomByName = (roomname, cb) => {
-  // Chatroom.find({ chatroom: roomname }).exec(callback);
   Chatroom.findOne({ chatroom: roomname }, (err, room) => {
     if (err) cb(err, null);
     else cb(null, room);

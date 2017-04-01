@@ -106,6 +106,10 @@ angular.module('app')
       // if (err) this.roomError = err;
       if (err) console.log(err);
       else {
+        if (room.password) {
+          // prompt for password and validate
+          // this.askPassword;
+        }
         this.chatrooms.push(room.chatroom);
         this.chatroom = room.chatroom;
       }
