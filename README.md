@@ -1,6 +1,6 @@
 # Project Name
 
-> Pithy project description
+> Link to screen shots: http://imgur.com/a/wVxXY
 
 ## Team
 
@@ -8,6 +8,10 @@
   - Raphael Feliciano
   - Apurva Shastry
   - Michael Diodoro
+  - Jeffery Briner
+  - Laura Greenbaum
+  - Tiffany Lin
+  - Eugene Shifrin
 
 ## Table of Contents
 
